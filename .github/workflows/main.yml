@@ -4,14 +4,23 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with: { distribution: temurin, java-version: '17' }
       - uses: android-actions/setup-android@v3
-      - run: chmod +x gradlew && ./gradlew assembleRelease --no-daemon
+      - uses: gradle/actions/setup-gradle@v5
+        with: { gradle-version: '8.7' }
+      - name: Find project folder
+        run: |
+          DIR=$(dirname "$(find . -name 'settings.gradle.kts' -not -path './.git/*' | head -1)")
+          echo "Project folder: $DIR"
+          ls -la "$DIR"
+          echo "PROJ=$DIR" >> $GITHUB_ENV
+      - name: Build
+        run: cd "$PROJ" && gradle assembleRelease --no-daemon --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: QuranRadio-apk
-          path: app/build/outputs/apk/release/*.apk
+          path: '**/build/outputs/apk/release/*.apk'

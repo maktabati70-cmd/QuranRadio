@@ -2,6 +2,7 @@
  "categories": {
   "national": "إذاعات القرآن الرسمية",
   "mixed": "تلاوات متنوعة",
+  "qiraat": "القراءات والروايات",
   "tafsir": "التفسير",
   "hadith": "الحديث الشريف",
   "seerah": "السيرة والقصص",
@@ -17,7 +18,7 @@
   },
   {
    "name": "إذاعة القرآن الكريم - القاهرة",
-   "url": "https://n09.radiojar.com/8s5u5tpdtwzuv",
+   "url": "https://stream.radiojar.com/8s5u5tpdtwzuv",
    "cat": "national"
   },
   {
@@ -49,6 +50,181 @@
    "name": "سورة الملك",
    "url": "https://backup.qurango.net/radio/Surah_Al-Mulk",
    "cat": "mixed"
+  },
+  {
+   "name": "عبدالباسط عبدالصمد - ورش عن نافع",
+   "url": "https://backup.qurango.net/radio/abdulbasit_abdulsamad_warsh",
+   "cat": "qiraat"
+  },
+  {
+   "name": "عبدالرشيد صوفي - خلف عن حمزة",
+   "url": "https://backup.qurango.net/radio/abdulrasheed_soufi_khalaf",
+   "cat": "qiraat"
+  },
+  {
+   "name": "عبدالرشيد صوفي - السوسي عن أبي عمرو",
+   "url": "https://backup.qurango.net/radio/abdulrasheed_soufi_assosi",
+   "cat": "qiraat"
+  },
+  {
+   "name": "علي الحذيفي - قالون عن نافع",
+   "url": "https://backup.qurango.net/radio/ali_alhuthaifi_qalon",
+   "cat": "qiraat"
+  },
+  {
+   "name": "محمد عبدالحكيم العبدالله - البزي عن ابن كثير",
+   "url": "https://backup.qurango.net/radio/mohammad_alabdullah_albizi",
+   "cat": "qiraat"
+  },
+  {
+   "name": "محمد عبدالحكيم العبدالله - الدوري عن الكسائي",
+   "url": "https://backup.qurango.net/radio/mohammad_alabdullah_aldorai",
+   "cat": "qiraat"
+  },
+  {
+   "name": "محمود خليل الحصري - ورش عن نافع",
+   "url": "https://backup.qurango.net/radio/mahmoud_khalil_alhussary_warsh",
+   "cat": "qiraat"
+  },
+  {
+   "name": "مفتاح السلطني - الدوري عن أبي عمرو",
+   "url": "https://backup.qurango.net/radio/muftah_alsaltany_aldori_an_abi_amr",
+   "cat": "qiraat"
+  },
+  {
+   "name": "مفتاح السلطني - الدوري عن الكسائي",
+   "url": "https://backup.qurango.net/radio/muftah_alsaltany_aldorai",
+   "cat": "qiraat"
+  },
+  {
+   "name": "مفتاح السلطني - ابن ذكوان عن ابن عامر",
+   "url": "https://backup.qurango.net/radio/muftah_alsaltany_ibn_thakwan_an_ibn_amr",
+   "cat": "qiraat"
+  },
+  {
+   "name": "محمد عبدالكريم - ورش من طريق الأصبهاني",
+   "url": "https://backup.qurango.net/radio/mohammad_abdullkarem_alasbahani",
+   "cat": "qiraat"
+  },
+  {
+   "name": "محمود خليل الحصري - ورش عن نافع",
+   "url": "https://cdn.mp3quran.net/audio/mahmoud-husary/r3/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "محمد سايد - ورش عن نافع",
+   "url": "https://cdn.mp3quran.net/audio/muhammad-saayed/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "القارئ ياسين الجزائري - ورش عن نافع",
+   "url": "https://cdn.mp3quran.net/audio/yassen-jazairi/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "العيون الكوشي - ورش عن نافع",
+   "url": "https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "إبراهيم الدوسري - ورش عن نافع",
+   "url": "https://cdn.mp3quran.net/audio/ibrahim-dosari/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "محمد الأيراوي - ورش من طريق الأزرق",
+   "url": "https://cdn.mp3quran.net/audio/muhammad-iraoui/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "محمد عبدالكريم - ورش من طريق الأصبهاني",
+   "url": "https://cdn.mp3quran.net/audio/muhammad-abdulkareem/r2/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "محمود خليل الحصري - قالون عن نافع",
+   "url": "https://cdn.mp3quran.net/audio/mahmoud-husary/r5/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "أحمد الطرابلسي - قالون عن نافع",
+   "url": "https://cdn.mp3quran.net/audio/ahmad-tarabulsi/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "الدوكالي محمد العالم - قالون عن نافع",
+   "url": "https://cdn.mp3quran.net/audio/dokali-alim/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "محمد عبدالحكيم العبدالله - البزي وقنبل عن ابن كثير",
+   "url": "https://cdn.mp3quran.net/audio/muhammad-abdullah/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "محمود خليل الحصري - الدوري عن أبي عمرو",
+   "url": "https://cdn.mp3quran.net/audio/mahmoud-husary/r4/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "مفتاح السلطني - الدوري عن أبي عمرو",
+   "url": "https://cdn.mp3quran.net/audio/muftah-saltani/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "نورين محمد صديق - الدوري عن أبي عمرو",
+   "url": "https://cdn.mp3quran.net/audio/noreen-siddiq/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "مفتاح السلطني - ابن ذكوان عن ابن عامر",
+   "url": "https://cdn.mp3quran.net/audio/muftah-saltani/r5/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "مفتاح السلطني - شعبة عن عاصم",
+   "url": "https://cdn.mp3quran.net/audio/muftah-saltani/r4/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "مشاري العفاسي - الدوري عن الكسائي",
+   "url": "https://cdn.mp3quran.net/audio/mishary-alafasy/r2/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "محمد عبدالحكيم العبدالله - الدوري عن الكسائي",
+   "url": "https://cdn.mp3quran.net/audio/muhammad-abdullah/r2/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "مفتاح السلطني - الدوري عن الكسائي",
+   "url": "https://cdn.mp3quran.net/audio/muftah-saltani/r2/",
+   "cat": "qiraat",
+   "type": "surahs"
+  },
+  {
+   "name": "محمود الشيمي - الدوري عن الكسائي",
+   "url": "https://cdn.mp3quran.net/audio/mahmoud-sheimy/r1/",
+   "cat": "qiraat",
+   "type": "surahs"
   },
   {
    "name": "تفسير القرآن الكريم",
@@ -296,11 +472,6 @@
    "cat": "quran"
   },
   {
-   "name": "عبدالباسط عبدالصمد - ورش",
-   "url": "https://backup.qurango.net/radio/abdulbasit_abdulsamad_warsh",
-   "cat": "quran"
-  },
-  {
    "name": "عبدالباسط عبدالصمد - مرتل",
    "url": "https://backup.qurango.net/radio/abdulbasit_abdulsamad",
    "cat": "quran"
@@ -336,16 +507,6 @@
    "cat": "quran"
   },
   {
-   "name": "عبدالرشيد صوفي - خلف",
-   "url": "https://backup.qurango.net/radio/abdulrasheed_soufi_khalaf",
-   "cat": "quran"
-  },
-  {
-   "name": "عبدالرشيد صوفي - السوسي",
-   "url": "https://backup.qurango.net/radio/abdulrasheed_soufi_assosi",
-   "cat": "quran"
-  },
-  {
    "name": "عبدالمحسن الحارثي",
    "url": "https://backup.qurango.net/radio/abdulmohsin_alharthy",
    "cat": "quran"
@@ -373,11 +534,6 @@
   {
    "name": "علي بن عبدالرحمن الحذيفي",
    "url": "https://backup.qurango.net/radio/ali_alhuthaifi",
-   "cat": "quran"
-  },
-  {
-   "name": "علي الحذيفي - قالون",
-   "url": "https://backup.qurango.net/radio/ali_alhuthaifi_qalon",
    "cat": "quran"
   },
   {
@@ -501,16 +657,6 @@
    "cat": "quran"
   },
   {
-   "name": "محمد عبدالحكيم العبدالله - البزي",
-   "url": "https://backup.qurango.net/radio/mohammad_alabdullah_albizi",
-   "cat": "quran"
-  },
-  {
-   "name": "محمد عبدالحكيم العبدالله - الدوري",
-   "url": "https://backup.qurango.net/radio/mohammad_alabdullah_aldorai",
-   "cat": "quran"
-  },
-  {
    "name": "محمود خليل الحصري - مرتل",
    "url": "https://backup.qurango.net/radio/mahmoud_khalil_alhussary",
    "cat": "quran"
@@ -518,11 +664,6 @@
   {
    "name": "محمود خليل الحصري - مجود",
    "url": "https://backup.qurango.net/radio/mahmoud_khalil_alhussary_mojawwad",
-   "cat": "quran"
-  },
-  {
-   "name": "محمود خليل الحصري - ورش",
-   "url": "https://backup.qurango.net/radio/mahmoud_khalil_alhussary_warsh",
    "cat": "quran"
   },
   {
@@ -553,11 +694,6 @@
   {
    "name": "مصطفى رعد العزاوي",
    "url": "https://backup.qurango.net/radio/mustafa_raad_alazawy",
-   "cat": "quran"
-  },
-  {
-   "name": "مفتاح السلطني - الدوري عن أبي عمرو",
-   "url": "https://backup.qurango.net/radio/muftah_alsaltany_aldori_an_abi_amr",
    "cat": "quran"
   },
   {
@@ -601,11 +737,6 @@
    "cat": "quran"
   },
   {
-   "name": "مفتاح السلطني - الدوري",
-   "url": "https://backup.qurango.net/radio/muftah_alsaltany_aldorai",
-   "cat": "quran"
-  },
-  {
    "name": "جمعان العصيمي",
    "url": "https://backup.qurango.net/radio/jamaan_alosaimi",
    "cat": "quran"
@@ -618,11 +749,6 @@
   {
    "name": "يوسف بن نوح أحمد",
    "url": "https://backup.qurango.net/radio/yousef_bin_noah_ahmad",
-   "cat": "quran"
-  },
-  {
-   "name": "مفتاح السلطني - ابن ذكوان",
-   "url": "https://backup.qurango.net/radio/muftah_alsaltany_ibn_thakwan_an_ibn_amr",
    "cat": "quran"
   },
   {
@@ -663,11 +789,6 @@
   {
    "name": "الدوكالي محمد العالم",
    "url": "https://backup.qurango.net/radio/addokali_mohammad_alalim",
-   "cat": "quran"
-  },
-  {
-   "name": "محمد عبدالكريم - الأصبهاني",
-   "url": "https://backup.qurango.net/radio/mohammad_abdullkarem_alasbahani",
    "cat": "quran"
   },
   {

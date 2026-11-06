@@ -51,9 +51,14 @@ class PlaybackService : MediaSessionService() {
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = session
 
+    /** عند سحب التطبيق من قائمة التطبيقات المفتوحة: إيقاف البث وإغلاق الخدمة نهائياً */
     override fun onTaskRemoved(rootIntent: Intent?) {
-        val p = session?.player
-        if (p == null || !p.playWhenReady) stopSelf()
+        session?.player?.run { stop(); clearMediaItems(); release() }
+        session?.release(); session = null
+        @Suppress("DEPRECATION") stopForeground(true)
+        stopSelf()
+        // إنهاء العملية بالكامل حتى لا يبقى أي شيء يعمل في الخلفية
+        android.os.Process.killProcess(android.os.Process.myPid())
     }
 
     override fun onDestroy() {

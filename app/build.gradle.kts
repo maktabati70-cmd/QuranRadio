@@ -10,14 +10,25 @@ android {
         applicationId = "com.quranradio.app"
         minSdk = 21
         targetSdk = 34
-        versionCode = 4
-        versionName = "4.0"
+        versionCode = 9
+        versionName = "7.0"
+    }
+    // مفتاح التوقيع الثابت: يُقرأ من أسرار GitHub (أو من keystore محلي) حتى تنزل التحديثات فوق بعضها
+    val ksFile = System.getenv("KEYSTORE_FILE")?.let { file(it) }
+    signingConfigs {
+        if (ksFile != null && ksFile.exists()) {
+            create("release") {
+                storeFile = ksFile
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS") ?: "almuslim"
+                keyPassword = System.getenv("KEY_PASSWORD") ?: System.getenv("KEYSTORE_PASSWORD")
+            }
+        }
     }
     buildTypes {
         release {
             isMinifyEnabled = false
-            // يوقَّع بمفتاح التصحيح ليكون الـ APK قابلاً للتثبيت مباشرة
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
     }
     compileOptions {

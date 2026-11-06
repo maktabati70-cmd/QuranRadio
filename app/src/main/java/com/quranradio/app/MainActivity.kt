@@ -4,6 +4,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.TrafficStats
@@ -35,6 +40,15 @@ import com.google.common.util.concurrent.MoreExecutors
 class MainActivity : AppCompatActivity() {
 
     companion object {
+        /** تطبيقات راديو FM المدمجة المعروفة لدى الشركات المصنّعة */
+        val FM_PACKAGES = listOf(
+            "com.sec.android.app.fm", "com.android.fmradio", "com.caf.fmradio", "com.miui.fm", "com.miui.fmradio",
+            "com.huawei.android.FMRadio", "com.motorola.fmplayer", "com.lge.fmradio", "com.sonyericsson.fmradio",
+            "com.sonymobile.fmradio", "com.htc.fm", "com.asus.fmradio", "com.android.fm", "com.coloros.fmradio",
+            "com.oppo.fmradio", "com.vivo.fmradio", "com.zte.fmradio", "com.qualcomm.fmradio", "com.mediatek.fmradio",
+            "com.transsion.fmradio", "com.infinix.fmradio", "com.tecno.fmradio", "com.nokia.fmradio",
+            "com.realme.fmradio", "com.oneplus.fmradio"
+        )
         private fun totalBytes(): Long {
             val uid = Process.myUid()
             val rx = TrafficStats.getUidRxBytes(uid); val tx = TrafficStats.getUidTxBytes(uid)
@@ -63,7 +77,15 @@ class MainActivity : AppCompatActivity() {
             mediaPlaybackRequiresUserGesture = false
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         }
-        web.webViewClient = WebViewClient()
+        web.webViewClient = object : WebViewClient() {
+            // روابط خارجية (واتساب للتواصل مع المطور) تُفتح في تطبيقاتها
+            override fun shouldOverrideUrlLoading(view: WebView, request: android.webkit.WebResourceRequest): Boolean {
+                val u = request.url
+                if (u.scheme == "file") return false
+                runCatching { startActivity(Intent(Intent.ACTION_VIEW, u)) }
+                return true
+            }
+        }
         web.webChromeClient = WebChromeClient()
         web.addJavascriptInterface(Bridge(), "Android")
         if (savedInstanceState != null) web.restoreState(savedInstanceState)
@@ -123,6 +145,21 @@ class MainActivity : AppCompatActivity() {
         override fun onPlayerError(error: PlaybackException) = send("error")
     }
 
+    private fun findFmApp(): String? {
+        val pm = packageManager
+        FM_PACKAGES.firstOrNull { pm.getLaunchIntentForPackage(it) != null }?.let { return it }
+        // بحث احتياطي: أي تطبيق مثبّت يحمل اسماً يدل على راديو FM
+        val launcher = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        @Suppress("DEPRECATION")
+        val apps = pm.queryIntentActivities(launcher, PackageManager.MATCH_ALL)
+        return apps.firstOrNull { ri ->
+            val p = ri.activityInfo.packageName.lowercase()
+            val label = ri.loadLabel(pm).toString().lowercase()
+            p != packageName && (p.contains("fmradio") || p.endsWith(".fm") || label.contains("fm radio") ||
+                label.contains("راديو fm") || label == "fm" || label.contains("radio fm"))
+        }?.activityInfo?.packageName
+    }
+
     private fun send(event: String) = runOnUiThread {
         web.evaluateJavascript("window.nativeEvent && window.nativeEvent('$event')", null)
     }
@@ -178,6 +215,57 @@ class MainActivity : AppCompatActivity() {
         /** عدد البايتات التي استهلكها التطبيق منذ فتحه */
         @JavascriptInterface
         fun usageBytes(): String = (totalBytes() - startBytes).coerceAtLeast(0).toString()
+
+        /** اسم حزمة تطبيق راديو FM المدمج في الهاتف، أو نص فارغ إن لم يوجد */
+        @JavascriptInterface
+        fun fmApp(): String = findFmApp() ?: ""
+
+        /** هل السماعة السلكية موصولة؟ (سلكها هو هوائي FM) */
+        @Suppress("DEPRECATION")
+        @JavascriptInterface
+        fun headsetPlugged(): Boolean {
+            val am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            if (Build.VERSION.SDK_INT < 23) return am.isWiredHeadsetOn
+            val wired = mutableSetOf(AudioDeviceInfo.TYPE_WIRED_HEADSET, AudioDeviceInfo.TYPE_WIRED_HEADPHONES)
+            if (Build.VERSION.SDK_INT >= 26) wired += AudioDeviceInfo.TYPE_USB_HEADSET
+            return am.getDevices(AudioManager.GET_DEVICES_OUTPUTS).any { it.type in wired }
+        }
+
+        /** فتح تطبيق راديو FM المدمج */
+        @JavascriptInterface
+        fun openFm(): Boolean {
+            val pkg = findFmApp() ?: return false
+            val i = packageManager.getLaunchIntentForPackage(pkg) ?: return false
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            return runCatching { startActivity(i); true }.getOrDefault(false)
+        }
+
+        /** حفظ بيانات (المصحف، آخر صفحة، حجم الخط) في ذاكرة التطبيق للقراءة بدون إنترنت */
+        @JavascriptInterface
+        fun saveData(key: String, value: String) {
+            runCatching { java.io.File(filesDir, "data_" + key.replace(Regex("[^A-Za-z0-9_]"), "")).writeText(value) }
+        }
+
+        @JavascriptInterface
+        fun loadData(key: String): String =
+            runCatching { java.io.File(filesDir, "data_" + key.replace(Regex("[^A-Za-z0-9_]"), "")).readText() }.getOrDefault("")
+
+        /** الموقع التقريبي لحساب أوقات الصلاة: "lat,lng" أو نص فارغ */
+        @SuppressLint("MissingPermission")
+        @JavascriptInterface
+        fun getLocation(): String {
+            if (Build.VERSION.SDK_INT >= 23 &&
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            ) {
+                runOnUiThread { requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 2) }
+                return ""
+            }
+            val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val loc = runCatching {
+                lm.getProviders(true).mapNotNull { lm.getLastKnownLocation(it) }.maxByOrNull { it.time }
+            }.getOrNull() ?: return ""
+            return "${loc.latitude},${loc.longitude}"
+        }
 
         @JavascriptInterface
         fun exit() = runOnUiThread { moveTaskToBack(true) }

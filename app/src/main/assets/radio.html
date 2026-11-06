@@ -7,13 +7,13 @@
 <meta name="author" content="أبو عبدالله الشامي">
 <title>مذياع أنا المسلم — تطوير أبو عبدالله الشامي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=El+Messiri:wght@500;600;700&family=Amiri+Quran&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
  --bg0:#070b16;--bg1:#0c1426;--card:rgba(255,255,255,.045);--card2:rgba(255,255,255,.07);--stroke:rgba(255,255,255,.08);
  --gold:#d9b46c;--gold2:#f3dca6;--gold3:#9c7a3c;--em:#34d399;--red:#f87171;--amber:#fbbf24;
  --ink:#eef1f7;--sub:#93a0b8;--dim:#5d6a82;
- --ff:"IBM Plex Sans Arabic","Segoe UI","Noto Sans Arabic",Tahoma,sans-serif;--fk:"Reem Kufi","IBM Plex Sans Arabic","Segoe UI",sans-serif
+ --ff:"Tajawal","Segoe UI","Noto Sans Arabic",Tahoma,sans-serif;--fk:"El Messiri","Tajawal","Segoe UI",sans-serif
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg0);color:var(--ink);font-family:var(--ff);overflow:hidden}
@@ -43,10 +43,12 @@ body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.05;background-s
 main{flex:1;overflow:hidden;position:relative}
 .page{position:absolute;inset:0;overflow-y:auto;padding:4px 18px 22px;transition:opacity .35s,transform .35s;scrollbar-width:none}
 .page::-webkit-scrollbar{display:none}
+#pRadio{overflow:hidden;display:flex;flex-direction:column;padding-bottom:8px}
+#radio{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;min-height:0}
 .page.hidden{opacity:0;pointer-events:none;transform:translateY(12px)}
 
 /* ===== القرص ===== */
-.stage{position:relative;width:min(300px,78vw);aspect-ratio:1;margin:10px auto 0}
+.stage{position:relative;width:min(290px,72vw,36vh);aspect-ratio:1;margin:4px auto 0;flex:none}
 .stage .glow{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle,rgba(217,180,108,.28),transparent 70%);filter:blur(18px);opacity:.35;transition:opacity .6s}
 .playing .stage .glow{opacity:1;animation:breathe 3s ease-in-out infinite}
 @keyframes breathe{50%{transform:scale(1.08)}}
@@ -71,7 +73,7 @@ main{flex:1;overflow:hidden;position:relative}
 .pointer{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid var(--gold2);filter:drop-shadow(0 0 5px var(--gold));z-index:2}
 
 /* ===== معلومات الإذاعة ===== */
-.info{text-align:center;margin-top:18px}
+.info{text-align:center;margin-top:6px}
 .info .nm{font-family:var(--fk);font-size:22px;font-weight:700;line-height:1.35;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .info .sub{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;font-size:13px;color:var(--sub)}
 .live{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;background:var(--card);border:1px solid var(--stroke);color:var(--sub)}
@@ -81,10 +83,10 @@ main{flex:1;overflow:hidden;position:relative}
 .live.wait{color:var(--amber)}.live.wait:before{background:var(--amber);animation:blink .8s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
 @keyframes blink{50%{opacity:.2}}
-.info .extra{font-size:12.5px;color:var(--gold);margin-top:6px;min-height:18px}
+.info .extra{font-size:12.5px;color:var(--gold);margin-top:4px;min-height:16px}
 
 /* ===== التحكم ===== */
-.controls{display:flex;align-items:center;justify-content:center;gap:28px;margin-top:16px}
+.controls{display:flex;align-items:center;justify-content:center;gap:28px;margin-top:6px}
 .cb{width:54px;height:54px;border-radius:50%;border:1px solid var(--stroke);background:var(--card);display:grid;place-items:center;cursor:pointer;transition:.2s}
 .cb svg{width:22px;height:22px;fill:var(--ink)}
 .cb:active{transform:scale(.92);background:var(--card2)}
@@ -93,7 +95,7 @@ main{flex:1;overflow:hidden;position:relative}
 .play:active{transform:scale(.94)}
 .play svg{width:30px;height:30px;fill:#1a1408}
 .play .ps{display:none}.power .play .ps{display:block}.power .play .pl{display:none}
-.volume{display:flex;align-items:center;gap:12px;margin:22px 6px 0}
+.volume{display:flex;align-items:center;gap:12px;margin:6px 6px 0}
 .volume svg{width:18px;height:18px;fill:var(--sub);flex:none}
 input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:5px;border-radius:5px;outline:none;direction:ltr;
  background:linear-gradient(90deg,var(--gold) var(--v,80%),rgba(255,255,255,.1) var(--v,80%))}
@@ -106,7 +108,126 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border:0;border-radiu
 .sw input:checked+span{background:var(--em)}.sw input:checked+span:before{transform:translateX(-18px)}
 .hint{text-align:center;color:var(--dim);font-size:12px;margin-top:12px}
 .hid{display:none}
+.fmcard{display:flex;align-items:center;gap:12px;width:100%;margin-top:12px;padding:12px 14px;border-radius:16px;cursor:pointer;text-align:right;font:inherit;color:var(--ink);
+ background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(217,180,108,.08));border:1px solid rgba(52,211,153,.25)}
+.fmcard:active{transform:scale(.98)}
+.fmcard .fi{width:42px;height:42px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(52,211,153,.15)}
+.fmcard .fi svg{width:24px;height:24px;fill:none;stroke:var(--em);stroke-width:1.8;stroke-linecap:round}
+.fmcard b{display:block;font-size:14.5px}.fmcard small{font-size:11.5px;color:var(--sub)}
+.fmcard .go{margin-right:auto;color:var(--em);font-size:18px}
+.sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:.25s}
+.sheet.show{opacity:1;pointer-events:auto}
+.sheet .box{width:100%;max-width:460px;margin:0 10px 12px;padding:22px 20px 16px;border-radius:22px;background:#111a30;border:1px solid var(--stroke);text-align:center;transform:translateY(30px);transition:.25s}
+.sheet.show .box{transform:none}
+.sheet .big{font-size:40px}.sheet h3{margin:6px 0 6px;font-family:var(--fk);color:var(--gold2);font-size:18px}
+.sheet p{margin:0 0 16px;color:var(--sub);font-size:13.5px;line-height:1.7}
+.sheet .acts{display:flex;gap:10px}.sheet .acts button{flex:1;padding:12px;border-radius:14px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+.sheet .acts .pri{background:linear-gradient(145deg,var(--gold2),var(--gold));color:#1a1408;border:0}
 
+.adbox{margin:18px 0 0;min-height:70px;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--stroke)}
+.adbox ins{display:block;width:100%;height:70px}
+.adbox.off{display:none}
+.tiles{display:flex;gap:8px;margin-top:8px}
+.tile{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;border-radius:14px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.tile svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tile.fm{color:var(--em);border-color:rgba(52,211,153,.28);background:rgba(52,211,153,.07)}
+.tile.on{color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(--gold));border-color:transparent}
+.tile:active{transform:scale(.96)}
+.kbps{font-size:9px;color:var(--gold);display:block}
+.credit a{color:var(--em);text-decoration:none;font-size:10.5px;display:inline-flex;align-items:center;gap:4px;margin-right:6px}
+.credit a svg{width:12px;height:12px;fill:var(--em)}
+.skiprow{display:flex;align-items:center;justify-content:space-between;margin-top:9px;font-size:12px;color:var(--sub)}
+.skiprow .sw{transform:scale(.85)}
+/* ===== المصحف ===== */
+#pMushaf{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.mview{flex:1;min-height:0;overflow-y:auto;padding:4px 16px 16px;scrollbar-width:none}.mview::-webkit-scrollbar{display:none}
+.mview.hidden,#mReader.hidden{display:none}
+.mhead{display:flex;gap:8px;align-items:center;margin:6px 0 10px}
+.mhead .search{flex:1}
+.gopage{display:flex;gap:6px;align-items:center}
+.gopage input{width:74px;height:44px;border-radius:14px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);text-align:center;font:inherit;font-size:14px;outline:none}
+.gopage button,.mbtn{height:44px;padding:0 14px;border-radius:14px;border:0;font:inherit;font-weight:700;cursor:pointer;color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(--gold))}
+.resume{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border-radius:16px;margin-bottom:12px;cursor:pointer;font:inherit;color:var(--ink);text-align:right;
+ background:linear-gradient(135deg,rgba(217,180,108,.18),rgba(217,180,108,.05));border:1px solid rgba(217,180,108,.35)}
+.resume .ri{font-size:24px}.resume b{display:block;font-size:14.5px}.resume small{color:var(--sub);font-size:12px}
+.mtabs{display:flex;gap:6px;margin-bottom:10px}
+.mtabs button{flex:1;padding:9px;border-radius:12px;border:1px solid var(--stroke);background:var(--card);color:var(--sub);font:inherit;font-weight:600;cursor:pointer}
+.mtabs button.on{background:rgba(217,180,108,.15);border-color:rgba(217,180,108,.45);color:var(--gold2)}
+.srow{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--card);border:1px solid var(--stroke);margin-bottom:6px;cursor:pointer}
+.srow:active{background:var(--card2)}
+.srow .sn{font-family:"Amiri Quran","Amiri",var(--fk);font-size:21px;color:var(--gold2);flex:1;line-height:1.5}
+.srow .sm{font-size:11.5px;color:var(--sub);text-align:left;line-height:1.5}
+.jgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.jgrid button{aspect-ratio:1;border-radius:14px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.jgrid button b{font-size:17px;color:var(--gold2)}.jgrid button small{font-size:10px;color:var(--sub)}
+.mload{text-align:center;color:var(--sub);padding:40px 10px;font-size:14px;line-height:1.9}
+.mload .bar2{height:4px;border-radius:3px;background:rgba(255,255,255,.08);margin:12px auto 0;max-width:220px;overflow:hidden}
+.mload .bar2 i{display:block;height:100%;width:30%;background:var(--gold);animation:ld 1.2s ease-in-out infinite}
+@keyframes ld{0%{transform:translateX(-120%)}100%{transform:translateX(380%)}}
+
+/* الصفحة */
+#mReader{padding:0 10px 10px;display:flex;flex-direction:column}
+.rtop{display:flex;align-items:center;gap:8px;padding:6px 2px 8px}
+.rtop button{width:40px;height:40px;border-radius:12px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);font-size:16px;cursor:pointer;flex:none}
+.rtop .rt{flex:1;text-align:center;font-size:12.5px;color:var(--sub)}
+
+.frame{position:relative;flex:1;min-height:0;display:flex;padding:11px;border-radius:6px;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Crect width='22' height='22' fill='%23dcecf4'/%3E%3Cg fill='%232f6fa6'%3E%3Cellipse cx='11' cy='5.2' rx='2.2' ry='4'/%3E%3Cellipse cx='11' cy='16.8' rx='2.2' ry='4'/%3E%3Cellipse cx='5.2' cy='11' rx='4' ry='2.2'/%3E%3Cellipse cx='16.8' cy='11' rx='4' ry='2.2'/%3E%3C/g%3E%3Cg fill='%2389b9d8'%3E%3Cellipse cx='11' cy='11' rx='1.6' ry='5' transform='rotate(45 11 11)'/%3E%3Cellipse cx='11' cy='11' rx='1.6' ry='5' transform='rotate(-45 11 11)'/%3E%3C/g%3E%3Ccircle cx='11' cy='11' r='2.4' fill='%23c9a14a'/%3E%3Ccircle cx='0' cy='0' r='2' fill='%232f6fa6'/%3E%3Ccircle cx='22' cy='0' r='2' fill='%232f6fa6'/%3E%3Ccircle cx='0' cy='22' r='2' fill='%232f6fa6'/%3E%3Ccircle cx='22' cy='22' r='2' fill='%232f6fa6'/%3E%3C/svg%3E") 0 0/22px 22px;box-shadow:0 0 0 2px #b8913f,0 0 0 4px #f6ecd0,0 0 0 5.5px #2f6fa6,0 18px 40px rgba(0,0,0,.55)}
+.frame:before{content:"";position:absolute;inset:8px;border:1.5px solid #b8913f;border-radius:3px;pointer-events:none}
+.frame .cn{position:absolute;width:30px;height:30px;z-index:2;pointer-events:none}
+.frame .cn.tl{top:-4px;left:-4px}.frame .cn.tr{top:-4px;right:-4px;transform:scaleX(-1)}.frame .cn.bl{bottom:-4px;left:-4px;transform:scaleY(-1)}.frame .cn.br{bottom:-4px;right:-4px;transform:scale(-1)}
+.paper{position:relative;flex:1;min-height:0;overflow-y:auto;padding:10px 12px 8px;scrollbar-width:none;touch-action:pan-y;background:#fffbee;color:#111;
+ box-shadow:inset 0 0 0 1.5px #2f6fa6,inset 0 0 0 3.5px #fffbee,inset 0 0 0 4.5px #b8913f,inset 0 0 30px rgba(190,150,70,.18)}
+.paper::-webkit-scrollbar{display:none}
+.mhdr{display:flex;justify-content:space-between;align-items:center;padding:0 8px 6px;font-family:"Amiri Quran","Amiri",serif;font-size:17px;color:#1d4f80}
+.mhdr span{min-width:90px}.mhdr span:last-child{text-align:left}
+.qtext{font-family:"Amiri Quran","Amiri","Noto Naskh Arabic",serif;font-size:var(--qs,23px);line-height:2.3;text-align:justify;text-align-last:center;padding:4px 4px 0}
+.ayn{font-family:"Amiri Quran",serif;color:#1d4f80;white-space:nowrap}
+.nofont .ayn{font-size:.9em;color:#9a7124}
+.stitle{position:relative;margin:8px 0 4px;height:46px;display:flex;align-items:center;justify-content:center}
+.stitle svg{position:absolute;inset:0;width:100%;height:100%}
+.stitle b{position:relative;font-family:"Amiri Quran","Amiri",serif;font-weight:400;font-size:22px;color:#14365a;padding:0 18px;background:#fffbee;border-radius:20px;line-height:1.5}
+.basm{text-align:center;font-family:"Amiri Quran","Amiri",serif;font-size:calc(var(--qs,23px) * 1.02);color:#111;margin:0 0 2px}
+.pfoot{display:flex;justify-content:center;margin-top:8px}
+.pfoot span{display:grid;place-items:center;width:46px;height:46px;font-family:"Amiri Quran",serif;font-size:17px;color:#14365a;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 1l5.3 5.3h7.4v7.4L38 20l-5.3 5.3v7.4h-7.4L20 38l-5.3-5.3H7.3v-7.4L2 20l5.3-5.3V7.3h7.4z' fill='%23dcecf4' stroke='%232f6fa6' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='20' r='11' fill='%23fffbee' stroke='%23b8913f' stroke-width='1.2'/%3E%3C/svg%3E") center/contain no-repeat}
+.rnav{display:flex;align-items:center;gap:8px;margin-top:10px}
+.rnav button{flex:1;height:44px;border-radius:14px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.rnav .pg{flex:none;width:90px;text-align:center;color:var(--gold2);font-weight:700}
+.tile.ico{flex:none;width:50px;padding:11px 0}
+.tile.ico svg{width:21px;height:21px}
+.panel{position:fixed;inset:0;z-index:25;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:.25s}
+.panel.show{opacity:1;pointer-events:auto}
+.panel .pbox{width:100%;max-width:460px;max-height:88%;display:flex;flex-direction:column;margin:0 8px;border-radius:24px 24px 0 0;background:#0e172b;border:1px solid var(--stroke);border-bottom:0;transform:translateY(40px);transition:.25s;box-shadow:0 -20px 50px rgba(0,0,0,.5)}
+.panel.show .pbox{transform:none}
+.phd{display:flex;align-items:center;gap:10px;padding:16px 18px 10px}
+.phd h3{flex:1;margin:0;font-family:var(--fk);font-size:19px;color:var(--gold2)}
+.phd button{width:36px;height:36px;border-radius:50%;border:1px solid var(--stroke);background:var(--card);color:var(--ink);font-size:16px;cursor:pointer}
+.pscroll{overflow-y:auto;padding:4px 16px 20px;scrollbar-width:none}.pscroll::-webkit-scrollbar{display:none}
+.psel{display:flex;gap:8px;padding:0 16px 10px}
+.psel select{flex:1;min-width:0;height:40px;border-radius:12px;border:1px solid var(--stroke);background:var(--card);color:var(--ink);font:inherit;font-size:13px;padding:0 8px}
+.psel select option{background:#0e172b}
+.psel button{height:40px;padding:0 12px;border-radius:12px;border:1px solid rgba(52,211,153,.35);background:rgba(52,211,153,.1);color:var(--em);font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
+.pnext{text-align:center;padding:16px;border-radius:18px;margin-bottom:10px;background:linear-gradient(135deg,rgba(217,180,108,.2),rgba(217,180,108,.05));border:1px solid rgba(217,180,108,.35)}
+.pnext small{display:block;color:var(--sub);font-size:12px}.pnext b{display:block;font-family:var(--fk);font-size:26px;color:var(--gold2);margin:2px 0}
+.pnext span{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.plist{display:flex;flex-direction:column;gap:6px}
+.prow{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:var(--card);border:1px solid var(--stroke);font-size:15px}
+.prow b{font-size:16px;font-variant-numeric:tabular-nums}
+.prow.on{border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.08)}.prow.on b{color:var(--em)}
+.pmeta{text-align:center;color:var(--dim);font-size:11.5px;margin-top:10px}
+#azTabs{display:flex;gap:6px;padding:0 16px 8px}
+#azTabs button{flex:1;padding:9px;border-radius:12px;border:1px solid var(--stroke);background:var(--card);color:var(--sub);font:inherit;font-weight:700;cursor:pointer}
+#azTabs button.on{background:rgba(217,180,108,.15);border-color:rgba(217,180,108,.45);color:var(--gold2)}
+.azp{height:3px;margin:0 16px 8px;border-radius:2px;background:rgba(255,255,255,.07);overflow:hidden}.azp i{display:block;height:100%;width:0;background:var(--em);transition:width .3s}
+.zk{padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--stroke);margin-bottom:8px;cursor:pointer;transition:.25s;user-select:none}
+.zk:active{transform:scale(.99)}
+.zk.done{opacity:.45}
+.zt{font-family:var(--fk);color:var(--gold);font-size:13px;margin-bottom:4px}
+.zx{font-family:"Amiri","Amiri Quran",serif;font-size:19px;line-height:2;color:var(--ink);text-align:justify}
+.zc{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px;color:var(--sub)}
+.zc button{min-width:64px;height:36px;border-radius:18px;border:0;font:inherit;font-size:15px;font-weight:800;color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(--gold));pointer-events:none}
+.zk.done .zc button{background:var(--em)}
 /* ===== القائمة ===== */
 .tools{position:sticky;top:-4px;z-index:3;padding:8px 0 10px;background:linear-gradient(var(--bg0) 85%,transparent)}
 .sbox{position:relative}.sbox svg{position:absolute;right:14px;top:13px;width:17px;height:17px;stroke:var(--sub)}
@@ -155,7 +276,7 @@ nav button.on{color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(-
   </div>
   <div class="net" id="netbar">
    <div class="ni" id="wifi" title="واي فاي"><svg viewBox="0 0 24 24"><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M5.5 12.4a10 10 0 0 1 13 0"/><path d="M9 15.9a5 5 0 0 1 6 0"/><path d="M12 19.5h.01" stroke-width="3.2"/></svg></div>
-   <div class="nmid"><b id="netv" dir="ltr">0 KB</b><span id="netl">منذ الفتح</span></div>
+   <div class="nmid"><b id="netv" dir="ltr">0 KB</b><span id="netl">منذ الفتح</span><span class="kbps" id="kbps"></span></div>
    <div class="ni" id="cell" title="بيانات الجوال"><svg viewBox="0 0 24 24"><path d="M4 20v-3"/><path d="M9 20v-6"/><path d="M14 20v-10"/><path d="M19 20V5"/></svg></div>
   </div>
  </div>
@@ -189,8 +310,12 @@ nav button.on{color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(-
      <button class="cb" id="nextB" title="التالية"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM9.5 12L19 5v14z"/></svg></button>
     </div>
     <div class="volume"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg><input type="range" id="vol" min="0" max="100" value="80"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9z"/></svg></div>
-    <div class="opts"><span>تخطَّ الإذاعات التي لا تعمل تلقائياً</span><label class="sw"><input type="checkbox" id="skipBad" checked><span></span></label></div>
-    <div class="hint">أدِر القرص بإصبعك للتنقّل بين الإذاعات</div>
+    <div class="tiles">
+     <button class="tile fm" id="fmBtn"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2.5"/><path d="M7 8l9-5"/><circle cx="15.5" cy="14" r="2.6"/><path d="M6.5 12.5h4M6.5 15.5h4"/></svg>راديو FM</button>
+     <button class="tile ico" id="prayB" title="أوقات الصلاة"><svg viewBox="0 0 24 24"><path d="M12 2.5c1.6 1.5 2.6 2.7 2.6 4 0 1.4-1.2 2.3-2.6 2.3s-2.6-.9-2.6-2.3c0-1.3 1-2.5 2.6-4z"/><path d="M5 21V12.5c0-2.5 3-4 7-4s7 1.5 7 4V21"/><path d="M3 21h18M10 21v-4a2 2 0 0 1 4 0v4"/></svg></button>
+     <button class="tile ico" id="azkarB" title="الأذكار"><svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.6"/><circle cx="16.8" cy="6.5" r="1.6"/><circle cx="19" cy="11.2" r="1.6"/><circle cx="17.2" cy="16" r="1.6"/><circle cx="7.2" cy="6.5" r="1.6"/><circle cx="5" cy="11.2" r="1.6"/><circle cx="6.8" cy="16" r="1.6"/><path d="M12 17.5v4M10.5 21.5h3"/><circle cx="12" cy="17.3" r="1.3"/></svg></button>
+     <button class="tile" id="sleepB"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="sleepT">المؤقت</span></button>
+    </div>
    </div>
   </section>
   <section class="page hidden" id="pList">
@@ -199,24 +324,59 @@ nav button.on{color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(-
      <input class="search" id="q" placeholder="ابحث عن قارئ أو رواية أو إذاعة…"></div>
     <div class="bar"><span class="sum" id="sum"></span><button class="cbtn" id="checkB">فحص الروابط</button></div>
     <div class="prog"><i id="progI"></i></div>
+    <div class="skiprow"><span>تخطَّ الإذاعات التي لا تعمل عند التنقّل</span><label class="sw"><input type="checkbox" id="skipBad" checked><span></span></label></div>
     <div class="chips" id="chips"></div>
    </div>
+   <!-- Ap -->
+   <div class="adbox" style="margin:4px 0 10px" data-ad><ins class="adsbygoogle" data-ad-client="ca-pub-4603588502338982" data-ad-slot="2626506133"></ins></div>
    <div id="list"></div>
+  </section>
+  <section class="page hidden" id="pMushaf">
+   <div class="mview" id="mIndex">
+    <div class="mhead">
+     <input class="search" id="mq" placeholder="ابحث عن سورة…">
+     <div class="gopage"><input id="mgo" type="number" min="1" max="604" placeholder="صفحة" inputmode="numeric"><button id="mgoB">اذهب</button></div>
+    </div>
+    <button class="resume" id="mResume" style="display:none"><span class="ri">📖</span><span><b id="mResT">متابعة القراءة</b><small id="mResS"></small></span></button>
+    <div class="mtabs"><button class="on" data-t="s">السور</button><button data-t="j">الأجزاء</button></div>
+    <div id="mList"><div class="mload">جارِ تحميل المصحف الشريف…<div class="bar2"><i></i></div></div></div>
+   </div>
+   <div class="mview hidden" id="mReader">
+    <div class="rtop">
+     <button id="rBack" title="الفهرس">☰</button>
+     <div class="rt" id="rInfo"></div>
+     <button id="rMinus" title="تصغير الخط">ـأ</button><button id="rPlus" title="تكبير الخط">أ+</button>
+    </div>
+    <div class="frame"><svg class='cn tl' viewBox='0 0 30 30'><circle cx='15' cy='15' r='13' fill='#2f6fa6'/><circle cx='15' cy='15' r='10.5' fill='#dcecf4' stroke='#b8913f' stroke-width='1.2'/><path d='M15 6l2.4 6.6L24 15l-6.6 2.4L15 24l-2.4-6.6L6 15l6.6-2.4z' fill='#2f6fa6'/><circle cx='15' cy='15' r='2.2' fill='#c9a14a'/></svg><svg class='cn tr' viewBox='0 0 30 30'><circle cx='15' cy='15' r='13' fill='#2f6fa6'/><circle cx='15' cy='15' r='10.5' fill='#dcecf4' stroke='#b8913f' stroke-width='1.2'/><path d='M15 6l2.4 6.6L24 15l-6.6 2.4L15 24l-2.4-6.6L6 15l6.6-2.4z' fill='#2f6fa6'/><circle cx='15' cy='15' r='2.2' fill='#c9a14a'/></svg><svg class='cn bl' viewBox='0 0 30 30'><circle cx='15' cy='15' r='13' fill='#2f6fa6'/><circle cx='15' cy='15' r='10.5' fill='#dcecf4' stroke='#b8913f' stroke-width='1.2'/><path d='M15 6l2.4 6.6L24 15l-6.6 2.4L15 24l-2.4-6.6L6 15l6.6-2.4z' fill='#2f6fa6'/><circle cx='15' cy='15' r='2.2' fill='#c9a14a'/></svg><svg class='cn br' viewBox='0 0 30 30'><circle cx='15' cy='15' r='13' fill='#2f6fa6'/><circle cx='15' cy='15' r='10.5' fill='#dcecf4' stroke='#b8913f' stroke-width='1.2'/><path d='M15 6l2.4 6.6L24 15l-6.6 2.4L15 24l-2.4-6.6L6 15l6.6-2.4z' fill='#2f6fa6'/><circle cx='15' cy='15' r='2.2' fill='#c9a14a'/></svg><div class="paper" id="paper"></div></div>
+    <div class="rnav"><button id="rPrev">› السابقة</button><div class="pg" id="rPg"></div><button id="rNext">التالية ‹</button></div>
+   </div>
   </section>
  </main>
  <nav>
   <button class="on" data-p="pRadio"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 4a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>المذياع</button>
+  <button data-p="pMushaf"><svg viewBox="0 0 24 24"><path d="M12 6.5C10 4.8 7 4 3 4v14c4 0 7 .8 9 2.5 2-1.7 5-2.5 9-2.5V4c-4 0-7 .8-9 2.5zm-1 11.2C9.3 16.7 7 16.2 5 16V6c2.3.1 4.4.7 6 1.8z"/></svg>المصحف</button>
   <button data-p="pList"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"/></svg>الإذاعات</button>
  </nav>
- <div class="credit">مذياع أنا المسلم · تطوير <b>أبو عبدالله الشامي</b></div>
+ <div class="credit"><a href="https://wa.me/963968744241" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8 0-1.4.7-2 1-2.3.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>تواصل مع المطور</a></div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="panel" id="prPanel"><div class="pbox">
+ <div class="phd"><h3>🕌 أوقات الصلاة</h3><button data-close>✕</button></div>
+ <div class="psel"><select id="prCity"></select><button id="prGps">📍 موقعي</button></div>
+ <div class="psel"><select id="prMethod"></select></div>
+ <div class="pscroll" id="prBody"></div></div></div>
+<div class="panel" id="azPanel"><div class="pbox">
+ <div class="phd"><h3>📿 الأذكار</h3><button id="azReset" title="إعادة العد" style="width:auto;padding:0 12px;border-radius:18px;font-size:12px">إعادة</button><button data-close>✕</button></div>
+ <div id="azTabs"><button data-t="m">☀️ أذكار الصباح</button><button data-t="e">🌙 أذكار المساء</button></div>
+ <div class="azp"><i id="azProg"></i></div>
+ <div class="pscroll" id="azBody"></div></div></div>
+<div class="sheet" id="sheet"><div class="box"><div class="big" id="shIc">🎧</div><h3 id="shT"></h3><p id="shP"></p><div class="acts" id="shA"></div></div></div>
 <audio id="au" preload="none"></audio>
 <script>
-const DATA = {"categories":{"national":"إذاعات القرآن الرسمية","mixed":"تلاوات متنوعة","qiraat":"القراءات والروايات","tafsir":"التفسير","hadith":"الحديث الشريف","seerah":"السيرة والقصص","ilm":"العلوم الشرعية والفتاوى","athkar":"الأذكار والرقية","quran":"القرّاء"},"stations":[{"name":"إذاعة القرآن الكريم - السعودية","url":"https://stream.radiojar.com/0tpy1h0kxtzuv","cat":"national"},{"name":"إذاعة القرآن الكريم - القاهرة","url":"https://stream.radiojar.com/8s5u5tpdtwzuv","cat":"national"},{"name":"العامة - متنوعة لمختلف القراء","url":"https://backup.qurango.net/radio/mix","cat":"mixed"},{"name":"تلاوات خاشعة","url":"https://backup.qurango.net/radio/salma","cat":"mixed"},{"name":"تراتيل قصيرة متميزة","url":"https://backup.qurango.net/radio/tarateel","cat":"mixed"},{"name":"آيات السكينة","url":"https://backup.qurango.net/radio/sakeenah","cat":"mixed"},{"name":"سورة البقرة - لعدد من القراء","url":"https://backup.qurango.net/radio/albaqarah","cat":"mixed"},{"name":"سورة الملك","url":"https://backup.qurango.net/radio/Surah_Al-Mulk","cat":"mixed"},{"name":"عبدالباسط عبدالصمد - ورش عن نافع","url":"https://backup.qurango.net/radio/abdulbasit_abdulsamad_warsh","cat":"qiraat"},{"name":"عبدالرشيد صوفي - خلف عن حمزة","url":"https://backup.qurango.net/radio/abdulrasheed_soufi_khalaf","cat":"qiraat"},{"name":"عبدالرشيد صوفي - السوسي عن أبي عمرو","url":"https://backup.qurango.net/radio/abdulrasheed_soufi_assosi","cat":"qiraat"},{"name":"علي الحذيفي - قالون عن نافع","url":"https://backup.qurango.net/radio/ali_alhuthaifi_qalon","cat":"qiraat"},{"name":"محمد عبدالحكيم العبدالله - البزي عن ابن كثير","url":"https://backup.qurango.net/radio/mohammad_alabdullah_albizi","cat":"qiraat"},{"name":"محمد عبدالحكيم العبدالله - الدوري عن الكسائي","url":"https://backup.qurango.net/radio/mohammad_alabdullah_aldorai","cat":"qiraat"},{"name":"محمود خليل الحصري - ورش عن نافع","url":"https://backup.qurango.net/radio/mahmoud_khalil_alhussary_warsh","cat":"qiraat"},{"name":"مفتاح السلطني - الدوري عن أبي عمرو","url":"https://backup.qurango.net/radio/muftah_alsaltany_aldori_an_abi_amr","cat":"qiraat"},{"name":"مفتاح السلطني - الدوري عن الكسائي","url":"https://backup.qurango.net/radio/muftah_alsaltany_aldorai","cat":"qiraat"},{"name":"مفتاح السلطني - ابن ذكوان عن ابن عامر","url":"https://backup.qurango.net/radio/muftah_alsaltany_ibn_thakwan_an_ibn_amr","cat":"qiraat"},{"name":"محمد عبدالكريم - ورش من طريق الأصبهاني","url":"https://backup.qurango.net/radio/mohammad_abdullkarem_alasbahani","cat":"qiraat"},{"name":"محمود خليل الحصري - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/mahmoud-husary/r3/","cat":"qiraat","type":"surahs"},{"name":"محمد سايد - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/muhammad-saayed/r1/","cat":"qiraat","type":"surahs"},{"name":"القارئ ياسين الجزائري - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/yassen-jazairi/r1/","cat":"qiraat","type":"surahs"},{"name":"العيون الكوشي - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/","cat":"qiraat","type":"surahs"},{"name":"إبراهيم الدوسري - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/ibrahim-dosari/r1/","cat":"qiraat","type":"surahs"},{"name":"محمد الأيراوي - ورش من طريق الأزرق","url":"https://cdn.mp3quran.net/audio/muhammad-iraoui/r1/","cat":"qiraat","type":"surahs"},{"name":"محمد عبدالكريم - ورش من طريق الأصبهاني","url":"https://cdn.mp3quran.net/audio/muhammad-abdulkareem/r2/","cat":"qiraat","type":"surahs"},{"name":"محمود خليل الحصري - قالون عن نافع","url":"https://cdn.mp3quran.net/audio/mahmoud-husary/r5/","cat":"qiraat","type":"surahs"},{"name":"أحمد الطرابلسي - قالون عن نافع","url":"https://cdn.mp3quran.net/audio/ahmad-tarabulsi/r1/","cat":"qiraat","type":"surahs"},{"name":"الدوكالي محمد العالم - قالون عن نافع","url":"https://cdn.mp3quran.net/audio/dokali-alim/r1/","cat":"qiraat","type":"surahs"},{"name":"محمد عبدالحكيم العبدالله - البزي وقنبل عن ابن كثير","url":"https://cdn.mp3quran.net/audio/muhammad-abdullah/r1/","cat":"qiraat","type":"surahs"},{"name":"محمود خليل الحصري - الدوري عن أبي عمرو","url":"https://cdn.mp3quran.net/audio/mahmoud-husary/r4/","cat":"qiraat","type":"surahs"},{"name":"مفتاح السلطني - الدوري عن أبي عمرو","url":"https://cdn.mp3quran.net/audio/muftah-saltani/r1/","cat":"qiraat","type":"surahs"},{"name":"نورين محمد صديق - الدوري عن أبي عمرو","url":"https://cdn.mp3quran.net/audio/noreen-siddiq/r1/","cat":"qiraat","type":"surahs"},{"name":"مفتاح السلطني - ابن ذكوان عن ابن عامر","url":"https://cdn.mp3quran.net/audio/muftah-saltani/r5/","cat":"qiraat","type":"surahs"},{"name":"مفتاح السلطني - شعبة عن عاصم","url":"https://cdn.mp3quran.net/audio/muftah-saltani/r4/","cat":"qiraat","type":"surahs"},{"name":"مشاري العفاسي - الدوري عن الكسائي","url":"https://cdn.mp3quran.net/audio/mishary-alafasy/r2/","cat":"qiraat","type":"surahs"},{"name":"محمد عبدالحكيم العبدالله - الدوري عن الكسائي","url":"https://cdn.mp3quran.net/audio/muhammad-abdullah/r2/","cat":"qiraat","type":"surahs"},{"name":"مفتاح السلطني - الدوري عن الكسائي","url":"https://cdn.mp3quran.net/audio/muftah-saltani/r2/","cat":"qiraat","type":"surahs"},{"name":"محمود الشيمي - الدوري عن الكسائي","url":"https://cdn.mp3quran.net/audio/mahmoud-sheimy/r1/","cat":"qiraat","type":"surahs"},{"name":"تفسير القرآن الكريم","url":"https://backup.qurango.net/radio/tafseer","cat":"tafsir"},{"name":"المختصر في تفسير القرآن الكريم","url":"https://backup.qurango.net/radio/mukhtasartafsir","cat":"tafsir"},{"name":"الخلاصة من تفسير الطبري","url":"https://backup.qurango.net/radio/tabri","cat":"tafsir"},{"name":"تفسير غريب القرآن","url":"https://backup.qurango.net/radio/gareeb-quran","cat":"tafsir"},{"name":"صحيح البخاري","url":"https://backup.qurango.net/radio/saheh-bokharee","cat":"hadith"},{"name":"صحيح مسلم","url":"https://backup.qurango.net/radio/saheh-muslim","cat":"hadith"},{"name":"رياض الصالحين","url":"https://backup.qurango.net/radio/riyad","cat":"hadith"},{"name":"في ظلال السيرة النبوية (400 حلقة)","url":"https://backup.qurango.net/radio/fi_zilal_alsiyra","cat":"seerah"},{"name":"المختصر في السيرة النبوية","url":"https://backup.qurango.net/radio/almukhtasar_fi_alsiyra","cat":"seerah"},{"name":"الشمائل المحمدية","url":"https://backup.qurango.net/radio/shmaeel","cat":"seerah"},{"name":"قصص الأنبياء","url":"https://backup.qurango.net/radio/alanbiya","cat":"seerah"},{"name":"صور من حياة الصحابة والتابعين","url":"https://backup.qurango.net/radio/sahabah","cat":"seerah"},{"name":"الفتاوى العامة","url":"https://backup.qurango.net/radio/fatwa","cat":"ilm"},{"name":"الاختيارات الفقهية في العبادات والمعاملات - ابن باز","url":"https://backup.qurango.net/radio/alaikhtiarat_alfiqhayh_bin_baz","cat":"ilm"},{"name":"فضل شهر رمضان","url":"https://backup.qurango.net/radio/ramadan","cat":"ilm"},{"name":"أذكار الصباح","url":"https://backup.qurango.net/radio/athkar_sabah","cat":"athkar"},{"name":"أذكار المساء","url":"https://backup.qurango.net/radio/athkar_masa","cat":"athkar"},{"name":"الرقية الشرعية","url":"https://backup.qurango.net/radio/roqiah","cat":"athkar"},{"name":"تكبيرات العيد","url":"https://backup.qurango.net/radio/eid","cat":"athkar"},{"name":"إبراهيم الأخضر","url":"https://backup.qurango.net/radio/ibrahim_alakdar","cat":"quran"},{"name":"أبو بكر الشاطري","url":"https://backup.qurango.net/radio/shaik_abu_bakr_al_shatri","cat":"quran"},{"name":"أحمد العجمي","url":"https://backup.qurango.net/radio/ahmad_alajmy","cat":"quran"},{"name":"أحمد الحواشي","url":"https://backup.qurango.net/radio/ahmad_alhawashi","cat":"quran"},{"name":"أحمد صابر","url":"https://backup.qurango.net/radio/ahmad_saber","cat":"quran"},{"name":"أحمد نعينع","url":"https://backup.qurango.net/radio/ahmad_nauina","cat":"quran"},{"name":"أكرم العلاقمي","url":"https://backup.qurango.net/radio/akram_alalaqmi","cat":"quran"},{"name":"إدريس أبكر","url":"https://backup.qurango.net/radio/idrees_abkr","cat":"quran"},{"name":"الزين محمد أحمد","url":"https://backup.qurango.net/radio/alzain_mohammad_ahmad","cat":"quran"},{"name":"القارئ ياسين","url":"https://backup.qurango.net/radio/alqaria_yassen","cat":"quran"},{"name":"العيون الكوشي","url":"https://backup.qurango.net/radio/aloyoon_alkoshi","cat":"quran"},{"name":"توفيق الصايغ","url":"https://backup.qurango.net/radio/tawfeeq_assayegh","cat":"quran"},{"name":"جمال شاكر عبدالله","url":"https://backup.qurango.net/radio/jamal_shaker_abdullah","cat":"quran"},{"name":"خالد القحطاني","url":"https://backup.qurango.net/radio/khaled_alqahtani","cat":"quran"},{"name":"خالد عبدالكافي","url":"https://backup.qurango.net/radio/khalid_abdulkafi","cat":"quran"},{"name":"خليفة الطنيجي","url":"https://backup.qurango.net/radio/khalifa_altunaiji","cat":"quran"},{"name":"سعد الغامدي","url":"https://backup.qurango.net/radio/saad_alghamdi","cat":"quran"},{"name":"سعود الشريم","url":"https://backup.qurango.net/radio/saud_alshuraim","cat":"quran"},{"name":"سهل ياسين","url":"https://backup.qurango.net/radio/sahl_yassin","cat":"quran"},{"name":"زكي داغستاني","url":"https://backup.qurango.net/radio/zaki_daghistani","cat":"quran"},{"name":"سيد رمضان","url":"https://backup.qurango.net/radio/sayeed_ramadan","cat":"quran"},{"name":"شيرزاد عبدالرحمن طاهر","url":"https://backup.qurango.net/radio/shirazad_taher","cat":"quran"},{"name":"صابر عبدالحكم","url":"https://backup.qurango.net/radio/saber_abdulhakm","cat":"quran"},{"name":"صلاح البدير","url":"https://backup.qurango.net/radio/salah_albudair","cat":"quran"},{"name":"صلاح الهاشم","url":"https://backup.qurango.net/radio/salah_alhashim","cat":"quran"},{"name":"صلاح بو خاطر","url":"https://backup.qurango.net/radio/slaah_bukhatir","cat":"quran"},{"name":"عادل ريان","url":"https://backup.qurango.net/radio/adel_ryyan","cat":"quran"},{"name":"عبدالبارئ الثبيتي","url":"https://backup.qurango.net/radio/abdelbari_altoubayti","cat":"quran"},{"name":"عبدالبارئ محمد","url":"https://backup.qurango.net/radio/abdulbari_mohammad","cat":"quran"},{"name":"عبدالباسط عبدالصمد - مجود","url":"https://backup.qurango.net/radio/abdulbasit_abdulsamad_mojawwad","cat":"quran"},{"name":"عبدالباسط عبدالصمد - مرتل","url":"https://backup.qurango.net/radio/abdulbasit_abdulsamad","cat":"quran"},{"name":"عبدالرحمن السديس","url":"https://backup.qurango.net/radio/abdulrahman_alsudaes","cat":"quran"},{"name":"عبدالعزيز الأحمد","url":"https://backup.qurango.net/radio/abdul_aziz_alahmad","cat":"quran"},{"name":"عبدالله المطرود","url":"https://backup.qurango.net/radio/abdullah_almattrod","cat":"quran"},{"name":"عبدالله بصفر","url":"https://backup.qurango.net/radio/abdullah_basfer","cat":"quran"},{"name":"عبدالله خياط","url":"https://backup.qurango.net/radio/abdullah_khayyat","cat":"quran"},{"name":"عبدالله عواد الجهني","url":"https://backup.qurango.net/radio/abdullah_aljohany","cat":"quran"},{"name":"عبدالمحسن الحارثي","url":"https://backup.qurango.net/radio/abdulmohsin_alharthy","cat":"quran"},{"name":"عبدالمحسن القاسم","url":"https://backup.qurango.net/radio/abdulmohsen_alqasim","cat":"quran"},{"name":"عبدالمحسن العبيكان","url":"https://backup.qurango.net/radio/abdulmohsin_alobaikan","cat":"quran"},{"name":"عبدالهادي أحمد كناكري","url":"https://backup.qurango.net/radio/abdulhadi_kanakeri","cat":"quran"},{"name":"عبدالودود حنيف","url":"https://backup.qurango.net/radio/abdulwadood_haneef","cat":"quran"},{"name":"علي بن عبدالرحمن الحذيفي","url":"https://backup.qurango.net/radio/ali_alhuthaifi","cat":"quran"},{"name":"علي جابر","url":"https://backup.qurango.net/radio/ali_jaber","cat":"quran"},{"name":"علي حجاج السويسي","url":"https://backup.qurango.net/radio/ali_hajjaj_alsouasi","cat":"quran"},{"name":"عماد زهير حافظ","url":"https://backup.qurango.net/radio/emad_hafez","cat":"quran"},{"name":"عمر القزابري","url":"https://backup.qurango.net/radio/omar_alqazabri","cat":"quran"},{"name":"فارس عباد","url":"https://backup.qurango.net/radio/fares_abbad","cat":"quran"},{"name":"ناصر القطامي","url":"https://backup.qurango.net/radio/nasser_alqatami","cat":"quran"},{"name":"نبيل الرفاعي","url":"https://backup.qurango.net/radio/nabil_al_rifay","cat":"quran"},{"name":"نعمة الحسان","url":"https://backup.qurango.net/radio/neamah_alhassan","cat":"quran"},{"name":"هاني الرفاعي","url":"https://backup.qurango.net/radio/hani_arrifai","cat":"quran"},{"name":"وليد النائحي","url":"https://backup.qurango.net/radio/waleed_alnaehi","cat":"quran"},{"name":"ياسر الدوسري","url":"https://backup.qurango.net/radio/yasser_aldosari","cat":"quran"},{"name":"ياسر القرشي","url":"https://backup.qurango.net/radio/yasser_alqurashi","cat":"quran"},{"name":"ياسر المزروعي","url":"https://backup.qurango.net/radio/yasser_almazroyee","cat":"quran"},{"name":"يحيى حوا","url":"https://backup.qurango.net/radio/yahya_hawwa","cat":"quran"},{"name":"يوسف الشويعي","url":"https://backup.qurango.net/radio/yousef_alshoaey","cat":"quran"},{"name":"ماهر المعيقلي","url":"https://backup.qurango.net/radio/maher","cat":"quran"},{"name":"محمد الطبلاوي","url":"https://backup.qurango.net/radio/mohammad_altablaway","cat":"quran"},{"name":"محمد اللحيدان","url":"https://backup.qurango.net/radio/mohammed_allohaidan","cat":"quran"},{"name":"محمد أيوب","url":"https://backup.qurango.net/radio/mohammed_ayyub","cat":"quran"},{"name":"محمد صالح عالم شاه","url":"https://backup.qurango.net/radio/mohammad_saleh_alim_shah","cat":"quran"},{"name":"محمد جبريل","url":"https://backup.qurango.net/radio/mohammed_jibreel","cat":"quran"},{"name":"محمد صديق المنشاوي - مرتل","url":"https://backup.qurango.net/radio/mohammed_siddiq_alminshawi","cat":"quran"},{"name":"محمد صديق المنشاوي - مجود","url":"https://backup.qurango.net/radio/mohammed_siddiq_alminshawi_mojawwad","cat":"quran"},{"name":"محمد عبدالكريم","url":"https://backup.qurango.net/radio/mohammad_abdullkarem","cat":"quran"},{"name":"محمود خليل الحصري - مرتل","url":"https://backup.qurango.net/radio/mahmoud_khalil_alhussary","cat":"quran"},{"name":"محمود خليل الحصري - مجود","url":"https://backup.qurango.net/radio/mahmoud_khalil_alhussary_mojawwad","cat":"quran"},{"name":"محمود علي البنا - مرتل","url":"https://backup.qurango.net/radio/mahmoud_ali__albanna","cat":"quran"},{"name":"محمود علي البنا - مجود","url":"https://backup.qurango.net/radio/mahmoud_ali__albanna_mojawwad","cat":"quran"},{"name":"مشاري العفاسي","url":"https://backup.qurango.net/radio/mishary_alafasi","cat":"quran"},{"name":"مصطفى إسماعيل","url":"https://backup.qurango.net/radio/mustafa_ismail","cat":"quran"},{"name":"مصطفى اللاهوني","url":"https://backup.qurango.net/radio/mustafa_allahoni","cat":"quran"},{"name":"مصطفى رعد العزاوي","url":"https://backup.qurango.net/radio/mustafa_raad_alazawy","cat":"quran"},{"name":"ماهر شخاشيرو","url":"https://backup.qurango.net/radio/maher_shakhashero","cat":"quran"},{"name":"محمود الشيمي","url":"https://backup.qurango.net/radio/mahmood_alsheimy","cat":"quran"},{"name":"خالد المهنا","url":"https://backup.qurango.net/radio/khalid_almohana","cat":"quran"},{"name":"عادل الكلباني","url":"https://backup.qurango.net/radio/adel_alkhalbany","cat":"quran"},{"name":"موسى بلال","url":"https://backup.qurango.net/radio/mousa_bilal","cat":"quran"},{"name":"حاتم فريد الواعر","url":"https://backup.qurango.net/radio/hatem_fareed_alwaer","cat":"quran"},{"name":"محمود الرفاعي","url":"https://backup.qurango.net/radio/mahmood_al_rifai","cat":"quran"},{"name":"إبراهيم الدوسري","url":"https://backup.qurango.net/radio/ibrahim_aldosari","cat":"quran"},{"name":"جمعان العصيمي","url":"https://backup.qurango.net/radio/jamaan_alosaimi","cat":"quran"},{"name":"مفتاح السلطني","url":"https://backup.qurango.net/radio/muftah_alsaltany","cat":"quran"},{"name":"يوسف بن نوح أحمد","url":"https://backup.qurango.net/radio/yousef_bin_noah_ahmad","cat":"quran"},{"name":"معيض الحارثي","url":"https://backup.qurango.net/radio/moeedh_alharthi","cat":"quran"},{"name":"محمد رشاد الشريف","url":"https://backup.qurango.net/radio/mohammad_rashad_alshareef","cat":"quran"},{"name":"أحمد خضر الطرابلسي","url":"https://backup.qurango.net/radio/ahmad_khader_altarabulsi","cat":"quran"},{"name":"أحمد الطرابلسي","url":"https://backup.qurango.net/radio/ahmed_altrabulsi","cat":"quran"},{"name":"عبدالله الكندري","url":"https://backup.qurango.net/radio/abdullah_alkandari","cat":"quran"},{"name":"أحمد عامر","url":"https://backup.qurango.net/radio/ahmed_amer","cat":"quran"},{"name":"محمد عثمان خان","url":"https://backup.qurango.net/radio/mohammed_osman_khan","cat":"quran"},{"name":"الدوكالي محمد العالم","url":"https://backup.qurango.net/radio/addokali_mohammad_alalim","cat":"quran"},{"name":"الفاتح محمد الزبير","url":"https://backup.qurango.net/radio/alfateh_alzubair","cat":"quran"},{"name":"طارق عبدالغني دعوب","url":"https://backup.qurango.net/radio/tareq_abdulgani_daawob","cat":"quran"},{"name":"عبدالرحمن الماجد","url":"https://backup.qurango.net/radio/abdulrahman_almajed","cat":"quran"},{"name":"خالد الجليل","url":"https://backup.qurango.net/radio/khalid_aljileel","cat":"quran"},{"name":"ناصر الماجد","url":"https://backup.qurango.net/radio/nasser_almajed","cat":"quran"},{"name":"هيثم الجدعاني","url":"https://backup.qurango.net/radio/hitham_aljadani","cat":"quran"},{"name":"أحمد خليل شاهين","url":"https://backup.qurango.net/radio/ahmad_shaheen","cat":"quran"},{"name":"عبدالله الموسى","url":"https://backup.qurango.net/radio/abdullah_almousa","cat":"quran"},{"name":"عبدالله الخلف","url":"https://backup.qurango.net/radio/abdullah_alkhalaf","cat":"quran"},{"name":"ماجد الزامل","url":"https://backup.qurango.net/radio/majed_alzamel","cat":"quran"},{"name":"بندر بليلة","url":"https://backup.qurango.net/radio/bandar_balilah","cat":"quran"},{"name":"ناصر العصفور","url":"https://backup.qurango.net/radio/nasser_alosfor","cat":"quran"},{"name":"محمد أيوب - قراءة مميزة","url":"https://backup.qurango.net/radio/ayyoub2","cat":"quran"},{"name":"أحمد ديبان","url":"https://backup.qurango.net/radio/ahmad_deban","cat":"quran"},{"name":"محمد أبوسنينة","url":"https://backup.qurango.net/radio/sneineh","cat":"quran"},{"name":"محمد الأمين قنيوة","url":"https://backup.qurango.net/radio/qeniwa","cat":"quran"},{"name":"عبدالرحمن الشحات","url":"https://backup.qurango.net/radio/a_alshahhat","cat":"quran"},{"name":"عبدالعزيز سحيم","url":"https://backup.qurango.net/radio/a_sheim","cat":"quran"},{"name":"صالح الهبدان","url":"https://backup.qurango.net/radio/saleh_alhabdan","cat":"quran"},{"name":"عبدالله البعيجان","url":"https://backup.qurango.net/radio/buajan","cat":"quran"},{"name":"أحمد طالب بن حميد","url":"https://backup.qurango.net/radio/a_binhameed","cat":"quran"},{"name":"بدر التركي","url":"https://backup.qurango.net/radio/bader","cat":"quran"},{"name":"هزاع البلوشي","url":"https://backup.qurango.net/radio/hazza","cat":"quran"},{"name":"نورين محمد صديق","url":"https://backup.qurango.net/radio/nourin_siddig","cat":"quran"}]};
+const DATA = {"categories":{"national":"إذاعات القرآن الرسمية","mixed":"تلاوات متنوعة","qiraat":"القراءات والروايات","tafsir":"التفسير","hadith":"الحديث الشريف","seerah":"السيرة والقصص","duroos":"دروس ومحاضرات المشايخ","ilm":"العلوم الشرعية والفتاوى","athkar":"الأذكار والرقية","world":"إذاعات إسلامية حول العالم","quran":"القرّاء"},"stations":[{"name":"إذاعة القرآن الكريم - السعودية","url":"https://stream.radiojar.com/0tpy1h0kxtzuv","cat":"national"},{"name":"إذاعة القرآن الكريم - القاهرة","url":"https://stream.radiojar.com/8s5u5tpdtwzuv","cat":"national"},{"name":"إذاعة القرآن الكريم - مكة المكرمة","url":"https://stream.radiojar.com/4wqre23fytzuv","cat":"national"},{"name":"إذاعة القرآن الكريم - الشارقة","url":"https://l3.itworkscdn.net/smcquranlive/quranradiolive/icecast.audio","cat":"national"},{"name":"إذاعة القرآن الكريم - نابلس","url":"https://quran-radio.org:8899/;","cat":"national"},{"name":"إذاعة القرآن الكريم - الجزائر","url":"https://radiocoran.ice.infomaniak.ch/coran.mp3","cat":"national"},{"name":"إذاعة محمد السادس للقرآن الكريم - المغرب","url":"https://stream.radio.co/sbce8f83f4/listen","cat":"national"},{"name":"إذاعة القرآن الكريم - المغرب (بديل)","url":"https://asmaki.ma:8000/radio.mp3","cat":"national"},{"name":"إذاعة زايد للقرآن الكريم - الإمارات","url":"https://zayedquran.gov.ae/stream.php","cat":"national"},{"name":"إذاعة القرآن الكريم - قطر","url":"https://live.kwikmotion.com/qmcquranradio2live/quranradio2/playlist.m3u8","cat":"national"},{"name":"إذاعة القرآن الكريم - الأردن","url":"https://jrtv-live.ercdn.net/jrradio/quranradio.m3u8","cat":"national"},{"name":"العامة - متنوعة لمختلف القراء","url":"https://backup.qurango.net/radio/mix","cat":"mixed"},{"name":"تلاوات خاشعة","url":"https://backup.qurango.net/radio/salma","cat":"mixed"},{"name":"تراتيل قصيرة متميزة","url":"https://backup.qurango.net/radio/tarateel","cat":"mixed"},{"name":"آيات السكينة","url":"https://backup.qurango.net/radio/sakeenah","cat":"mixed"},{"name":"سورة البقرة - لعدد من القراء","url":"https://backup.qurango.net/radio/albaqarah","cat":"mixed"},{"name":"سورة الملك","url":"https://backup.qurango.net/radio/Surah_Al-Mulk","cat":"mixed"},{"name":"قرآن للروح - تلاوات متواصلة","url":"https://islamicbulletin.site:8102/stream","cat":"mixed"},{"name":"عبدالباسط عبدالصمد - ورش عن نافع","url":"https://backup.qurango.net/radio/abdulbasit_abdulsamad_warsh","cat":"qiraat"},{"name":"عبدالرشيد صوفي - خلف عن حمزة","url":"https://backup.qurango.net/radio/abdulrasheed_soufi_khalaf","cat":"qiraat"},{"name":"عبدالرشيد صوفي - السوسي عن أبي عمرو","url":"https://backup.qurango.net/radio/abdulrasheed_soufi_assosi","cat":"qiraat"},{"name":"علي الحذيفي - قالون عن نافع","url":"https://backup.qurango.net/radio/ali_alhuthaifi_qalon","cat":"qiraat"},{"name":"محمد عبدالحكيم العبدالله - البزي عن ابن كثير","url":"https://backup.qurango.net/radio/mohammad_alabdullah_albizi","cat":"qiraat"},{"name":"محمد عبدالحكيم العبدالله - الدوري عن الكسائي","url":"https://backup.qurango.net/radio/mohammad_alabdullah_aldorai","cat":"qiraat"},{"name":"محمود خليل الحصري - ورش عن نافع","url":"https://backup.qurango.net/radio/mahmoud_khalil_alhussary_warsh","cat":"qiraat"},{"name":"مفتاح السلطني - الدوري عن أبي عمرو","url":"https://backup.qurango.net/radio/muftah_alsaltany_aldori_an_abi_amr","cat":"qiraat"},{"name":"مفتاح السلطني - الدوري عن الكسائي","url":"https://backup.qurango.net/radio/muftah_alsaltany_aldorai","cat":"qiraat"},{"name":"مفتاح السلطني - ابن ذكوان عن ابن عامر","url":"https://backup.qurango.net/radio/muftah_alsaltany_ibn_thakwan_an_ibn_amr","cat":"qiraat"},{"name":"محمد عبدالكريم - ورش من طريق الأصبهاني","url":"https://backup.qurango.net/radio/mohammad_abdullkarem_alasbahani","cat":"qiraat"},{"name":"محمود خليل الحصري - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/mahmoud-husary/r3/","cat":"qiraat","type":"surahs"},{"name":"محمد سايد - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/muhammad-saayed/r1/","cat":"qiraat","type":"surahs"},{"name":"القارئ ياسين الجزائري - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/yassen-jazairi/r1/","cat":"qiraat","type":"surahs"},{"name":"العيون الكوشي - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/","cat":"qiraat","type":"surahs"},{"name":"إبراهيم الدوسري - ورش عن نافع","url":"https://cdn.mp3quran.net/audio/ibrahim-dosari/r1/","cat":"qiraat","type":"surahs"},{"name":"محمد الأيراوي - ورش من طريق الأزرق","url":"https://cdn.mp3quran.net/audio/muhammad-iraoui/r1/","cat":"qiraat","type":"surahs"},{"name":"محمد عبدالكريم - ورش من طريق الأصبهاني","url":"https://cdn.mp3quran.net/audio/muhammad-abdulkareem/r2/","cat":"qiraat","type":"surahs"},{"name":"محمود خليل الحصري - قالون عن نافع","url":"https://cdn.mp3quran.net/audio/mahmoud-husary/r5/","cat":"qiraat","type":"surahs"},{"name":"أحمد الطرابلسي - قالون عن نافع","url":"https://cdn.mp3quran.net/audio/ahmad-tarabulsi/r1/","cat":"qiraat","type":"surahs"},{"name":"الدوكالي محمد العالم - قالون عن نافع","url":"https://cdn.mp3quran.net/audio/dokali-alim/r1/","cat":"qiraat","type":"surahs"},{"name":"محمد عبدالحكيم العبدالله - البزي وقنبل عن ابن كثير","url":"https://cdn.mp3quran.net/audio/muhammad-abdullah/r1/","cat":"qiraat","type":"surahs"},{"name":"محمود خليل الحصري - الدوري عن أبي عمرو","url":"https://cdn.mp3quran.net/audio/mahmoud-husary/r4/","cat":"qiraat","type":"surahs"},{"name":"مفتاح السلطني - الدوري عن أبي عمرو","url":"https://cdn.mp3quran.net/audio/muftah-saltani/r1/","cat":"qiraat","type":"surahs"},{"name":"نورين محمد صديق - الدوري عن أبي عمرو","url":"https://cdn.mp3quran.net/audio/noreen-siddiq/r1/","cat":"qiraat","type":"surahs"},{"name":"مفتاح السلطني - ابن ذكوان عن ابن عامر","url":"https://cdn.mp3quran.net/audio/muftah-saltani/r5/","cat":"qiraat","type":"surahs"},{"name":"مفتاح السلطني - شعبة عن عاصم","url":"https://cdn.mp3quran.net/audio/muftah-saltani/r4/","cat":"qiraat","type":"surahs"},{"name":"مشاري العفاسي - الدوري عن الكسائي","url":"https://cdn.mp3quran.net/audio/mishary-alafasy/r2/","cat":"qiraat","type":"surahs"},{"name":"محمد عبدالحكيم العبدالله - الدوري عن الكسائي","url":"https://cdn.mp3quran.net/audio/muhammad-abdullah/r2/","cat":"qiraat","type":"surahs"},{"name":"مفتاح السلطني - الدوري عن الكسائي","url":"https://cdn.mp3quran.net/audio/muftah-saltani/r2/","cat":"qiraat","type":"surahs"},{"name":"محمود الشيمي - الدوري عن الكسائي","url":"https://cdn.mp3quran.net/audio/mahmoud-sheimy/r1/","cat":"qiraat","type":"surahs"},{"name":"تفسير القرآن الكريم","url":"https://backup.qurango.net/radio/tafseer","cat":"tafsir"},{"name":"المختصر في تفسير القرآن الكريم","url":"https://backup.qurango.net/radio/mukhtasartafsir","cat":"tafsir"},{"name":"الخلاصة من تفسير الطبري","url":"https://backup.qurango.net/radio/tabri","cat":"tafsir"},{"name":"تفسير غريب القرآن","url":"https://backup.qurango.net/radio/gareeb-quran","cat":"tafsir"},{"name":"صحيح البخاري","url":"https://backup.qurango.net/radio/saheh-bokharee","cat":"hadith"},{"name":"صحيح مسلم","url":"https://backup.qurango.net/radio/saheh-muslim","cat":"hadith"},{"name":"رياض الصالحين","url":"https://backup.qurango.net/radio/riyad","cat":"hadith"},{"name":"إذاعة الارتقاء للحديث النبوي - لبنان","url":"https://radio.garden/api/ara/content/listen/Fo8OvQbj/channel.mp3","cat":"hadith"},{"name":"رياض الصالحين - شروح","url":"https://islamicbulletin.site:8058/stream","cat":"hadith"},{"name":"قناة السنة النبوية","url":"https://stream.radiojar.com/x0vs2vzy6k0uv","cat":"hadith"},{"name":"في ظلال السيرة النبوية (400 حلقة)","url":"https://backup.qurango.net/radio/fi_zilal_alsiyra","cat":"seerah"},{"name":"المختصر في السيرة النبوية","url":"https://backup.qurango.net/radio/almukhtasar_fi_alsiyra","cat":"seerah"},{"name":"الشمائل المحمدية","url":"https://backup.qurango.net/radio/shmaeel","cat":"seerah"},{"name":"قصص الأنبياء","url":"https://backup.qurango.net/radio/alanbiya","cat":"seerah"},{"name":"صور من حياة الصحابة والتابعين","url":"https://backup.qurango.net/radio/sahabah","cat":"seerah"},{"name":"إذاعة السيرة النبوية","url":"https://islamicbulletin.site:8054/stream","cat":"seerah"},{"name":"السيرة والحج وحياة الصحابة","url":"https://islamicbulletin.site:8070/stream","cat":"seerah"},{"name":"الدكتور محمد راتب النابلسي","url":"https://islamicbulletin.site:8060/stream","cat":"duroos"},{"name":"الشيخ محمد متولي الشعراوي","url":"https://islamicbulletin.site:8066/stream","cat":"duroos"},{"name":"الشيخ عبدالحميد كشك","url":"https://islamicbulletin.site:8062/stream","cat":"duroos"},{"name":"الدكتور عمر عبدالكافي","url":"https://islamicbulletin.site:8068/stream","cat":"duroos"},{"name":"نور على نور","url":"https://islamicbulletin.site:8056/stream","cat":"duroos"},{"name":"الفتاوى العامة","url":"https://backup.qurango.net/radio/fatwa","cat":"ilm"},{"name":"الاختيارات الفقهية في العبادات والمعاملات - ابن باز","url":"https://backup.qurango.net/radio/alaikhtiarat_alfiqhayh_bin_baz","cat":"ilm"},{"name":"فضل شهر رمضان","url":"https://backup.qurango.net/radio/ramadan","cat":"ilm"},{"name":"أذكار الصباح","url":"https://backup.qurango.net/radio/athkar_sabah","cat":"athkar"},{"name":"أذكار المساء","url":"https://backup.qurango.net/radio/athkar_masa","cat":"athkar"},{"name":"الرقية الشرعية","url":"https://backup.qurango.net/radio/roqiah","cat":"athkar"},{"name":"تكبيرات العيد","url":"https://backup.qurango.net/radio/eid","cat":"athkar"},{"name":"الرقية الشرعية - متواصلة","url":"https://islamicbulletin.site:8052/stream","cat":"athkar"},{"name":"Radio Islam - جنوب أفريقيا","url":"http://listen.radioislam.co.za:8080/radioislam.mp3","cat":"world"},{"name":"إذاعة البيان - أستراليا","url":"https://s9.viastreaming.net:9645/;stream/1","cat":"world"},{"name":"Islamic Bulletin - سان فرانسيسكو","url":"https://islamicbulletin.site:8076/stream","cat":"world"},{"name":"إذاعة إسلامية بالفرنسية","url":"https://islamicbulletin.site:8046/stream","cat":"world"},{"name":"إذاعة إسلامية بالإنجليزية - تحفيزية","url":"https://islamicbulletin.site:8078/stream","cat":"world"},{"name":"إذاعة القرآن الكريم - باكستان","url":"https://whmsonic.radio.gov.pk:7002/stream","cat":"world"},{"name":"إبراهيم الأخضر","url":"https://backup.qurango.net/radio/ibrahim_alakdar","cat":"quran"},{"name":"أبو بكر الشاطري","url":"https://backup.qurango.net/radio/shaik_abu_bakr_al_shatri","cat":"quran"},{"name":"أحمد العجمي","url":"https://backup.qurango.net/radio/ahmad_alajmy","cat":"quran"},{"name":"أحمد الحواشي","url":"https://backup.qurango.net/radio/ahmad_alhawashi","cat":"quran"},{"name":"أحمد صابر","url":"https://backup.qurango.net/radio/ahmad_saber","cat":"quran"},{"name":"أحمد نعينع","url":"https://backup.qurango.net/radio/ahmad_nauina","cat":"quran"},{"name":"أكرم العلاقمي","url":"https://backup.qurango.net/radio/akram_alalaqmi","cat":"quran"},{"name":"إدريس أبكر","url":"https://backup.qurango.net/radio/idrees_abkr","cat":"quran"},{"name":"الزين محمد أحمد","url":"https://backup.qurango.net/radio/alzain_mohammad_ahmad","cat":"quran"},{"name":"القارئ ياسين","url":"https://backup.qurango.net/radio/alqaria_yassen","cat":"quran"},{"name":"العيون الكوشي","url":"https://backup.qurango.net/radio/aloyoon_alkoshi","cat":"quran"},{"name":"توفيق الصايغ","url":"https://backup.qurango.net/radio/tawfeeq_assayegh","cat":"quran"},{"name":"جمال شاكر عبدالله","url":"https://backup.qurango.net/radio/jamal_shaker_abdullah","cat":"quran"},{"name":"خالد القحطاني","url":"https://backup.qurango.net/radio/khaled_alqahtani","cat":"quran"},{"name":"خالد عبدالكافي","url":"https://backup.qurango.net/radio/khalid_abdulkafi","cat":"quran"},{"name":"خليفة الطنيجي","url":"https://backup.qurango.net/radio/khalifa_altunaiji","cat":"quran"},{"name":"سعد الغامدي","url":"https://backup.qurango.net/radio/saad_alghamdi","cat":"quran"},{"name":"سعود الشريم","url":"https://backup.qurango.net/radio/saud_alshuraim","cat":"quran"},{"name":"سهل ياسين","url":"https://backup.qurango.net/radio/sahl_yassin","cat":"quran"},{"name":"زكي داغستاني","url":"https://backup.qurango.net/radio/zaki_daghistani","cat":"quran"},{"name":"سيد رمضان","url":"https://backup.qurango.net/radio/sayeed_ramadan","cat":"quran"},{"name":"شيرزاد عبدالرحمن طاهر","url":"https://backup.qurango.net/radio/shirazad_taher","cat":"quran"},{"name":"صابر عبدالحكم","url":"https://backup.qurango.net/radio/saber_abdulhakm","cat":"quran"},{"name":"صلاح البدير","url":"https://backup.qurango.net/radio/salah_albudair","cat":"quran"},{"name":"صلاح الهاشم","url":"https://backup.qurango.net/radio/salah_alhashim","cat":"quran"},{"name":"صلاح بو خاطر","url":"https://backup.qurango.net/radio/slaah_bukhatir","cat":"quran"},{"name":"عادل ريان","url":"https://backup.qurango.net/radio/adel_ryyan","cat":"quran"},{"name":"عبدالبارئ الثبيتي","url":"https://backup.qurango.net/radio/abdelbari_altoubayti","cat":"quran"},{"name":"عبدالبارئ محمد","url":"https://backup.qurango.net/radio/abdulbari_mohammad","cat":"quran"},{"name":"عبدالباسط عبدالصمد - مجود","url":"https://backup.qurango.net/radio/abdulbasit_abdulsamad_mojawwad","cat":"quran"},{"name":"عبدالباسط عبدالصمد - مرتل","url":"https://backup.qurango.net/radio/abdulbasit_abdulsamad","cat":"quran"},{"name":"عبدالرحمن السديس","url":"https://backup.qurango.net/radio/abdulrahman_alsudaes","cat":"quran"},{"name":"عبدالعزيز الأحمد","url":"https://backup.qurango.net/radio/abdul_aziz_alahmad","cat":"quran"},{"name":"عبدالله المطرود","url":"https://backup.qurango.net/radio/abdullah_almattrod","cat":"quran"},{"name":"عبدالله بصفر","url":"https://backup.qurango.net/radio/abdullah_basfer","cat":"quran"},{"name":"عبدالله خياط","url":"https://backup.qurango.net/radio/abdullah_khayyat","cat":"quran"},{"name":"عبدالله عواد الجهني","url":"https://backup.qurango.net/radio/abdullah_aljohany","cat":"quran"},{"name":"عبدالمحسن الحارثي","url":"https://backup.qurango.net/radio/abdulmohsin_alharthy","cat":"quran"},{"name":"عبدالمحسن القاسم","url":"https://backup.qurango.net/radio/abdulmohsen_alqasim","cat":"quran"},{"name":"عبدالمحسن العبيكان","url":"https://backup.qurango.net/radio/abdulmohsin_alobaikan","cat":"quran"},{"name":"عبدالهادي أحمد كناكري","url":"https://backup.qurango.net/radio/abdulhadi_kanakeri","cat":"quran"},{"name":"عبدالودود حنيف","url":"https://backup.qurango.net/radio/abdulwadood_haneef","cat":"quran"},{"name":"علي بن عبدالرحمن الحذيفي","url":"https://backup.qurango.net/radio/ali_alhuthaifi","cat":"quran"},{"name":"علي جابر","url":"https://backup.qurango.net/radio/ali_jaber","cat":"quran"},{"name":"علي حجاج السويسي","url":"https://backup.qurango.net/radio/ali_hajjaj_alsouasi","cat":"quran"},{"name":"عماد زهير حافظ","url":"https://backup.qurango.net/radio/emad_hafez","cat":"quran"},{"name":"عمر القزابري","url":"https://backup.qurango.net/radio/omar_alqazabri","cat":"quran"},{"name":"فارس عباد","url":"https://backup.qurango.net/radio/fares_abbad","cat":"quran"},{"name":"ناصر القطامي","url":"https://backup.qurango.net/radio/nasser_alqatami","cat":"quran"},{"name":"نبيل الرفاعي","url":"https://backup.qurango.net/radio/nabil_al_rifay","cat":"quran"},{"name":"نعمة الحسان","url":"https://backup.qurango.net/radio/neamah_alhassan","cat":"quran"},{"name":"هاني الرفاعي","url":"https://backup.qurango.net/radio/hani_arrifai","cat":"quran"},{"name":"وليد النائحي","url":"https://backup.qurango.net/radio/waleed_alnaehi","cat":"quran"},{"name":"ياسر الدوسري","url":"https://backup.qurango.net/radio/yasser_aldosari","cat":"quran"},{"name":"ياسر القرشي","url":"https://backup.qurango.net/radio/yasser_alqurashi","cat":"quran"},{"name":"ياسر المزروعي","url":"https://backup.qurango.net/radio/yasser_almazroyee","cat":"quran"},{"name":"يحيى حوا","url":"https://backup.qurango.net/radio/yahya_hawwa","cat":"quran"},{"name":"يوسف الشويعي","url":"https://backup.qurango.net/radio/yousef_alshoaey","cat":"quran"},{"name":"ماهر المعيقلي","url":"https://backup.qurango.net/radio/maher","cat":"quran"},{"name":"محمد الطبلاوي","url":"https://backup.qurango.net/radio/mohammad_altablaway","cat":"quran"},{"name":"محمد اللحيدان","url":"https://backup.qurango.net/radio/mohammed_allohaidan","cat":"quran"},{"name":"محمد أيوب","url":"https://backup.qurango.net/radio/mohammed_ayyub","cat":"quran"},{"name":"محمد صالح عالم شاه","url":"https://backup.qurango.net/radio/mohammad_saleh_alim_shah","cat":"quran"},{"name":"محمد جبريل","url":"https://backup.qurango.net/radio/mohammed_jibreel","cat":"quran"},{"name":"محمد صديق المنشاوي - مرتل","url":"https://backup.qurango.net/radio/mohammed_siddiq_alminshawi","cat":"quran"},{"name":"محمد صديق المنشاوي - مجود","url":"https://backup.qurango.net/radio/mohammed_siddiq_alminshawi_mojawwad","cat":"quran"},{"name":"محمد عبدالكريم","url":"https://backup.qurango.net/radio/mohammad_abdullkarem","cat":"quran"},{"name":"محمود خليل الحصري - مرتل","url":"https://backup.qurango.net/radio/mahmoud_khalil_alhussary","cat":"quran"},{"name":"محمود خليل الحصري - مجود","url":"https://backup.qurango.net/radio/mahmoud_khalil_alhussary_mojawwad","cat":"quran"},{"name":"محمود علي البنا - مرتل","url":"https://backup.qurango.net/radio/mahmoud_ali__albanna","cat":"quran"},{"name":"محمود علي البنا - مجود","url":"https://backup.qurango.net/radio/mahmoud_ali__albanna_mojawwad","cat":"quran"},{"name":"مشاري العفاسي","url":"https://backup.qurango.net/radio/mishary_alafasi","cat":"quran"},{"name":"مصطفى إسماعيل","url":"https://backup.qurango.net/radio/mustafa_ismail","cat":"quran"},{"name":"مصطفى اللاهوني","url":"https://backup.qurango.net/radio/mustafa_allahoni","cat":"quran"},{"name":"مصطفى رعد العزاوي","url":"https://backup.qurango.net/radio/mustafa_raad_alazawy","cat":"quran"},{"name":"ماهر شخاشيرو","url":"https://backup.qurango.net/radio/maher_shakhashero","cat":"quran"},{"name":"محمود الشيمي","url":"https://backup.qurango.net/radio/mahmood_alsheimy","cat":"quran"},{"name":"خالد المهنا","url":"https://backup.qurango.net/radio/khalid_almohana","cat":"quran"},{"name":"عادل الكلباني","url":"https://backup.qurango.net/radio/adel_alkhalbany","cat":"quran"},{"name":"موسى بلال","url":"https://backup.qurango.net/radio/mousa_bilal","cat":"quran"},{"name":"حاتم فريد الواعر","url":"https://backup.qurango.net/radio/hatem_fareed_alwaer","cat":"quran"},{"name":"محمود الرفاعي","url":"https://backup.qurango.net/radio/mahmood_al_rifai","cat":"quran"},{"name":"إبراهيم الدوسري","url":"https://backup.qurango.net/radio/ibrahim_aldosari","cat":"quran"},{"name":"جمعان العصيمي","url":"https://backup.qurango.net/radio/jamaan_alosaimi","cat":"quran"},{"name":"مفتاح السلطني","url":"https://backup.qurango.net/radio/muftah_alsaltany","cat":"quran"},{"name":"يوسف بن نوح أحمد","url":"https://backup.qurango.net/radio/yousef_bin_noah_ahmad","cat":"quran"},{"name":"معيض الحارثي","url":"https://backup.qurango.net/radio/moeedh_alharthi","cat":"quran"},{"name":"محمد رشاد الشريف","url":"https://backup.qurango.net/radio/mohammad_rashad_alshareef","cat":"quran"},{"name":"أحمد خضر الطرابلسي","url":"https://backup.qurango.net/radio/ahmad_khader_altarabulsi","cat":"quran"},{"name":"أحمد الطرابلسي","url":"https://backup.qurango.net/radio/ahmed_altrabulsi","cat":"quran"},{"name":"عبدالله الكندري","url":"https://backup.qurango.net/radio/abdullah_alkandari","cat":"quran"},{"name":"أحمد عامر","url":"https://backup.qurango.net/radio/ahmed_amer","cat":"quran"},{"name":"محمد عثمان خان","url":"https://backup.qurango.net/radio/mohammed_osman_khan","cat":"quran"},{"name":"الدوكالي محمد العالم","url":"https://backup.qurango.net/radio/addokali_mohammad_alalim","cat":"quran"},{"name":"الفاتح محمد الزبير","url":"https://backup.qurango.net/radio/alfateh_alzubair","cat":"quran"},{"name":"طارق عبدالغني دعوب","url":"https://backup.qurango.net/radio/tareq_abdulgani_daawob","cat":"quran"},{"name":"عبدالرحمن الماجد","url":"https://backup.qurango.net/radio/abdulrahman_almajed","cat":"quran"},{"name":"خالد الجليل","url":"https://backup.qurango.net/radio/khalid_aljileel","cat":"quran"},{"name":"ناصر الماجد","url":"https://backup.qurango.net/radio/nasser_almajed","cat":"quran"},{"name":"هيثم الجدعاني","url":"https://backup.qurango.net/radio/hitham_aljadani","cat":"quran"},{"name":"أحمد خليل شاهين","url":"https://backup.qurango.net/radio/ahmad_shaheen","cat":"quran"},{"name":"عبدالله الموسى","url":"https://backup.qurango.net/radio/abdullah_almousa","cat":"quran"},{"name":"عبدالله الخلف","url":"https://backup.qurango.net/radio/abdullah_alkhalaf","cat":"quran"},{"name":"ماجد الزامل","url":"https://backup.qurango.net/radio/majed_alzamel","cat":"quran"},{"name":"بندر بليلة","url":"https://backup.qurango.net/radio/bandar_balilah","cat":"quran"},{"name":"ناصر العصفور","url":"https://backup.qurango.net/radio/nasser_alosfor","cat":"quran"},{"name":"محمد أيوب - قراءة مميزة","url":"https://backup.qurango.net/radio/ayyoub2","cat":"quran"},{"name":"أحمد ديبان","url":"https://backup.qurango.net/radio/ahmad_deban","cat":"quran"},{"name":"محمد أبوسنينة","url":"https://backup.qurango.net/radio/sneineh","cat":"quran"},{"name":"محمد الأمين قنيوة","url":"https://backup.qurango.net/radio/qeniwa","cat":"quran"},{"name":"عبدالرحمن الشحات","url":"https://backup.qurango.net/radio/a_alshahhat","cat":"quran"},{"name":"عبدالعزيز سحيم","url":"https://backup.qurango.net/radio/a_sheim","cat":"quran"},{"name":"صالح الهبدان","url":"https://backup.qurango.net/radio/saleh_alhabdan","cat":"quran"},{"name":"عبدالله البعيجان","url":"https://backup.qurango.net/radio/buajan","cat":"quran"},{"name":"أحمد طالب بن حميد","url":"https://backup.qurango.net/radio/a_binhameed","cat":"quran"},{"name":"بدر التركي","url":"https://backup.qurango.net/radio/bader","cat":"quran"},{"name":"هزاع البلوشي","url":"https://backup.qurango.net/radio/hazza","cat":"quran"},{"name":"نورين محمد صديق","url":"https://backup.qurango.net/radio/nourin_siddig","cat":"quran"}]};
 const CATS = DATA.categories, ST = DATA.stations;
 const SURAH = "الفاتحة البقرة آل_عمران النساء المائدة الأنعام الأعراف الأنفال التوبة يونس هود يوسف الرعد إبراهيم الحجر النحل الإسراء الكهف مريم طه الأنبياء الحج المؤمنون النور الفرقان الشعراء النمل القصص العنكبوت الروم لقمان السجدة الأحزاب سبأ فاطر يس الصافات ص الزمر غافر فصلت الشورى الزخرف الدخان الجاثية الأحقاف محمد الفتح الحجرات ق الذاريات الطور النجم القمر الرحمن الواقعة الحديد المجادلة الحشر الممتحنة الصف الجمعة المنافقون التغابن الطلاق التحريم الملك القلم الحاقة المعارج نوح الجن المزمل المدثر القيامة الإنسان المرسلات النبأ النازعات عبس التكوير الانفطار المطففين الانشقاق البروج الطارق الأعلى الغاشية الفجر البلد الشمس الليل الضحى الشرح التين العلق القدر البينة الزلزلة العاديات القارعة التكاثر العصر الهمزة الفيل قريش الماعون الكوثر الكافرون النصر المسد الإخلاص الفلق الناس".split(' ').map(s => s.replace('_', ' '));
-const ICON = {national:'📡',mixed:'📖',qiraat:'🌙',tafsir:'📚',hadith:'📜',seerah:'🕌',ilm:'🎓',athkar:'🤲',quran:'🎙'};
+const ICON = {duroos:'🎤',world:'🌍',national:'📡',mixed:'📖',qiraat:'🌙',tafsir:'📚',hadith:'📜',seerah:'🕌',ilm:'🎓',athkar:'🤲',quran:'🎙'};
 const $ = id => document.getElementById(id);
 /* ---------- جسر المشغّل الأصلي داخل تطبيق الأندرويد (يعمل في الخلفية وعلى شاشة القفل) ---------- */
 class NativeAudio extends EventTarget {
@@ -237,7 +397,8 @@ window.nativeEvent = e => {
   if (e === 'pause' || e === 'error') au.paused = true;
   if (e === 'ended') { au.paused = true; au.ended = true; }
   if (e === 'next') { spin(30); if (!power) setPower(true); step(1); return; }
-  if (e === 'back') { if (!document.getElementById('pList').classList.contains('hidden')) show('pRadio'); else Android.exit(); return; }
+  if (e === 'back') { const op = document.querySelector('.panel.show'); if (op) { panel(op.id, false); return; } if (!$('pMushaf').classList.contains('hidden') && !$('mReader').classList.contains('hidden')) { $('rBack').click(); return; }
+    if ($('pRadio').classList.contains('hidden')) show('pRadio'); else Android.exit(); return; }
   au.dispatchEvent(new Event(e));
 };
 const status = ST.map(() => 'unk');
@@ -351,7 +512,7 @@ tune.addEventListener('pointermove', e => { if (last === null) return; const a =
   while (acc >= 30) { acc -= 30; step(1); } while (acc <= -30) { acc += 30; step(-1); } });
 ['pointerup', 'pointercancel'].forEach(v => tune.addEventListener(v, () => { last = null; acc = 0; }));
 tune.addEventListener('wheel', e => { e.preventDefault(); const d = e.deltaY > 0 ? 1 : -1; spin(30 * d); if (!power) setPower(true); step(d); }, { passive: false });
-document.addEventListener('keydown', e => { if (e.target.tagName === 'INPUT') return;
+document.addEventListener('keydown', e => { if (e.target.tagName === 'INPUT' || $('pRadio').classList.contains('hidden')) return;
   if (e.key === 'ArrowLeft') { spin(30); if (!power) setPower(true); step(1); }
   if (e.key === 'ArrowRight') { spin(-30); if (!power) setPower(true); step(-1); }
   if (e.key === ' ') { e.preventDefault(); setPower(!power); } });
@@ -406,7 +567,7 @@ $('checkB').onclick = async () => {
 };
 
 /* ---------- عام ---------- */
-function show(p){ document.querySelectorAll('.page').forEach(x => x.classList.toggle('hidden', x.id !== p));
+function show(p){ if (p === 'pMushaf') loadMushaf(); document.querySelectorAll('.page').forEach(x => x.classList.toggle('hidden', x.id !== p));
   document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.p === p)); }
 document.querySelectorAll('nav button').forEach(b => b.onclick = () => show(b.dataset.p));
 let tt; function toast(m){ const t = $('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2600); }
@@ -430,10 +591,263 @@ function netTick(){
   $('wifi').classList.toggle('on', type === 'wifi' || type === 'unknown');
   $('cell').classList.toggle('on', type === 'cellular');
   $('netv').textContent = (exact ? '' : '≈ ') + fmtBytes(bytes);
-  $('netl').textContent = type === 'none' ? 'لا يوجد اتصال' : 'استهلاك منذ الفتح';
+  const now2 = Date.now(); if (window._lb != null && exact) { const r = (bytes - window._lb) * 8 / ((now2 - window._lt) / 1000) / 1000; window._kb = window._kb == null ? r : window._kb * .6 + r * .4; }
+  window._lb = bytes; window._lt = now2;
+  $('kbps').textContent = exact && power && !au.paused && window._kb > 1 ? Math.round(window._kb) + ' kbps' : '';
+  $('netl').textContent = type === 'none' ? 'لا يوجد اتصال' : 'منذ الفتح';
   $('netbar').classList.toggle('off', type === 'none');
 }
 setInterval(netTick, 2000); window.addEventListener('online', netTick); window.addEventListener('offline', netTick);
+
+/* ---------- راديو FM المحلي (عبر تطبيق الراديو المدمج في الهاتف) ---------- */
+function sheet(ic, t, p, actions){
+  $('shIc').textContent = ic; $('shT').textContent = t; $('shP').textContent = p; const a = $('shA'); a.innerHTML = '';
+  actions.forEach(([txt, fn, pri]) => { const b = document.createElement('button'); b.textContent = txt; if (pri) b.className = 'pri';
+    b.onclick = () => { $('sheet').classList.remove('show'); fn && fn(); }; a.appendChild(b); });
+  $('sheet').classList.add('show');
+}
+$('sheet').onclick = e => { if (e.target.id === 'sheet') $('sheet').classList.remove('show'); };
+function openFm(){ if (power) setPower(false); if (!Android.openFm()) toast('تعذّر فتح تطبيق الراديو'); }
+$('fmBtn').onclick = () => {
+  if (!(window.Android && Android.fmApp)) {
+    sheet('📱', 'ميزة خاصة بتطبيق الأندرويد', 'راديو FM المحلي يعمل من داخل تطبيق «مذياع أنا المسلم» على هاتف أندرويد يحتوي على شريحة FM.', [['حسناً', null, true]]); return; }
+  const app = Android.fmApp();
+  if (!app) { sheet('📵', 'هاتفك لا يدعم راديو FM', 'لم نجد تطبيق راديو FM مدمجاً في هاتفك. كثير من الهواتف الحديثة عطّلت شريحة FM، فاستمع إلى الإذاعات عبر الإنترنت من المذياع.', [['حسناً', null, true]]); return; }
+  if (!Android.headsetPlugged()) {
+    sheet('🎧', 'وصّل السماعة السلكية', 'سلك السماعة يعمل كهوائي لالتقاط إذاعات FM. وصّلها ثم اضغط «فتح الراديو».', [['فتح الراديو', openFm, true], ['إلغاء']]); return; }
+  openFm();
+};
+
+/* ---------- مؤقت الإيقاف (لتوفير البيانات) ---------- */
+const SLEEP = [0, 15, 30, 60, 90]; let sleepI = 0, sleepAt = 0;
+$('sleepB').onclick = () => {
+  sleepI = (sleepI + 1) % SLEEP.length; const m = SLEEP[sleepI];
+  sleepAt = m ? Date.now() + m * 60000 : 0; $('sleepB').classList.toggle('on', !!m);
+  toast(m ? 'سيتوقف المذياع بعد ' + m + ' دقيقة' : 'تم إلغاء مؤقت الإيقاف'); sleepTick();
+};
+function sleepTick(){
+  if (!sleepAt) { $('sleepT').textContent = 'المؤقت'; return; }
+  const left = sleepAt - Date.now();
+  if (left <= 0) { sleepAt = 0; sleepI = 0; $('sleepB').classList.remove('on'); $('sleepT').textContent = 'المؤقت'; if (power) setPower(false); toast('توقّف المذياع حسب المؤقت'); return; }
+  const mm = Math.floor(left / 60000), ss = Math.floor(left % 60000 / 1000); $('sleepT').textContent = mm + ':' + String(ss).padStart(2, '0');
+}
+setInterval(sleepTick, 1000);
+
+/* ---------- المصحف الشريف: قراءة كاملة مفهرسة بترتيب صفحات مصحف المدينة (604 صفحة) ---------- */
+const M = { pages: null, surahs: null, juz: null, page: 1, size: 23, loading: false };
+const AR = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const store = {
+  get(k){ try { return window.Android && Android.loadData ? Android.loadData(k) : (M['_' + k] || ''); } catch(e){ return ''; } },
+  set(k, v){ try { if (window.Android && Android.saveData) Android.saveData(k, v); else M['_' + k] = v; } catch(e){} }
+};
+function buildMushaf(raw){
+  // raw: data.surahs[] من api.alquran.cloud (رواية حفص - الرسم العثماني)
+  const pages = Array.from({ length: 605 }, () => []), surahs = [], juz = [];
+  raw.forEach(s => {
+    surahs.push({ n: s.number, name: s.name, count: s.ayahs.length, type: s.revelationType === 'Meccan' ? 'مكية' : 'مدنية', page: s.ayahs[0].page });
+    s.ayahs.forEach(a => {
+      let t = a.text;
+      if (a.numberInSurah === 1 && s.number !== 1 && s.number !== 9 && t.startsWith('بِسْمِ')) t = t.split(' ').slice(4).join(' ');
+      pages[a.page].push([s.number, a.numberInSurah, t]);
+      if (!juz[a.juz]) juz[a.juz] = { n: a.juz, page: a.page, s: s.name, a: a.numberInSurah };
+    });
+  });
+  return { pages, surahs, juz };
+}
+function checkFont(){ try { if (document.fonts) document.fonts.load('24px UthmanicHafs', 'بِسۡمِ').then(f => { M.font = f.length > 0; if (!$('mReader').classList.contains('hidden')) mOpen(M.page); }).catch(() => {}); } catch(e){} }
+async function loadMushaf(){
+  if (M.pages || M.loading) return; M.loading = true;
+  try {
+    let data = store.get('mushaf');
+    if (data) data = JSON.parse(data);
+    else {
+      const r = await fetch('https://api.alquran.cloud/v1/quran/quran-uthmani');
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json(); data = buildMushaf(j.data.surahs);
+      store.set('mushaf', JSON.stringify(data)); // يُحفظ للقراءة لاحقاً بدون إنترنت
+    }
+    Object.assign(M, data);
+    const lp = +store.get('lastPage'); if (lp) M.page = lp;
+    const fs = +store.get('qsize'); if (fs) M.size = fs;
+    mIndex('s');
+  } catch (e) {
+    $('mList').innerHTML = '<div class="mload">تعذّر تحميل المصحف — تأكد من الاتصال بالإنترنت أول مرة، بعدها يعمل بدون إنترنت.<br><br><button class="mbtn" id="mRetry">إعادة المحاولة</button></div>';
+    $('mRetry').onclick = () => { $('mList').innerHTML = '<div class="mload">جارِ تحميل المصحف الشريف…<div class="bar2"><i></i></div></div>'; loadMushaf(); };
+  }
+  M.loading = false;
+}
+function surahOfPage(p){ let s = M.surahs[0]; for (const x of M.surahs) if (x.page <= p) s = x; else break; return s; }
+function juzOfPage(p){ let j = 1; for (const x of M.juz) if (x && x.page <= p) j = x.n; return j; }
+function mIndex(t){
+  if (!M.pages) return;
+  document.querySelectorAll('.mtabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  const q = $('mq').value.trim().replace(/[ًٌٍَُِّْٰـ]/g, '');
+  let h = '';
+  if (t === 's') {
+    M.surahs.forEach(s => { if (q && !s.name.replace(/ٱ/g, 'ا').replace(/[ًٌٍَُِّْٰـ]/g, '').includes(q.replace(/ٱ/g, 'ا')) && !String(s.n).startsWith(q)) return;
+      h += '<div class="srow" data-p="' + s.page + '"><div class="num">' + s.n + '</div><div class="sn">' + s.name + '</div><div class="sm">' + s.type + ' · ' + AR(s.count) + ' آية<br>صفحة ' + AR(s.page) + '</div></div>'; });
+  } else {
+    h = '<div class="jgrid">' + M.juz.filter(Boolean).map(j => '<button data-p="' + j.page + '"><b>' + AR(j.n) + '</b><small>ص ' + AR(j.page) + '</small></button>').join('') + '</div>';
+  }
+  $('mList').innerHTML = h || '<div class="mload">لا توجد نتائج</div>';
+  const r = $('mResume'); r.style.display = '';
+  $('mResT').textContent = 'متابعة القراءة — صفحة ' + AR(M.page); $('mResS').textContent = surahOfPage(M.page).name + ' · الجزء ' + AR(juzOfPage(M.page));
+}
+function mOpen(p){
+  p = Math.min(604, Math.max(1, p | 0)); M.page = p; store.set('lastPage', String(p));
+  $('mIndex').classList.add('hidden'); $('mReader').classList.remove('hidden');
+  const items = M.pages[p], sp = surahOfPage(p), uf = false; // أرقام الآيات بين ﴿ ﴾ مع خط أميري قرآن
+  const banner = '<svg viewBox="0 0 300 46" preserveAspectRatio="none"><rect x="1" y="3" width="298" height="40" rx="4" fill="#2f6fa6"/><rect x="4" y="6" width="292" height="34" rx="3" fill="none" stroke="#c9a14a" stroke-width="1.3"/>' +
+    '<rect x="8" y="10" width="284" height="26" rx="2" fill="#dcecf4"/><path d="M8 23h60M232 23h60" stroke="#2f6fa6" stroke-width="1" stroke-dasharray="2 3"/>' +
+    '<g fill="#c9a14a"><circle cx="18" cy="23" r="4"/><circle cx="282" cy="23" r="4"/></g></svg>';
+  let h = '<div class="mhdr"><span>' + sp.name.replace(/^سُورَةُ\s*/, 'سُورَةُ ') + '</span><span>الجُزْءُ ' + AR(juzOfPage(p)) + '</span></div><div class="qtext">';
+  items.forEach(([s, a, t]) => {
+    if (a === 1) { const S = M.surahs[s - 1];
+      h += '</div><div class="stitle">' + banner + '<b>' + S.name + '</b></div>' +
+        (s !== 1 && s !== 9 ? '<div class="basm">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</div>' : '') + '<div class="qtext">'; }
+    h += t + ' <span class="ayn">' + (uf ? AR(a) : '﴿' + AR(a) + '﴾') + '</span> ';
+  });
+  h += '</div><div class="pfoot"><span>' + AR(p) + '</span></div>';
+  const pp = $('paper'); pp.innerHTML = h; pp.scrollTop = 0; pp.style.setProperty('--qs', M.size + 'px');
+  $('paper').classList.toggle('nofont', !uf); $('rInfo').textContent = surahOfPage(p).name + ' · الجزء ' + AR(juzOfPage(p)); $('rPg').textContent = AR(p) + ' / ' + AR(604);
+}
+$('mq').oninput = () => mIndex('s');
+document.querySelectorAll('.mtabs button').forEach(b => b.onclick = () => mIndex(b.dataset.t));
+$('mList').onclick = e => { const el = e.target.closest('[data-p]'); if (el) mOpen(+el.dataset.p); };
+$('mResume').onclick = () => mOpen(M.page);
+$('mgoB').onclick = () => { const v = +$('mgo').value; if (v >= 1 && v <= 604 && M.pages) mOpen(v); else toast('اكتب رقم صفحة من ١ إلى ٦٠٤'); };
+$('rBack').onclick = () => { $('mReader').classList.add('hidden'); $('mIndex').classList.remove('hidden'); mIndex('s'); };
+$('rNext').onclick = () => mOpen(M.page + 1);
+$('rPrev').onclick = () => mOpen(M.page - 1);
+$('rPlus').onclick = () => { M.size = Math.min(36, M.size + 2); store.set('qsize', String(M.size)); $('paper').style.setProperty('--qs', M.size + 'px'); };
+$('rMinus').onclick = () => { M.size = Math.max(16, M.size - 2); store.set('qsize', String(M.size)); $('paper').style.setProperty('--qs', M.size + 'px'); };
+(function swipe(){ // سحب أفقي لتقليب الصفحات كالمصحف: من اليسار إلى اليمين = الصفحة التالية
+  let x0 = null, y0 = 0; const el = $('paper');
+  el.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  el.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) mOpen(M.page + (dx > 0 ? 1 : -1)); });
+})();
+document.addEventListener('keydown', e => { if ($('mReader').classList.contains('hidden') || $('pMushaf').classList.contains('hidden')) return;
+  if (e.key === 'ArrowLeft') mOpen(M.page + 1); if (e.key === 'ArrowRight') mOpen(M.page - 1); });
+
+/* ---------- لوحة منبثقة عامة ---------- */
+function panel(id, open){ $(id).classList.toggle('show', open); }
+document.querySelectorAll('.panel').forEach(p => p.addEventListener('click', e => { if (e.target === p || e.target.closest('[data-close]')) panel(p.id, false); }));
+
+/* ---------- أوقات الصلاة (حساب فلكي محلي بدون إنترنت) ---------- */
+const CITIES = [
+  ['دمشق', 33.5138, 36.2765], ['حلب', 36.2021, 37.1343], ['حمص', 34.7324, 36.7137], ['حماة', 35.1318, 36.7578],
+  ['اللاذقية', 35.5317, 35.7915], ['طرطوس', 34.8890, 35.8866], ['إدلب', 35.9306, 36.6339], ['دير الزور', 35.3359, 40.1408],
+  ['الرقة', 35.9594, 39.0079], ['الحسكة', 36.5024, 40.7477], ['القامشلي', 37.0522, 41.2269], ['درعا', 32.6189, 36.1021],
+  ['السويداء', 32.7094, 36.5694], ['إسطنبول', 41.0082, 28.9784], ['غازي عنتاب', 37.0662, 37.3833], ['عمّان', 31.9454, 35.9284],
+  ['بيروت', 33.8938, 35.5018], ['مكة المكرمة', 21.3891, 39.8579], ['المدينة المنورة', 24.4672, 39.6111], ['القاهرة', 30.0444, 31.2357]
+];
+const METHODS = { egypt: ['الهيئة المصرية العامة للمساحة', 19.5, 17.5], mwl: ['رابطة العالم الإسلامي', 18, 17], makkah: ['أم القرى', 18.5, '90m'], karachi: ['جامعة كراتشي', 18, 18] };
+const PR = { loc: null, method: 'egypt' };
+const D2R = Math.PI / 180, sin = d => Math.sin(d * D2R), cos = d => Math.cos(d * D2R), tan = d => Math.tan(d * D2R);
+const asin = x => Math.asin(x) / D2R, acos = x => Math.acos(Math.max(-1, Math.min(1, x))) / D2R, atan2 = (y, x) => Math.atan2(y, x) / D2R, acot = x => Math.atan(1 / x) / D2R;
+const fix = (a, b) => { a = a - b * Math.floor(a / b); return a < 0 ? a + b : a; };
+function julian(y, m, d){ if (m <= 2) { y--; m += 12; } const A = Math.floor(y / 100), B = 2 - A + Math.floor(A / 4); return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5; }
+function sunPos(jd){ const D = jd - 2451545, g = fix(357.529 + .98560028 * D, 360), q = fix(280.459 + .98564736 * D, 360), L = fix(q + 1.915 * sin(g) + .020 * sin(2 * g), 360), e = 23.439 - .00000036 * D;
+  const RA = fix(atan2(cos(e) * sin(L), cos(L)) / 15, 24); return { decl: asin(sin(e) * sin(L)), eqt: q / 15 - RA }; }
+function prayerTimes(date, lat, lng, method){
+  const [_, fajrA, ishaA] = METHODS[method], tz = -date.getTimezoneOffset() / 60;
+  const jd = julian(date.getFullYear(), date.getMonth() + 1, date.getDate()) - lng / (15 * 24);
+  const mid = t => fix(12 - sunPos(jd + t).eqt, 24);
+  const angT = (ang, t, ccw) => { const d = sunPos(jd + t).decl, T = acos((-sin(ang) - sin(d) * sin(lat)) / (cos(d) * cos(lat))) / 15, n = mid(t); return n + (ccw ? -T : T); };
+  const asr = t => { const d = sunPos(jd + t).decl; return angT(-acot(1 + tan(Math.abs(lat - d))), t); };
+  let r = { fajr: angT(fajrA, 5 / 24, true), sunrise: angT(.833, 6 / 24, true), dhuhr: mid(12 / 24), asr: asr(13 / 24), maghrib: angT(.833, 18 / 24), isha: 0 };
+  r.isha = typeof ishaA === 'string' ? r.maghrib + parseInt(ishaA) / 60 : angT(ishaA, 18 / 24);
+  for (const k in r) r[k] = r[k] + tz - lng / 15 + (k === 'dhuhr' ? 1 / 60 : 0);
+  return r;
+}
+const PNAMES = { fajr: 'الفجر', sunrise: 'الشروق', dhuhr: 'الظهر', asr: 'العصر', maghrib: 'المغرب', isha: 'العشاء' };
+const PICON = { fajr: '🌄', sunrise: '☀️', dhuhr: '🕛', asr: '🌤️', maghrib: '🌇', isha: '🌙' };
+function fmtT(h){ h = fix(h + .5 / 60, 24); let H = Math.floor(h), M = Math.floor((h - H) * 60); const ap = H < 12 ? 'ص' : 'م'; H = H % 12 || 12; return AR(H) + ':' + AR(String(M).padStart(2, '0')) + ' ' + ap; }
+function renderPrayer(){
+  if (!PR.loc) { $('prBody').innerHTML = '<div class="mload">اختر مدينتك أو اضغط «موقعي»</div>'; return; }
+  const now = new Date(), t = prayerTimes(now, PR.loc[1], PR.loc[2], PR.method), cur = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+  let next = Object.keys(t).find(k => k !== 'sunrise' && t[k] > cur), nextT;
+  if (!next) { next = 'fajr'; const tm = new Date(now); tm.setDate(tm.getDate() + 1); nextT = prayerTimes(tm, PR.loc[1], PR.loc[2], PR.method).fajr + 24; } else nextT = t[next];
+  const left = (nextT - cur) * 3600, hh = Math.floor(left / 3600), mm = Math.floor(left % 3600 / 60), ss = Math.floor(left % 60);
+  let h = '<div class="pnext"><small>الصلاة القادمة</small><b>' + PNAMES[next] + '</b><span dir="ltr">' + AR(hh) + ':' + AR(String(mm).padStart(2, '0')) + ':' + AR(String(ss).padStart(2, '0')) + '</span></div><div class="plist">';
+  for (const k in t) h += '<div class="prow' + (k === next ? ' on' : '') + '"><span>' + PICON[k] + ' ' + PNAMES[k] + '</span><b>' + fmtT(t[k]) + '</b></div>';
+  h += '</div><div class="pmeta">' + PR.loc[0] + ' · ' + METHODS[PR.method][0] + '</div>';
+  $('prBody').innerHTML = h;
+  $('prayB').title = 'أوقات الصلاة — ' + PNAMES[next] + ' ' + fmtT(nextT);
+}
+function setLoc(loc){ PR.loc = loc; store.set('prloc', JSON.stringify(loc)); $('prCity').value = CITIES.findIndex(c => c[0] === loc[0]) >= 0 ? loc[0] : ''; renderPrayer(); }
+(function initPrayer(){
+  $('prCity').innerHTML = '<option value="">— اختر المدينة —</option>' + CITIES.map(c => '<option>' + c[0] + '</option>').join('');
+  $('prMethod').innerHTML = Object.entries(METHODS).map(([k, v]) => '<option value="' + k + '">' + v[0] + '</option>').join('');
+  try { const l = store.get('prloc'); if (l) PR.loc = JSON.parse(l); const m = store.get('prmethod'); if (m && METHODS[m]) PR.method = m; } catch(e){}
+  $('prMethod').value = PR.method; if (PR.loc) $('prCity').value = PR.loc[0];
+  $('prCity').onchange = () => { const c = CITIES.find(c => c[0] === $('prCity').value); if (c) setLoc(c); };
+  $('prMethod').onchange = () => { PR.method = $('prMethod').value; store.set('prmethod', PR.method); renderPrayer(); };
+  $('prGps').onclick = () => {
+    if (window.Android && Android.getLocation) { const v = Android.getLocation(); if (v) { const [a, b] = v.split(','); setLoc(['موقعي الحالي', +a, +b]); } else toast('فعّل الموقع (GPS) واسمح للتطبيق به ثم أعد المحاولة'); return; }
+    if (!navigator.geolocation) return toast('المتصفح لا يدعم تحديد الموقع');
+    navigator.geolocation.getCurrentPosition(p => setLoc(['موقعي الحالي', p.coords.latitude, p.coords.longitude]), () => toast('تعذّر تحديد موقعك — اختر المدينة من القائمة'), { timeout: 10000 });
+  };
+  if (!PR.loc) PR.loc = CITIES[0];
+  $('prCity').value = CITIES.some(c => c[0] === PR.loc[0]) ? PR.loc[0] : '';
+  $('prayB').onclick = () => { renderPrayer(); panel('prPanel', true); };
+  setInterval(() => { if ($('prPanel').classList.contains('show')) renderPrayer(); }, 1000);
+  renderPrayer();
+})();
+
+/* ---------- أذكار الصباح والمساء ---------- */
+const AZKAR = [
+  ['b', 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ ۚ لَا تَأْخُذُهُۥ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُۥ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۗ مَن ذَا ٱلَّذِى يَشْفَعُ عِندَهُۥٓ إِلَّا بِإِذْنِهِۦ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَىْءٍ مِّنْ عِلْمِهِۦٓ إِلَّا بِمَا شَآءَ ۚ وَسِعَ كُرْسِيُّهُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ ۖ وَلَا يَـُٔودُهُۥ حِفْظُهُمَا ۚ وَهُوَ ٱلْعَلِىُّ ٱلْعَظِيمُ', 1, 'آية الكرسي'],
+  ['b', 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ اللَّهُ الصَّمَدُ لَمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ', 3, 'سورة الإخلاص'],
+  ['b', 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ مِن شَرِّ مَا خَلَقَ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ', 3, 'سورة الفلق'],
+  ['b', 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ مَلِكِ النَّاسِ إِلَٰهِ النَّاسِ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ مِنَ الْجِنَّةِ وَالنَّاسِ', 3, 'سورة الناس'],
+  ['m', 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَٰذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَٰذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ', 1],
+  ['e', 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَٰذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَٰذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ', 1],
+  ['m', 'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ', 1],
+  ['e', 'اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ', 1],
+  ['b', 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ', 1, 'سيد الاستغفار'],
+  ['b', 'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَٰهَ إِلَّا أَنْتَ', 3],
+  ['b', 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي', 1],
+  ['b', 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ', 3],
+  ['b', 'رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا', 3],
+  ['b', 'يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَىٰ نَفْسِي طَرْفَةَ عَيْنٍ', 1],
+  ['b', 'حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ', 7],
+  ['e', 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ', 3],
+  ['b', 'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ', 10],
+  ['b', 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', 100],
+  ['b', 'اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَىٰ نَبِيِّنَا مُحَمَّدٍ', 10]
+];
+let azT = new Date().getHours() < 15 ? 'm' : 'e', azLeft = {};
+function renderAzkar(){
+  document.querySelectorAll('#azTabs button').forEach(b => b.classList.toggle('on', b.dataset.t === azT));
+  let h = '';
+  AZKAR.forEach(([w, txt, n, title], i) => { if (w !== 'b' && w !== azT) return; const left = azLeft[azT + i] ?? n;
+    h += '<div class="zk' + (left === 0 ? ' done' : '') + '" data-i="' + i + '">' + (title ? '<div class="zt">' + title + '</div>' : '') +
+      '<div class="zx">' + txt.replace(/\n/g, '<br>') + '</div><div class="zc"><span>التكرار: ' + AR(n) + '</span><button>' + (left === 0 ? '✓ تم' : AR(left)) + '</button></div></div>'; });
+  $('azBody').innerHTML = h;
+  const tot = AZKAR.filter(z => z[0] === 'b' || z[0] === azT).length, done = AZKAR.filter((z, i) => (z[0] === 'b' || z[0] === azT) && azLeft[azT + i] === 0).length;
+  $('azProg').style.width = (done / tot * 100) + '%';
+}
+$('azBody').onclick = e => { const c = e.target.closest('.zk'); if (!c) return; const i = +c.dataset.i, k = azT + i, n = AZKAR[i][2];
+  const left = azLeft[k] ?? n; if (left === 0) return; azLeft[k] = left - 1;
+  try { navigator.vibrate && navigator.vibrate(azLeft[k] === 0 ? 60 : 15); } catch(e){}
+  renderAzkar(); };
+document.querySelectorAll('#azTabs button').forEach(b => b.onclick = () => { azT = b.dataset.t; renderAzkar(); });
+$('azReset').onclick = () => { Object.keys(azLeft).forEach(k => { if (k[0] === azT) delete azLeft[k]; }); renderAzkar(); };
+$('azkarB').onclick = () => { renderAzkar(); panel('azPanel', true); };
+
+/* ---------- الإعلانات (Google AdSense) ---------- */
+(function ads(){
+  const boxes = document.querySelectorAll('[data-ad]');
+  // داخل تطبيق الأندرويد لا تعمل إعلانات AdSense (تحتاج AdMob) — نخفي المساحة
+  if (window.Android || location.protocol === 'file:') { boxes.forEach(b => b.classList.add('off')); return; }
+  const sc = document.createElement('script'); sc.async = true; sc.crossOrigin = 'anonymous';
+  sc.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4603588502338982';
+  sc.onerror = () => boxes.forEach(b => b.classList.add('off'));
+  document.head.appendChild(sc);
+  boxes.forEach(() => { try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){} });
+})();
 buildList(); render(); netTick();
 </script>
 </body>

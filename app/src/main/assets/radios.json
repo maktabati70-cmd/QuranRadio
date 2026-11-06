@@ -6,8 +6,10 @@
   "tafsir": "التفسير",
   "hadith": "الحديث الشريف",
   "seerah": "السيرة والقصص",
+  "duroos": "دروس ومحاضرات المشايخ",
   "ilm": "العلوم الشرعية والفتاوى",
   "athkar": "الأذكار والرقية",
+  "world": "إذاعات إسلامية حول العالم",
   "quran": "القرّاء"
  },
  "stations": [
@@ -19,6 +21,51 @@
   {
    "name": "إذاعة القرآن الكريم - القاهرة",
    "url": "https://stream.radiojar.com/8s5u5tpdtwzuv",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - مكة المكرمة",
+   "url": "https://stream.radiojar.com/4wqre23fytzuv",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - الشارقة",
+   "url": "https://l3.itworkscdn.net/smcquranlive/quranradiolive/icecast.audio",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - نابلس",
+   "url": "https://quran-radio.org:8899/;",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - الجزائر",
+   "url": "https://radiocoran.ice.infomaniak.ch/coran.mp3",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة محمد السادس للقرآن الكريم - المغرب",
+   "url": "https://stream.radio.co/sbce8f83f4/listen",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - المغرب (بديل)",
+   "url": "https://asmaki.ma:8000/radio.mp3",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة زايد للقرآن الكريم - الإمارات",
+   "url": "https://zayedquran.gov.ae/stream.php",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - قطر",
+   "url": "https://live.kwikmotion.com/qmcquranradio2live/quranradio2/playlist.m3u8",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - الأردن",
+   "url": "https://jrtv-live.ercdn.net/jrradio/quranradio.m3u8",
    "cat": "national"
   },
   {
@@ -49,6 +96,11 @@
   {
    "name": "سورة الملك",
    "url": "https://backup.qurango.net/radio/Surah_Al-Mulk",
+   "cat": "mixed"
+  },
+  {
+   "name": "قرآن للروح - تلاوات متواصلة",
+   "url": "https://islamicbulletin.site:8102/stream",
    "cat": "mixed"
   },
   {
@@ -262,6 +314,21 @@
    "cat": "hadith"
   },
   {
+   "name": "إذاعة الارتقاء للحديث النبوي - لبنان",
+   "url": "https://radio.garden/api/ara/content/listen/Fo8OvQbj/channel.mp3",
+   "cat": "hadith"
+  },
+  {
+   "name": "رياض الصالحين - شروح",
+   "url": "https://islamicbulletin.site:8058/stream",
+   "cat": "hadith"
+  },
+  {
+   "name": "قناة السنة النبوية",
+   "url": "https://stream.radiojar.com/x0vs2vzy6k0uv",
+   "cat": "hadith"
+  },
+  {
    "name": "في ظلال السيرة النبوية (400 حلقة)",
    "url": "https://backup.qurango.net/radio/fi_zilal_alsiyra",
    "cat": "seerah"
@@ -285,6 +352,41 @@
    "name": "صور من حياة الصحابة والتابعين",
    "url": "https://backup.qurango.net/radio/sahabah",
    "cat": "seerah"
+  },
+  {
+   "name": "إذاعة السيرة النبوية",
+   "url": "https://islamicbulletin.site:8054/stream",
+   "cat": "seerah"
+  },
+  {
+   "name": "السيرة والحج وحياة الصحابة",
+   "url": "https://islamicbulletin.site:8070/stream",
+   "cat": "seerah"
+  },
+  {
+   "name": "الدكتور محمد راتب النابلسي",
+   "url": "https://islamicbulletin.site:8060/stream",
+   "cat": "duroos"
+  },
+  {
+   "name": "الشيخ محمد متولي الشعراوي",
+   "url": "https://islamicbulletin.site:8066/stream",
+   "cat": "duroos"
+  },
+  {
+   "name": "الشيخ عبدالحميد كشك",
+   "url": "https://islamicbulletin.site:8062/stream",
+   "cat": "duroos"
+  },
+  {
+   "name": "الدكتور عمر عبدالكافي",
+   "url": "https://islamicbulletin.site:8068/stream",
+   "cat": "duroos"
+  },
+  {
+   "name": "نور على نور",
+   "url": "https://islamicbulletin.site:8056/stream",
+   "cat": "duroos"
   },
   {
    "name": "الفتاوى العامة",
@@ -320,6 +422,41 @@
    "name": "تكبيرات العيد",
    "url": "https://backup.qurango.net/radio/eid",
    "cat": "athkar"
+  },
+  {
+   "name": "الرقية الشرعية - متواصلة",
+   "url": "https://islamicbulletin.site:8052/stream",
+   "cat": "athkar"
+  },
+  {
+   "name": "Radio Islam - جنوب أفريقيا",
+   "url": "http://listen.radioislam.co.za:8080/radioislam.mp3",
+   "cat": "world"
+  },
+  {
+   "name": "إذاعة البيان - أستراليا",
+   "url": "https://s9.viastreaming.net:9645/;stream/1",
+   "cat": "world"
+  },
+  {
+   "name": "Islamic Bulletin - سان فرانسيسكو",
+   "url": "https://islamicbulletin.site:8076/stream",
+   "cat": "world"
+  },
+  {
+   "name": "إذاعة إسلامية بالفرنسية",
+   "url": "https://islamicbulletin.site:8046/stream",
+   "cat": "world"
+  },
+  {
+   "name": "إذاعة إسلامية بالإنجليزية - تحفيزية",
+   "url": "https://islamicbulletin.site:8078/stream",
+   "cat": "world"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - باكستان",
+   "url": "https://whmsonic.radio.gov.pk:7002/stream",
+   "cat": "world"
   },
   {
    "name": "إبراهيم الأخضر",

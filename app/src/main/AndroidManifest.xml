@@ -2,11 +2,45 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <queries>
+        <package android:name="com.sec.android.app.fm" />
+        <package android:name="com.android.fmradio" />
+        <package android:name="com.caf.fmradio" />
+        <package android:name="com.miui.fm" />
+        <package android:name="com.miui.fmradio" />
+        <package android:name="com.huawei.android.FMRadio" />
+        <package android:name="com.motorola.fmplayer" />
+        <package android:name="com.lge.fmradio" />
+        <package android:name="com.sonyericsson.fmradio" />
+        <package android:name="com.sonymobile.fmradio" />
+        <package android:name="com.htc.fm" />
+        <package android:name="com.asus.fmradio" />
+        <package android:name="com.android.fm" />
+        <package android:name="com.coloros.fmradio" />
+        <package android:name="com.oppo.fmradio" />
+        <package android:name="com.vivo.fmradio" />
+        <package android:name="com.zte.fmradio" />
+        <package android:name="com.qualcomm.fmradio" />
+        <package android:name="com.mediatek.fmradio" />
+        <package android:name="com.transsion.fmradio" />
+        <package android:name="com.infinix.fmradio" />
+        <package android:name="com.tecno.fmradio" />
+        <package android:name="com.nokia.fmradio" />
+        <package android:name="com.realme.fmradio" />
+        <package android:name="com.oneplus.fmradio" />
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"

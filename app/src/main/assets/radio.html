@@ -324,6 +324,11 @@ body.reading .rtop{padding:2px 0 6px;gap:5px}
 .rtop select{height:36px!important}
 .tapzone{position:absolute;top:0;bottom:0;width:16%;z-index:3}
 .tapzone.l{left:0}.tapzone.r{right:0}
+.onl{white-space:nowrap;border-right:1px solid var(--stroke);padding-right:9px;font-size:10.5px;color:var(--sub)}
+.onl b{color:var(--em);font-size:12.5px}
+.lisc{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;background:var(--card);border:1px solid var(--stroke);color:var(--gold)}
+.lis{display:inline-block;font-size:11px;color:var(--gold);margin-right:8px}
+body.reading .onl{display:none}
 /* ===== القائمة ===== */
 .tools{position:sticky;top:-4px;z-index:3;padding:8px 0 10px;background:linear-gradient(var(--bg0) 85%,transparent)}
 .sbox{position:relative}.sbox svg{position:absolute;right:14px;top:13px;width:17px;height:17px;stroke:var(--sub)}
@@ -375,6 +380,7 @@ nav button.on{color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(-
   <div class="net" id="netbar">
    <div class="ni" id="wifi" title="واي فاي"><svg viewBox="0 0 24 24"><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M5.5 12.4a10 10 0 0 1 13 0"/><path d="M9 15.9a5 5 0 0 1 6 0"/><path d="M12 19.5h.01" stroke-width="3.2"/></svg></div>
    <div class="nmid"><b id="netv" dir="ltr">0 KB</b><span id="netl">منذ الفتح</span><span class="kbps" id="kbps"></span></div>
+   <span class="onl" id="onlW" style="display:none"><b id="onl"></b> <span>متصل الآن</span></span>
    <div class="ni" id="cell" title="بيانات الجوال"><svg viewBox="0 0 24 24"><path d="M4 20v-3"/><path d="M9 20v-6"/><path d="M14 20v-10"/><path d="M19 20V5"/></svg></div>
   </div>
  </div>
@@ -398,7 +404,7 @@ nav button.on{color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(-
     </div>
     <div class="info">
      <div class="nm" id="sName">—</div>
-     <div class="sub"><button class="favb" id="favB" title="إضافة إلى المفضلة">☆</button><span id="sCat"></span><span class="live" id="liveChip"><span id="sStat">متوقف</span></span></div>
+     <div class="sub"><button class="favb" id="favB" title="إضافة إلى المفضلة">☆</button><span id="sCat"></span><span class="live" id="liveChip"><span id="sStat">متوقف</span></span><span class="lisc" id="lisC" style="display:none"></span></div>
      <div class="extra" id="nB"></div>
      <span class="hid" id="nIc"></span><span class="hid" id="nA"></span>
     </div>
@@ -564,6 +570,7 @@ function render(){
   $('nIc').textContent = ICON[s.cat] || '📻';
   $('nA').textContent = s.name;
   $('nB').textContent = s.type === 'surahs' ? 'سورة ' + SURAH[surahPos[idx]] + ' — تلاوة متواصلة بالترتيب' : '';
+  try { if (PRS.stats) { const c = (PRS.stats.s || {})[SKEYS[idx]] || 0; $('lisC').textContent = '🎧 ' + AR(c) + ' يستمعون'; $('lisC').style.display = c > 0 && power ? '' : 'none'; } } catch(e){}
   document.querySelectorAll('.item').forEach(el => { const on = +el.dataset.i === idx; el.classList.toggle('cur', on); el.classList.toggle('pl', on && power && !au.paused); });
 }
 
@@ -679,7 +686,7 @@ function buildList(){
     if (s.cat !== lc) { h += '<div class="grp">' + ICON[s.cat] + ' ' + CATS[s.cat] + '</div>'; lc = s.cat; }
     h += itemHTML(s, i);
   });
-  $('list').innerHTML = h || '<div class="hint">لا توجد نتائج</div>'; render(); sum();
+  $('list').innerHTML = h || '<div class="hint">لا توجد نتائج</div>'; render(); sum(); try { showStats(); } catch(e){}
 }
 $('list').onclick = e => { const fb = e.target.closest('.fv'); if (fb) { e.stopPropagation(); toggleFav(+fb.dataset.f); return; } const it = e.target.closest('.item'); if (!it) return; idx = +it.dataset.i; if (!power) setPower(true); else tuneTo(idx, { instant: true }); show('pRadio'); };
 $('q').oninput = buildList;
@@ -1162,6 +1169,59 @@ $('rHome').onclick = () => { document.body.classList.remove('reading'); show('pR
 $('rSearch').onclick = () => { $('rBack').click(); const b = document.querySelector('.mtabs button[data-t=q]'); if (b) b.click(); setTimeout(() => $('mq').focus(), 50); };
 $('tzL').onclick = () => mGo(M.page + 1); // الطرف الأيسر = الصفحة التالية (كالمصحف)
 $('tzR').onclick = () => mGo(M.page - 1);
+
+/* ---------- عدّاد المستخدمين والمستمعين الآن (Firebase Realtime Database — بدون أي بيانات شخصية) ---------- */
+const FB = 'https://almuslim-radio-default-rtdb.europe-west1.firebasedatabase.app';
+const PRS = { id: '', off: 0, stats: null, lastBeat: 0 };
+function skey(u){ let h = 5381; for (let i = 0; i < u.length; i++) h = ((h << 5) + h + u.charCodeAt(i)) | 0; return 'k' + (h >>> 0).toString(36); }
+const SKEYS = ST.map(s => skey(s.url));
+function prsId(){
+  if (PRS.id) return PRS.id;
+  let id = ''; try { id = store.get('uid'); } catch(e){}
+  if (!id) { id = Math.random().toString(36).slice(2, 10) + Date.now().toString(36); try { store.set('uid', id); } catch(e){} }
+  return PRS.id = id;
+}
+async function beat(){
+  if (document.hidden && !(power && !au.paused)) return;
+  const st = power && !au.paused ? SKEYS[idx] : '';
+  try {
+    const r = await fetch(FB + '/presence/' + prsId() + '.json', { method: 'PUT', body: JSON.stringify({ t: { '.sv': 'timestamp' }, s: st }) });
+    if (r.ok) { const j = await r.json(); if (j && j.t) PRS.off = j.t - Date.now(); PRS.lastBeat = Date.now(); }
+  } catch(e){}
+}
+async function pullStats(){
+  try {
+    const now = Date.now() + PRS.off;
+    let s = await fetch(FB + '/stats.json').then(r => r.ok ? r.json() : null);
+    if (!s || !s.at || now - s.at > 60000) { // الإحصاء قديم: نعيد حسابه نحن ونشاركه مع الجميع
+      const p = await fetch(FB + '/presence.json?orderBy=%22t%22&startAt=' + (now - 75000)).then(r => r.ok ? r.json() : null);
+      if (p) {
+        const per = {}; let n = 0, l = 0;
+        Object.values(p).forEach(v => { n++; if (v && v.s) { l++; per[v.s] = (per[v.s] || 0) + 1; } });
+        s = { at: now, n, l, s: per };
+        fetch(FB + '/stats.json', { method: 'PUT', body: JSON.stringify({ at: { '.sv': 'timestamp' }, n, l, s: per }) }).catch(() => {});
+      }
+    }
+    if (s) { PRS.stats = s; showStats(); }
+  } catch(e){}
+}
+function showStats(){
+  const s = PRS.stats; if (!s) return;
+  $('onl').textContent = '👥 ' + AR(Math.max(1, s.n || 0));
+  $('onlW').style.display = '';
+  const c = (s.s || {})[SKEYS[idx]] || 0;
+  const lc = $('lisC'); lc.textContent = '🎧 ' + AR(c) + ' يستمعون'; lc.style.display = c > 0 ? '' : 'none';
+  document.querySelectorAll('.item').forEach(el => {
+    const i = +el.dataset.i, k = (s.s || {})[SKEYS[i]] || 0; let b = el.querySelector('.lis');
+    if (k > 0) { if (!b) { b = document.createElement('span'); b.className = 'lis'; el.querySelector('.t').appendChild(b); } b.textContent = '🎧 ' + AR(k); }
+    else if (b) b.remove();
+  });
+}
+setInterval(beat, 30000); setInterval(pullStats, 20000);
+setTimeout(() => { beat().then(pullStats); }, 1500);
+au.addEventListener('playing', () => setTimeout(beat, 500));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { beat(); pullStats(); } });
+window.addEventListener('pagehide', () => { try { fetch(FB + '/presence/' + prsId() + '.json', { method: 'DELETE', keepalive: true }); } catch(e){} });
 
 /* ---------- الإعلانات (Google AdSense) ---------- */
 (function ads(){

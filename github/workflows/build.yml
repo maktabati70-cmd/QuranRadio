@@ -36,6 +36,8 @@ jobs:
           else
             echo "::warning::KEYSTORE_BASE64 secret is missing - building with a temporary debug key"
           fi
+      - name: Stamp UI version
+        run: sed -i 's/content="UIVER"/content="${{ github.run_number }}"/' "$PROJ/app/src/main/assets/radio.html"
       - name: Build
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -46,6 +48,7 @@ jobs:
           mkdir -p out
           cp "$PROJ"/app/build/outputs/apk/release/*.apk "out/almuslim-radio-$VN.apk"
           cp "$PROJ/app/src/main/assets/radios.json" out/radios.json
+          cp "$PROJ/app/src/main/assets/radio.html" out/radio.html
       - uses: actions/upload-artifact@v4
         with:
           name: QuranRadio-apk
@@ -61,4 +64,5 @@ jobs:
           files: |
             out/almuslim-radio-${{ env.VN }}.apk
             out/radios.json
+            out/radio.html
           make_latest: true

@@ -44,6 +44,7 @@ import com.google.common.util.concurrent.MoreExecutors
 class MainActivity : AppCompatActivity() {
 
     companion object {
+        const val GH_REPO = "maktabati70-cmd/QuranRadio"
         /** تطبيقات راديو FM المدمجة المعروفة لدى الشركات المصنّعة */
         val FM_PACKAGES = listOf(
             "com.sec.android.app.fm", "com.android.fmradio", "com.caf.fmradio", "com.miui.fm", "com.miui.fmradio",
@@ -94,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         web.addJavascriptInterface(Bridge(), "Android")
         if (savedInstanceState != null) web.restoreState(savedInstanceState)
         else web.loadUrl("file:///android_asset/radio.html")
+        web.postDelayed({ checkGithubUpdate() }, 4000)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() = send("back")
@@ -189,6 +191,54 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPause() { stopCompassSensor(); super.onPause() }
+
+    /**
+     * التحديث من GitHub:
+     * 1) يقرأ آخر إصدار منشور (Release). إذا كان رقمه أكبر من رقم التطبيق المثبّت يعرض «تحديث متوفر» مع رابط ملف APK.
+     * 2) يحمّل ملف radios.json من نفس الإصدار ويحفظه، فتظهر الإذاعات الجديدة عند كل المستخدمين بدون تثبيت جديد.
+     */
+    private fun checkGithubUpdate() = Thread {
+        runCatching {
+            val api = java.net.URL("https://api.github.com/repos/$GH_REPO/releases/latest")
+            val c = api.openConnection() as java.net.HttpURLConnection
+            c.connectTimeout = 10000; c.readTimeout = 15000
+            c.setRequestProperty("Accept", "application/vnd.github+json")
+            c.setRequestProperty("User-Agent", "AlmuslimRadio")
+            if (c.responseCode != 200) return@runCatching
+            val j = org.json.JSONObject(c.inputStream.bufferedReader().readText())
+            val tag = j.optString("tag_name").filter { it.isDigit() }.toLongOrNull() ?: return@runCatching
+            val name = j.optString("name")
+            val notes = j.optString("body").take(300)
+            var apk = ""; var radios = ""
+            val assets = j.optJSONArray("assets")
+            if (assets != null) for (i in 0 until assets.length()) {
+                val a = assets.getJSONObject(i); val n = a.optString("name"); val u = a.optString("browser_download_url")
+                if (n.endsWith(".apk")) apk = u
+                if (n == "radios.json") radios = u
+            }
+            if (radios.isNotEmpty()) {
+                val txt = java.net.URL(radios).openStream().bufferedReader(Charsets.UTF_8).readText()
+                val d = org.json.JSONObject(txt)
+                val count = d.getJSONArray("stations").length()
+                val f = java.io.File(filesDir, "remote_radios.json")
+                val old = if (f.exists()) f.readText() else ""
+                if (count > 50 && txt != old) {
+                    f.writeText(txt)
+                    if (old.isNotEmpty()) runOnUiThread { web.evaluateJavascript("window.stationsUpdated && window.stationsUpdated($count)", null) }
+                }
+            }
+            @Suppress("DEPRECATION")
+            val mine = packageManager.getPackageInfo(packageName, 0).let {
+                if (Build.VERSION.SDK_INT >= 28) it.longVersionCode else it.versionCode.toLong()
+            }
+            if (tag > mine && apk.isNotEmpty()) {
+                val q = org.json.JSONObject.quote(name.ifEmpty { "v$tag" })
+                val n = org.json.JSONObject.quote(notes)
+                val u = org.json.JSONObject.quote(apk)
+                runOnUiThread { web.evaluateJavascript("window.updateAvailable && window.updateAvailable($q,$u,$n)", null) }
+            }
+        }
+    }.start()
 
     private fun send(event: String) = runOnUiThread {
         web.evaluateJavascript("window.nativeEvent && window.nativeEvent('$event')", null)
@@ -313,6 +363,16 @@ class MainActivity : AppCompatActivity() {
 
         @JavascriptInterface
         fun stopCompass() = runOnUiThread { stopCompassSensor() }
+
+        /** قائمة الإذاعات المحدَّثة المحفوظة من آخر إصدار على GitHub (أو نص فارغ) */
+        @JavascriptInterface
+        fun remoteStations(): String =
+            runCatching { java.io.File(filesDir, "remote_radios.json").readText() }.getOrDefault("")
+
+        @JavascriptInterface
+        fun openUrl(url: String) = runOnUiThread {
+            runCatching { startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))) }
+        }
 
         @JavascriptInterface
         fun exit() = runOnUiThread { moveTaskToBack(true) }

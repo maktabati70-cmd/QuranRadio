@@ -9,6 +9,10 @@ import android.content.pm.PackageManager
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.location.LocationManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.TrafficStats
@@ -160,6 +164,32 @@ class MainActivity : AppCompatActivity() {
         }?.activityInfo?.packageName
     }
 
+    /** بوصلة القبلة: حساس الاتجاه يرسل زاوية الشمال إلى الواجهة */
+    private var compassOn = false
+    private val compass = object : SensorEventListener {
+        private val rot = FloatArray(9); private val ori = FloatArray(3); private var last = 0L
+        override fun onSensorChanged(e: SensorEvent) {
+            val now = System.currentTimeMillis(); if (now - last < 80) return; last = now
+            SensorManager.getRotationMatrixFromVector(rot, e.values)
+            SensorManager.getOrientation(rot, ori)
+            val deg = ((Math.toDegrees(ori[0].toDouble()) + 360) % 360)
+            web.evaluateJavascript("window.nativeHeading && window.nativeHeading(" + "%.1f".format(java.util.Locale.US, deg) + ")", null)
+        }
+        override fun onAccuracyChanged(s: Sensor?, a: Int) {}
+    }
+    private fun startCompassSensor() {
+        if (compassOn) return
+        val sm = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val s = sm.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) ?: sm.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR) ?: return
+        compassOn = sm.registerListener(compass, s, SensorManager.SENSOR_DELAY_UI)
+    }
+    private fun stopCompassSensor() {
+        if (!compassOn) return
+        (getSystemService(Context.SENSOR_SERVICE) as SensorManager).unregisterListener(compass); compassOn = false
+    }
+
+    override fun onPause() { stopCompassSensor(); super.onPause() }
+
     private fun send(event: String) = runOnUiThread {
         web.evaluateJavascript("window.nativeEvent && window.nativeEvent('$event')", null)
     }
@@ -266,6 +296,23 @@ class MainActivity : AppCompatActivity() {
             }.getOrNull() ?: return ""
             return "${loc.latitude},${loc.longitude}"
         }
+
+        /** مستويات أعمدة الصوت الحقيقية (7 قيم من 0 إلى 1) */
+        @JavascriptInterface
+        fun levels(): String = AudioLevels.snapshot()
+
+        /** لون شريط الحالة حسب الوضع الليلي */
+        @JavascriptInterface
+        fun setNight(on: Boolean) = runOnUiThread {
+            val c = if (on) 0xFF01030A.toInt() else 0xFF070B16.toInt()
+            window.statusBarColor = c; window.navigationBarColor = c; web.setBackgroundColor(c)
+        }
+
+        @JavascriptInterface
+        fun startCompass() = runOnUiThread { startCompassSensor() }
+
+        @JavascriptInterface
+        fun stopCompass() = runOnUiThread { stopCompassSensor() }
 
         @JavascriptInterface
         fun exit() = runOnUiThread { moveTaskToBack(true) }

@@ -11,13 +11,24 @@ jobs:
         with: { distribution: temurin, java-version: '17' }
       - uses: gradle/actions/setup-gradle@v5
         with: { gradle-version: '8.7' }
-      - name: Find project folder
+      - name: Prepare project & signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
           DIR=$(dirname "$(find . -name 'settings.gradle.kts' -not -path './.git/*' | head -1)")
-          echo "Project folder: $DIR"
           echo "PROJ=$DIR" >> $GITHUB_ENV
           echo "sdk.dir=$ANDROID_HOME" > "$DIR/local.properties"
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "KEYSTORE_FILE=$RUNNER_TEMP/release.jks" >> $GITHUB_ENV
+            echo "Release key: OK"
+          else
+            echo "::warning::KEYSTORE_BASE64 secret is missing - building with a temporary debug key"
+          fi
       - name: Build
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: cd "$PROJ" && gradle assembleRelease --no-daemon --stacktrace
       - uses: actions/upload-artifact@v4
         with:

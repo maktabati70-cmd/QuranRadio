@@ -9,15 +9,14 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-java@v5
         with: { distribution: temurin, java-version: '17' }
-      - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v5
         with: { gradle-version: '8.7' }
       - name: Find project folder
         run: |
           DIR=$(dirname "$(find . -name 'settings.gradle.kts' -not -path './.git/*' | head -1)")
           echo "Project folder: $DIR"
-          ls -la "$DIR"
           echo "PROJ=$DIR" >> $GITHUB_ENV
+          echo "sdk.dir=$ANDROID_HOME" > "$DIR/local.properties"
       - name: Build
         run: cd "$PROJ" && gradle assembleRelease --no-daemon --stacktrace
       - uses: actions/upload-artifact@v4

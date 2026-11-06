@@ -6,7 +6,7 @@
 
 تطوير **أبو عبدالله الشامي**
 
-![الإصدار](https://img.shields.io/badge/الإصدار-8.3-d9b46c?style=flat-square)
+![الإصدار](https://img.shields.io/badge/الإصدار-1.3-d9b46c?style=flat-square)
 ![الإذاعات](https://img.shields.io/badge/الإذاعات-225-1e6b4e?style=flat-square)
 ![أندرويد](https://img.shields.io/badge/Android-5.0%2B-3ddc84?style=flat-square&logo=android&logoColor=white)
 [![تواصل عبر واتساب](https://img.shields.io/badge/تواصل-واتساب-25d366?style=flat-square&logo=whatsapp&logoColor=white)](https://wa.me/963968744241)
@@ -75,7 +75,7 @@
 
 ## 📥 التحميل
 
-حمّل أحدث نسخة من تبويب **[Actions](../../actions)** ← آخر عملية بناء ناجحة ✅ ← **Artifacts** ← `QuranRadio-apk`.
+**[⬇️ تحميل أحدث نسخة](../../releases/latest)** — من صفحة الإصدارات (Releases)، والتطبيق يُعلمك تلقائياً عند صدور تحديث جديد.
 
 أو اطلب التطبيق مباشرة من المطور عبر [واتساب](https://wa.me/963968744241?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%AD%D8%B5%D9%88%D9%84%20%D8%B9%D9%84%D9%89%20%D8%AA%D8%B7%D8%A8%D9%8A%D9%82%20%C2%AB%D9%85%D8%B0%D9%8A%D8%A7%D8%B9%20%D8%A3%D9%86%D8%A7%20%D8%A7%D9%84%D9%85%D8%B3%D9%84%D9%85%C2%BB).
 

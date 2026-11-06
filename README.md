@@ -6,7 +6,7 @@
 
 تطوير **أبو عبدالله الشامي**
 
-![الإصدار](https://img.shields.io/badge/الإصدار-9.0-d9b46c?style=flat-square)
+![الإصدار](https://img.shields.io/badge/الإصدار-1.0-d9b46c?style=flat-square)
 ![الإذاعات](https://img.shields.io/badge/الإذاعات-225-1e6b4e?style=flat-square)
 ![أندرويد](https://img.shields.io/badge/Android-5.0%2B-3ddc84?style=flat-square&logo=android&logoColor=white)
 [![تواصل عبر واتساب](https://img.shields.io/badge/تواصل-واتساب-25d366?style=flat-square&logo=whatsapp&logoColor=white)](https://wa.me/963968744241)

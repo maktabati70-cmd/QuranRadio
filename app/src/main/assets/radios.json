@@ -29,6 +29,11 @@
    "cat": "national"
   },
   {
+   "name": "إذاعة المجد للقرآن الكريم",
+   "url": "http://r1.tarat.com:8196/stream?sid=1",
+   "cat": "national"
+  },
+  {
    "name": "إذاعة القرآن الكريم - الشارقة",
    "url": "https://l3.itworkscdn.net/smcquranlive/quranradiolive/icecast.audio",
    "cat": "national"

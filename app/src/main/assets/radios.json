@@ -29,27 +29,27 @@
    "cat": "national"
   },
   {
-   "name": "إذاعة المجد للقرآن الكريم",
-   "url": "http://r1.tarat.com:8196/stream?sid=1",
-   "cat": "national"
-  },
-  {
    "name": "إذاعة القرآن الكريم - الشارقة",
    "url": "https://l3.itworkscdn.net/smcquranlive/quranradiolive/icecast.audio",
    "cat": "national"
   },
   {
    "name": "إذاعة القرآن الكريم - نابلس",
-   "url": "https://quran-radio.org:8080/;",
+   "url": "https://quran-radio.org:8899/;",
    "cat": "national"
   },
   {
    "name": "إذاعة القرآن الكريم - الجزائر",
-   "url": "https://webradio1.tda.dz:8001/Coran_64K.mp3",
+   "url": "https://radiocoran.ice.infomaniak.ch/coran.mp3",
    "cat": "national"
   },
   {
-   "name": "إذاعة القرآن الكريم - المغرب",
+   "name": "إذاعة محمد السادس للقرآن الكريم - المغرب",
+   "url": "https://stream.radio.co/sbce8f83f4/listen",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - المغرب (بديل)",
    "url": "https://asmaki.ma:8000/radio.mp3",
    "cat": "national"
   },
@@ -66,46 +66,6 @@
   {
    "name": "إذاعة القرآن الكريم - الأردن",
    "url": "https://jrtv-live.ercdn.net/jrradio/quranradio.m3u8",
-   "cat": "national"
-  },
-  {
-   "name": "إذاعة القرآن الكريم - لبنان (بيروت)",
-   "url": "https://audio.osina.cloud:7987/stream",
-   "cat": "national"
-  },
-  {
-   "name": "إذاعة آيات القرآن الكريم - بيروت",
-   "url": "https://stream.zeno.fm/1fatuk10fkhvv",
-   "cat": "national"
-  },
-  {
-   "name": "إذاعة القرآن الكريم - الكويت",
-   "url": "https://radio.mp3islam.com/listen/quran_radio/radio.mp3",
-   "cat": "national"
-  },
-  {
-   "name": "إذاعة الزيتونة للقرآن الكريم - تونس",
-   "url": "https://radio.radiotunisienne.tn/radiozaitouna",
-   "cat": "national"
-  },
-  {
-   "name": "إذاعة القرآن الكريم - فلسطين",
-   "url": "https://sawtelghad.org:8888/;",
-   "cat": "national"
-  },
-  {
-   "name": "إذاعة ياسين للقرآن الكريم - المغرب",
-   "url": "https://radio.yassine.mobi:8443/quran.mp3",
-   "cat": "national"
-  },
-  {
-   "name": "إذاعة القرآن الكريم - السودان",
-   "url": "https://tijaniyyah.asuscomm.com:8000/stream/2/",
-   "cat": "national"
-  },
-  {
-   "name": "إذاعة ميراث الأنبياء للقرآن الكريم",
-   "url": "https://radio.al7eah.net/8010/stream",
    "cat": "national"
   },
   {
@@ -141,16 +101,6 @@
   {
    "name": "قرآن للروح - تلاوات متواصلة",
    "url": "https://islamicbulletin.site:8102/stream",
-   "cat": "mixed"
-  },
-  {
-   "name": "إذاعة تحفيظ القرآن الكريم - رياض الصالحين",
-   "url": "https://radio.rawda.ai/listen/riadquran/radio.mp3",
-   "cat": "mixed"
-  },
-  {
-   "name": "القرآن الكريم مباشر - مصر",
-   "url": "https://stream.zeno.fm/ru2hqnplhk7uv",
    "cat": "mixed"
   },
   {
@@ -364,8 +314,18 @@
    "cat": "hadith"
   },
   {
+   "name": "إذاعة الارتقاء للحديث النبوي - لبنان",
+   "url": "https://radio.garden/api/ara/content/listen/Fo8OvQbj/channel.mp3",
+   "cat": "hadith"
+  },
+  {
    "name": "رياض الصالحين - شروح",
    "url": "https://islamicbulletin.site:8058/stream",
+   "cat": "hadith"
+  },
+  {
+   "name": "قناة السنة النبوية",
+   "url": "https://stream.radiojar.com/x0vs2vzy6k0uv",
    "cat": "hadith"
   },
   {
@@ -426,46 +386,6 @@
   {
    "name": "نور على نور",
    "url": "https://islamicbulletin.site:8056/stream",
-   "cat": "duroos"
-  },
-  {
-   "name": "إذاعة مركز رياض الصالحين - دروس",
-   "url": "https://radio.rawda.ai/listen/riadalsaliheen/radio.mp3",
-   "cat": "duroos"
-  },
-  {
-   "name": "إذاعة ابن القيم السلفية - دروس",
-   "url": "https://c38.radioboss.fm:8323/stream",
-   "cat": "duroos"
-  },
-  {
-   "name": "إذاعة المنير - طرابلس ليبيا",
-   "url": "https://live.munir.ly/proxy/almunirtip/stream",
-   "cat": "duroos"
-  },
-  {
-   "name": "إذاعة طريق السلف - ليبيا",
-   "url": "https://c14.radioboss.fm:8384/stream",
-   "cat": "duroos"
-  },
-  {
-   "name": "دروس الشيخ عبدالله سراج الدين - حلب",
-   "url": "https://stream.zeno.fm/sq7ntk6zlaquv",
-   "cat": "duroos"
-  },
-  {
-   "name": "إذاعة ميراث الأنبياء - دروس وشروح",
-   "url": "http://miraath.ddns.net:7000/autodj",
-   "cat": "duroos"
-  },
-  {
-   "name": "إذاعة السنة - دروس علمية",
-   "url": "http://andromeda.shoutca.st:8189/stream",
-   "cat": "duroos"
-  },
-  {
-   "name": "إذاعة كتاب وسنة - ليبيا",
-   "url": "http://162.244.80.118:5678/stream",
    "cat": "duroos"
   },
   {
@@ -1126,36 +1046,6 @@
   {
    "name": "نورين محمد صديق",
    "url": "https://backup.qurango.net/radio/nourin_siddig",
-   "cat": "quran"
-  },
-  {
-   "name": "محمود خليل الحصري (إذاعة الكويت)",
-   "url": "https://serverkw.quran-uni.com:8018/;",
-   "cat": "quran"
-  },
-  {
-   "name": "فارس عباد (إذاعة الكويت)",
-   "url": "https://serverkw.quran-uni.com:8068/;",
-   "cat": "quran"
-  },
-  {
-   "name": "عبدالله عواد الجهني (إذاعة الكويت)",
-   "url": "https://serverkw.quran-uni.com:8066/;",
-   "cat": "quran"
-  },
-  {
-   "name": "هاني الرفاعي (إذاعة الكويت)",
-   "url": "https://serverkw.quran-uni.com:8154/;",
-   "cat": "quran"
-  },
-  {
-   "name": "محمد أيوب (إذاعة الكويت)",
-   "url": "https://serverkw.quran-uni.com:8158/;",
-   "cat": "quran"
-  },
-  {
-   "name": "عبدالله علي جابر (إذاعة الكويت)",
-   "url": "https://serverkw.quran-uni.com:8150/;",
    "cat": "quran"
   }
  ]

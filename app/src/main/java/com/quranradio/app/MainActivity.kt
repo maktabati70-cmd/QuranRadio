@@ -232,7 +232,7 @@ class MainActivity : AppCompatActivity() {
                 val html = java.net.URL(ui).openStream().bufferedReader(Charsets.UTF_8).readText()
                 val f = java.io.File(filesDir, "remote_ui.html")
                 val cur = if (f.exists()) meta(f.readText(), "ui-version") else 0L
-                val assetV = runCatching { meta(assets.open("radio.html").bufferedReader().readText(), "ui-version") }.getOrDefault(0L)
+                val assetV = runCatching { meta(this@MainActivity.assets.open("radio.html").bufferedReader().readText(), "ui-version") }.getOrDefault(0L)
                 val v = meta(html, "ui-version")
                 if (html.length > 50000 && v > maxOf(cur, assetV) && meta(html, "min-native") <= myVersionCode()) {
                     f.writeText(html)
@@ -306,7 +306,7 @@ class MainActivity : AppCompatActivity() {
             }
             val total = conn.contentLengthLong
             conn.inputStream.use { input -> out.outputStream().use { o ->
-                val buf = ByteArray(64 * 1024); var done = 0L; var last = -1; var n: Int
+                val buf = ByteArray(64 * 1024); var done = 0L; var last = -1; var n = 0
                 while (input.read(buf).also { n = it } > 0) {
                     o.write(buf, 0, n); done += n
                     if (total > 0) { val p = (done * 100 / total).toInt(); if (p != last) { last = p; runOnUiThread { web.evaluateJavascript("window.updProgress&&window.updProgress($p)", null) } } }

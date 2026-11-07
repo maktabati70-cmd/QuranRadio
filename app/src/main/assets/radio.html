@@ -52,12 +52,12 @@ body.night .nightB{color:var(--gold2);border-color:rgba(var(--nr),.5);box-shadow
 main{flex:1;overflow:hidden;position:relative}
 .page{position:absolute;inset:0;overflow-y:auto;padding:4px 18px 22px;transition:opacity .35s,transform .35s;scrollbar-width:none}
 .page::-webkit-scrollbar{display:none}
-#pRadio{overflow:hidden;display:flex;flex-direction:column;padding-bottom:8px}
-#radio{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;min-height:0}
+#pRadio{overflow-y:auto;display:flex;flex-direction:column;padding-bottom:8px}
+#radio{flex:1 0 auto;display:flex;flex-direction:column;justify-content:space-evenly}
 .page.hidden{opacity:0;pointer-events:none;transform:translateY(12px)}
 
 /* ===== القرص ===== */
-.stage{position:relative;width:min(290px,72vw,36vh);aspect-ratio:1;margin:4px auto 0;flex:none}
+.stage{position:relative;width:min(290px,72vw,var(--sh,36vh));aspect-ratio:1;margin:4px auto 0;flex:none}
 .stage .glow{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle,rgba(217,180,108,.28),transparent 70%);filter:blur(18px);opacity:.35;transition:opacity .6s}
 .playing .stage .glow{opacity:1;animation:breathe 3s ease-in-out infinite}
 @keyframes breathe{50%{transform:scale(1.08)}}
@@ -241,7 +241,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border:0;border-radiu
 .fv{flex:none;width:36px;height:36px;border-radius:50%;border:0;background:none;font-size:20px;color:var(--dim);cursor:pointer}
 .fv.on{color:var(--gold2)}
 .grp.favg{color:var(--gold2)}
-@media (max-height:700px){.stage{width:min(290px,72vw,29vh)}.hijri{margin-top:0}.play{width:66px;height:66px}.cb{width:46px;height:46px}.tile{padding:9px 6px}.info .nm{font-size:19px}.brand h1{font-size:25px}.mark{width:34px;height:34px}}
+@media (max-height:700px){.stage{width:min(290px,72vw,var(--sh,29vh))}.hijri{margin-top:0}.play{width:66px;height:66px}.cb{width:46px;height:46px}.tile{padding:9px 6px}.info .nm{font-size:19px}.brand h1{font-size:25px}.mark{width:34px;height:34px}}
 
 /* ===== الوضع الليلي: نيون أزرق ===== */
 body.night{--bg0:#01030a;--bg1:#040b1c;--card:rgba(var(--nr),.05);--card2:rgba(var(--nr),.1);--stroke:rgba(var(--nr),.16);
@@ -751,7 +751,7 @@ $('checkB').onclick = async () => {
 };
 
 /* ---------- عام ---------- */
-function show(p){ if (p === 'pMushaf') loadMushaf(); document.body.classList.toggle('reading', p === 'pMushaf' && !$('mReader').classList.contains('hidden')); document.querySelectorAll('.page').forEach(x => x.classList.toggle('hidden', x.id !== p));
+function show(p){ if (p === 'pMushaf') loadMushaf(); if (p === 'pRadio') setTimeout(fitRadio, 30); document.body.classList.toggle('reading', p === 'pMushaf' && !$('mReader').classList.contains('hidden')); document.querySelectorAll('.page').forEach(x => x.classList.toggle('hidden', x.id !== p));
   document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.p === p)); }
 document.querySelectorAll('nav button').forEach(b => b.onclick = () => show(b.dataset.p));
 let tt; function toast(m){ const t = $('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2600); }
@@ -1367,6 +1367,15 @@ setTimeout(() => { // تظهر تلقائياً مرة واحدة كل يوم
 function recents(){ try { return JSON.parse(store.get('recent') || '[]'); } catch(e){ return []; } }
 au.addEventListener('playing', () => { try { const u = ST[idx].url, r = recents().filter(x => x !== u); r.unshift(u); store.set('recent', JSON.stringify(r.slice(0, 8))); } catch(e){} });
 (function restoreLast(){ const r = recents(); if (r.length) { const i = ST.findIndex(s => s.url === r[0]); if (i >= 0) { idx = i; render(); } } })();
+
+/* ---------- ملاءمة الشاشة الرئيسية لأي هاتف (حتى مع تكبير خط النظام) ---------- */
+function fitRadio(){
+  const pg = $('pRadio'); if (pg.classList.contains('hidden')) return;
+  document.documentElement.style.removeProperty('--sh');
+  let vh = window.innerHeight <= 700 ? 29 : 36;
+  for (let k = 0; k < 14 && pg.scrollHeight > pg.clientHeight + 2 && vh > 16; k++) { vh -= 1.5; document.documentElement.style.setProperty('--sh', vh + 'vh'); }
+}
+window.addEventListener('resize', fitRadio); setTimeout(fitRadio, 50); setTimeout(fitRadio, 800);
 
 /* ---------- الإعلانات (Google AdSense) ---------- */
 (function ads(){

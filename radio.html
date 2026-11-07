@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#070b16">
+<meta name="ui-version" content="UIVER">
+<meta name="min-native" content="25">
 <meta name="author" content="أبو عبدالله الشامي">
 <title>مذياع أنا المسلم — تطوير أبو عبدالله الشامي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -332,6 +334,18 @@ body.reading .rtop{padding:2px 0 6px;gap:5px}
 .lis{display:inline-block;font-size:11px;color:var(--gold);margin-right:8px}
 body.reading .onl{display:none}
 .ver{margin-right:12px;font-size:10px;color:var(--dim);font-variant-numeric:tabular-nums}
+.imt{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+.imt th{color:var(--gold);font-weight:700;font-size:12px;padding:8px 2px;border-bottom:1px solid var(--stroke);position:sticky;top:0;background:#0e172b}
+.imt td{text-align:center;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.05);font-variant-numeric:tabular-nums}
+.imt td.ift{color:var(--gold2);font-weight:700}
+.imt tr.tod td{background:rgba(52,211,153,.1);color:var(--em);font-weight:700}
+.dcard{padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--stroke);margin-bottom:10px}
+.dh{font-family:var(--fk);color:var(--gold);font-size:14px;margin-bottom:8px}
+.dq{font-family:"Amiri Quran","Amiri",serif;font-size:22px;line-height:2.1;color:var(--ink);text-align:center}
+.dt{font-family:"Amiri","Amiri Quran",serif;font-size:18px;line-height:2;color:var(--ink);text-align:justify}
+.ds{font-size:12px;color:var(--sub);margin-top:8px;text-align:left}
+.dshare{width:100%;margin-top:4px;background:#25d366!important;color:#fff!important}
+.updbar{height:8px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;margin:4px 0 12px}.updbar i{display:block;height:100%;width:0;background:var(--em);transition:width .2s}
 /* ===== القائمة ===== */
 .tools{position:sticky;top:-4px;z-index:5;margin:0 -18px;padding:8px 18px 10px;background:var(--bg0);box-shadow:0 10px 14px -10px rgba(0,0,0,.8);border-bottom:1px solid var(--stroke)}
 .sbox{position:relative}.sbox svg{position:absolute;right:14px;top:13px;width:17px;height:17px;stroke:var(--sub)}
@@ -418,9 +432,10 @@ nav button.on{color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(-
     </div>
     <div class="volume"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg><input type="range" id="vol" min="0" max="100" value="80"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9z"/></svg></div>
     <div class="tiles">
-     <button class="tile fm" id="fmBtn"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2.5"/><path d="M7 8l9-5"/><circle cx="15.5" cy="14" r="2.6"/><path d="M6.5 12.5h4M6.5 15.5h4"/></svg>راديو FM</button>
+     <button class="tile fm" id="fmBtn"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2.5"/><path d="M7 8l9-5"/><circle cx="15.5" cy="14" r="2.6"/><path d="M6.5 12.5h4M6.5 15.5h4"/></svg>FM</button>
      <button class="tile ico" id="prayB" title="أوقات الصلاة"><svg viewBox="0 0 24 24"><path d="M12 2.5c1.6 1.5 2.6 2.7 2.6 4 0 1.4-1.2 2.3-2.6 2.3s-2.6-.9-2.6-2.3c0-1.3 1-2.5 2.6-4z"/><path d="M5 21V12.5c0-2.5 3-4 7-4s7 1.5 7 4V21"/><path d="M3 21h18M10 21v-4a2 2 0 0 1 4 0v4"/></svg></button>
      <button class="tile ico" id="azkarB" title="الأذكار"><svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.6"/><circle cx="16.8" cy="6.5" r="1.6"/><circle cx="19" cy="11.2" r="1.6"/><circle cx="17.2" cy="16" r="1.6"/><circle cx="7.2" cy="6.5" r="1.6"/><circle cx="5" cy="11.2" r="1.6"/><circle cx="6.8" cy="16" r="1.6"/><path d="M12 17.5v4M10.5 21.5h3"/><circle cx="12" cy="17.3" r="1.3"/></svg></button>
+     <button class="tile ico" id="dailyB" title="آية وحديث اليوم"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/><path d="M9 8h6M9 11h4"/></svg></button>
      <button class="tile" id="sleepB"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="sleepT">المؤقت</span></button>
     </div>
    </div>
@@ -480,6 +495,13 @@ nav button.on{color:#1a1408;background:linear-gradient(145deg,var(--gold2),var(-
   <button class="th" data-th="yellow"><i style="background:#facc15;box-shadow:0 0 10px #facc15"></i>نيون أصفر</button>
   <button class="th" data-th="red"><i style="background:#e57373;box-shadow:0 0 10px #e57373"></i>أحمر باهت</button>
  </div></div></div>
+<div class="panel" id="imPanel"><div class="pbox">
+ <div class="phd"><h3>🌙 إمساكية رمضان</h3><button data-close>✕</button></div>
+ <div class="prh" id="imHijri"></div>
+ <div class="pscroll" id="imBody"></div></div></div>
+<div class="panel" id="dyPanel"><div class="pbox">
+ <div class="phd"><h3>✨ آية وحديث اليوم</h3><button data-close>✕</button></div>
+ <div class="pscroll" id="dyBody"></div></div></div>
 <div class="panel" id="prPanel"><div class="pbox">
  <div class="phd"><h3>🕌 الصلاة والقبلة</h3><button data-close>✕</button></div>
  <div class="prh" id="prHijri"></div>
@@ -665,7 +687,7 @@ drawVol();
 
 /* ---------- القائمة ---------- */
 const chips = $('chips');
-[['fav', '⭐ المفضلة'], ['all', 'الكل'], ['ok', '🟢 تعمل'], ...Object.entries(CATS)].forEach(([k, t]) => {
+[['fav', '⭐ المفضلة'], ['recent', '🕘 الأخيرة'], ['all', 'الكل'], ['ok', '🟢 تعمل'], ...Object.entries(CATS)].forEach(([k, t]) => {
   const c = document.createElement('span'); c.className = 'chip' + (k === 'all' ? ' on' : ''); c.textContent = (ICON[k] ? ICON[k] + ' ' : '') + t; c.dataset.k = k;
   c.onclick = () => { filterCat = k; chips.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === c)); buildList(); };
   chips.appendChild(c);
@@ -690,7 +712,12 @@ function buildList(){
     if (fl.length) { h += '<div class="grp favg">⭐ المفضلة</div>'; fl.forEach(([s, i]) => h += itemHTML(s, i)); }
     else if (filterCat === 'fav') h = '<div class="hint" style="padding:30px 10px;line-height:1.9">لم تُضف إذاعات للمفضلة بعد<br>اضغط ☆ بجانب أي إذاعة لإضافتها</div>';
   }
-  if (filterCat !== 'fav') ST.forEach((s, i) => {
+  if (filterCat === 'recent' || (filterCat === 'all' && !q)) {
+    const rl = recents().map(u => ST.findIndex(s => s.url === u)).filter(i => i >= 0).slice(0, filterCat === 'all' ? 4 : 8);
+    if (rl.length) { h += '<div class="grp favg">🕘 آخر ما سمعت</div>'; rl.forEach(i => h += itemHTML(ST[i], i)); }
+    else if (filterCat === 'recent') h = '<div class="hint" style="padding:30px 10px">لم تستمع لأي إذاعة بعد</div>';
+  }
+  if (filterCat !== 'fav' && filterCat !== 'recent') ST.forEach((s, i) => {
     if (!match(s)) return;
     if (filterCat === 'ok' ? status[i] !== 'ok' : (filterCat !== 'all' && s.cat !== filterCat)) return;
     if (s.cat !== lc) { h += '<div class="grp">' + ICON[s.cat] + ' ' + CATS[s.cat] + '</div>'; lc = s.cat; }
@@ -1138,7 +1165,6 @@ function renderHijri(){
   const r = ramadanInfo(); let rt = '';
   if (r) rt = r.inR ? '🌙 رمضان كريم — اليوم ' + AR(r.day) : '🌙 باقي ' + AR(r.days) + ' ' + (r.days === 1 ? 'يوم' : r.days === 2 ? 'يومان' : r.days <= 10 ? 'أيام' : 'يوماً') + ' على رمضان';
   $('hijri').innerHTML = h + (rt ? ' <span class="ramc" id="ramC">' + rt + '</span>' : '');
-  const rc = $('ramC'); if (rc && r && !r.inR) rc.onclick = () => toast('أول رمضان تقريباً: ' + r.date.toLocaleDateString('ar-SY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + ' — حسب تقويم أم القرى');
 }
 renderHijri(); setInterval(renderHijri, 60000);
 
@@ -1252,13 +1278,95 @@ window.addEventListener('pagehide', () => { try { fetch(FB + '/presence/' + prsI
 
 /* ---------- التحديث التلقائي من GitHub ---------- */
 window.updateAvailable = (ver, url, notes) => {
-  sheet('🎉', 'تحديث جديد متوفر — الإصدار ' + ver, (notes || 'إصدار جديد من مذياع أنا المسلم فيه تحسينات وإذاعات جديدة.') + '\n\nبعد التحميل افتح الملف واضغط «تحديث».',
-    [['تحميل التحديث', () => { try { Android.openUrl(url); } catch(e){ location.href = url; } }, true], ['لاحقاً']]);
+  sheet('🎉', 'تحديث جديد متوفر — ' + ver, (notes || 'إصدار جديد من مذياع أنا المسلم فيه تحسينات جديدة.'),
+    [['تحديث الآن', () => startUpdate(url), true], ['لاحقاً']]);
 };
+function startUpdate(url){
+  if (!(window.Android && Android.installUpdate)) { location.href = url; return; }
+  sheet('⬇️', 'جارِ تنزيل التحديث…', '', [['إخفاء']]);
+  $('shP').innerHTML = '<div class="updbar"><i id="updI"></i></div><span id="updT">٠٪</span>';
+  Android.installUpdate(url);
+}
+window.updProgress = p => { const i = $('updI'), t = $('updT'); if (i) i.style.width = p + '%'; if (t) t.textContent = AR(p) + '٪'; };
+window.updDone = ok => { $('sheet').classList.remove('show'); if (!ok) toast('تعذّر تنزيل التحديث — تحقق من الإنترنت وحاول لاحقاً'); };
+window.updNeedPermission = () => sheet('🔐', 'اسمح بتثبيت التحديث', 'سيفتح الآن إعداد «السماح من هذا المصدر» — فعّله ثم ارجع واضغط «تحديث الآن» مرة أخرى.', [['حسناً', null, true]]);
+window.uiUpdated = () => toast('✨ تم تحديث التطبيق — يظهر الجديد عند فتحه في المرة القادمة');
 window.stationsUpdated = n => toast('📻 تم تحديث قائمة الإذاعات (' + AR(n) + ' إذاعة) — تظهر عند فتح التطبيق القادم');
 
 /* ---------- رقم الإصدار ---------- */
 (function(){ let v = '1.0'; try { if (window.Android && Android.appVersion) v = Android.appVersion() || v; } catch(e){} $('appVer').textContent = 'الإصدار ' + v; })();
+
+/* ---------- إمساكية رمضان ---------- */
+function hm(h){ h = fix(h, 24); let H = Math.floor(h), M = Math.round((h - H) * 60); if (M === 60) { H++; M = 0; } return AR(H % 12 || 12) + ':' + AR(String(M).padStart(2, '0')); }
+function renderImsak(){
+  const r = ramadanInfo(); if (!r) return;
+  const loc = PR.loc || CITIES[0];
+  let start = new Date(); start.setHours(12, 0, 0, 0);
+  if (r.inR) start.setDate(start.getDate() - (r.day - 1)); else start = new Date(r.date);
+  const f = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { month: 'numeric' });
+  const today = new Date(); today.setHours(12, 0, 0, 0);
+  let rows = '', todayRow = null;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    if (i >= 29 && f.format(d) !== '9') break;
+    const t = prayerTimes(d, loc[1], loc[2], PR.method), isT = d.toDateString() === today.toDateString();
+    if (isT) todayRow = t;
+    rows += '<tr' + (isT ? ' class="tod"' : '') + '><td>' + AR(i + 1) + '</td><td>' + d.toLocaleDateString('ar-SY', { weekday: 'short', day: 'numeric', month: 'short' }) + '</td><td>' + hm(t.fajr - 10 / 60) + '</td><td>' + hm(t.fajr) + '</td><td class="ift">' + hm(t.maghrib) + '</td></tr>';
+  }
+  let head = '';
+  if (r.inR && todayRow) {
+    const now = new Date(), cur = now.getHours() + now.getMinutes() / 60, left = todayRow.maghrib - cur;
+    head = left > 0 ? '<div class="pnext"><small>باقي على الإفطار</small><b>' + AR(Math.floor(left)) + ' س ' + AR(Math.floor((left % 1) * 60)) + ' د</b><span>المغرب ' + hm(todayRow.maghrib) + ' م</span></div>'
+      : '<div class="pnext"><small>تقبّل الله صيامكم</small><b>الإمساك غداً</b></div>';
+  } else head = '<div class="pnext"><small>أول أيام رمضان تقريباً</small><b>' + start.toLocaleDateString('ar-SY', { weekday: 'long', day: 'numeric', month: 'long' }) + '</b><span>باقي ' + AR(r.days) + ' يوماً</span></div>';
+  $('imBody').innerHTML = head + '<table class="imt"><tr><th>اليوم</th><th>التاريخ</th><th>الإمساك</th><th>الفجر</th><th>الإفطار</th></tr>' + rows + '</table>' +
+    '<div class="pmeta">' + loc[0] + ' · ' + METHODS[PR.method][0] + ' · الإمساك قبل الفجر بعشر دقائق · لتغيير المدينة افتح نافذة الصلاة</div>';
+}
+document.addEventListener('click', e => { if (e.target.closest('#ramC')) { renderImsak(); panel('imPanel', true); } });
+
+/* ---------- آية وحديث اليوم ---------- */
+const DAYK = () => { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+const dayNum = () => Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+async function loadDaily(){
+  const k = DAYK();
+  try { const c = JSON.parse(store.get('daily') || 'null'); if (c && c.k === k) return c; } catch(e){}
+  const out = { k };
+  try {
+    let n = (dayNum() * 7919) % 6236 + 1;
+    for (let tries = 0; tries < 8; tries++, n = n % 6236 + 1) {
+      const j = await fetch('https://api.alquran.cloud/v1/ayah/' + n + '/quran-uthmani').then(r => r.json());
+      const t = j.data.text; if (t.length >= 40 && t.length <= 260) { out.ayah = { t, s: j.data.surah.name, a: j.data.numberInSurah }; break; }
+    }
+  } catch(e){}
+  try {
+    const i = dayNum() % 82, nw = i < 42, num = nw ? i + 1 : i - 41;
+    const j = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/' + (nw ? 'ara-nawawi' : 'ara-qudsi') + '/' + num + '.min.json').then(r => r.json());
+    out.hadith = { t: j.hadiths[0].text.trim(), src: (nw ? 'الأربعون النووية' : 'الأحاديث القدسية') + ' — الحديث ' + AR(num) };
+  } catch(e){}
+  if (out.ayah || out.hadith) store.set('daily', JSON.stringify(out));
+  return out;
+}
+async function showDaily(){
+  $('dyBody').innerHTML = '<div class="mload">جارِ التحميل…<div class="bar2"><i></i></div></div>'; panel('dyPanel', true);
+  const d = await loadDaily(); let h = '';
+  if (d.ayah) h += '<div class="dcard"><div class="dh">📖 آية اليوم</div><div class="dq">﴿ ' + d.ayah.t + ' ﴾</div><div class="ds">' + d.ayah.s + ' — الآية ' + AR(d.ayah.a) + '</div></div>';
+  if (d.hadith) h += '<div class="dcard"><div class="dh">📜 حديث اليوم</div><div class="dt">' + d.hadith.t + '</div><div class="ds">' + d.hadith.src + '</div></div>';
+  if (!h) h = '<div class="mload">تعذّر التحميل — تحقق من الاتصال بالإنترنت</div>';
+  else h += '<button class="mbtn dshare" id="dyShare">مشاركة عبر واتساب</button>';
+  $('dyBody').innerHTML = h;
+  const sb = $('dyShare'); if (sb) sb.onclick = () => {
+    const msg = (d.ayah ? '📖 آية اليوم:\n﴿ ' + d.ayah.t + ' ﴾\n[' + d.ayah.s + ' — ' + d.ayah.a + ']\n\n' : '') + (d.hadith ? '📜 حديث اليوم:\n' + d.hadith.t + '\n[' + d.hadith.src + ']\n\n' : '') + '📻 من تطبيق «مذياع أنا المسلم»';
+    const url = 'https://wa.me/?text=' + encodeURIComponent(msg); if (window.Android) location.href = url; else window.open(url, '_blank'); };
+}
+$('dailyB').onclick = showDaily;
+setTimeout(() => { // تظهر تلقائياً مرة واحدة كل يوم
+  try { if (store.get('dailyShown') !== DAYK() && !document.querySelector('.panel.show')) { store.set('dailyShown', DAYK()); showDaily(); } } catch(e){}
+}, 3500);
+
+/* ---------- آخر ما سمعت ---------- */
+function recents(){ try { return JSON.parse(store.get('recent') || '[]'); } catch(e){ return []; } }
+au.addEventListener('playing', () => { try { const u = ST[idx].url, r = recents().filter(x => x !== u); r.unshift(u); store.set('recent', JSON.stringify(r.slice(0, 8))); } catch(e){} });
+(function restoreLast(){ const r = recents(); if (r.length) { const i = ST.findIndex(s => s.url === r[0]); if (i >= 0) { idx = i; render(); } } })();
 
 /* ---------- الإعلانات (Google AdSense) ---------- */
 (function ads(){

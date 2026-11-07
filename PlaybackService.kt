@@ -55,7 +55,7 @@ class PlaybackService : MediaSessionService() {
     override fun onTaskRemoved(rootIntent: Intent?) {
         session?.player?.run { stop(); clearMediaItems(); release() }
         session?.release(); session = null
-        @Suppress("DEPRECATION") stopForeground(true)
+        androidx.core.app.ServiceCompat.stopForeground(this, androidx.core.app.ServiceCompat.STOP_FOREGROUND_REMOVE)
         stopSelf()
         // إنهاء العملية بالكامل حتى لا يبقى أي شيء يعمل في الخلفية
         android.os.Process.killProcess(android.os.Process.myPid())

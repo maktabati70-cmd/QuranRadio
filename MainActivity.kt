@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(web)
         web.setBackgroundColor(0xFF070B16.toInt())
         web.settings.apply {
+            allowFileAccess = true
             javaScriptEnabled = true
             domStorageEnabled = true
             mediaPlaybackRequiresUserGesture = false
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         web.webChromeClient = WebChromeClient()
         web.addJavascriptInterface(Bridge(), "Android")
         if (savedInstanceState != null) web.restoreState(savedInstanceState)
-        else web.loadUrl("file:///android_asset/radio.html")
+        else loadBestUi()
         web.postDelayed({ checkGithubUpdate() }, 4000)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -219,12 +220,24 @@ class MainActivity : AppCompatActivity() {
             val tag = j.optString("tag_name").filter { it.isDigit() }.toLongOrNull() ?: return@runCatching
             val name = j.optString("name")
             val notes = j.optString("body").take(300)
-            var apk = ""; var radios = ""
+            var apk = ""; var radios = ""; var ui = ""
             val assets = j.optJSONArray("assets")
             if (assets != null) for (i in 0 until assets.length()) {
                 val a = assets.getJSONObject(i); val n = a.optString("name"); val u = a.optString("browser_download_url")
                 if (n.endsWith(".apk")) apk = u
                 if (n == "radios.json") radios = u
+                if (n == "radio.html") ui = u
+            }
+            if (ui.isNotEmpty()) runCatching {
+                val html = java.net.URL(ui).openStream().bufferedReader(Charsets.UTF_8).readText()
+                val f = java.io.File(filesDir, "remote_ui.html")
+                val cur = if (f.exists()) meta(f.readText(), "ui-version") else 0L
+                val assetV = runCatching { meta(this@MainActivity.assets.open("radio.html").bufferedReader().readText(), "ui-version") }.getOrDefault(0L)
+                val v = meta(html, "ui-version")
+                if (html.length > 50000 && v > maxOf(cur, assetV) && meta(html, "min-native") <= myVersionCode()) {
+                    f.writeText(html)
+                    runOnUiThread { web.evaluateJavascript("window.uiUpdated && window.uiUpdated()", null) }
+                }
             }
             if (radios.isNotEmpty()) {
                 val txt = java.net.URL(radios).openStream().bufferedReader(Charsets.UTF_8).readText()
@@ -249,6 +262,85 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }.start()
+
+
+    // ===================== الواجهة المحدَّثة من GitHub =====================
+    private fun meta(html: String, name: String): Long =
+        Regex("<meta name=\"" + name + "\" content=\"(\\d+)\"").find(html)?.groupValues?.get(1)?.toLongOrNull() ?: 0L
+
+    private fun myVersionCode(): Long {
+        @Suppress("DEPRECATION")
+        val pi = packageManager.getPackageInfo(packageName, 0)
+        return if (Build.VERSION.SDK_INT >= 28) pi.longVersionCode else pi.versionCode.toLong()
+    }
+
+    /** يحمّل الواجهة الأحدث: النسخة المحفوظة من GitHub إن كانت أحدث ومتوافقة، وإلا المدمجة في التطبيق */
+    private fun loadBestUi() {
+        val asset = runCatching { assets.open("radio.html").bufferedReader(Charsets.UTF_8).readText() }.getOrDefault("")
+        val f = java.io.File(filesDir, "remote_ui.html")
+        val remote = if (f.exists()) runCatching { f.readText() }.getOrDefault("") else ""
+        val useRemote = remote.length > 50000 && meta(remote, "ui-version") > meta(asset, "ui-version") &&
+            meta(remote, "min-native") <= myVersionCode()
+        if (useRemote) web.loadDataWithBaseURL("file:///android_asset/", remote, "text/html", "utf-8", null)
+        else web.loadUrl("file:///android_asset/radio.html")
+    }
+
+    // ===================== التحديث بضغطة واحدة =====================
+    private var pendingApk: java.io.File? = null
+
+    private fun downloadAndInstall(url: String) = Thread {
+        val ok = runCatching {
+            val dir = java.io.File(cacheDir, "updates").apply { mkdirs(); listFiles()?.forEach { it.delete() } }
+            val out = java.io.File(dir, "update.apk")
+            var link = url
+            var conn = java.net.URL(link).openConnection() as java.net.HttpURLConnection
+            var hops = 0
+            while (true) { // متابعة التحويلات (GitHub يحوّل إلى خادم الملفات)
+                if (hops > 0) conn = java.net.URL(link).openConnection() as java.net.HttpURLConnection
+                conn.instanceFollowRedirects = true; conn.connectTimeout = 15000; conn.readTimeout = 30000
+                conn.setRequestProperty("User-Agent", "AlmuslimRadio")
+                val code = conn.responseCode
+                if (code in 300..399 && hops < 5) { hops++; link = conn.getHeaderField("Location"); conn.disconnect(); continue }
+                if (code != 200) error("HTTP $code")
+                break
+            }
+            val total = conn.contentLengthLong
+            conn.inputStream.use { input -> out.outputStream().use { o ->
+                val buf = ByteArray(64 * 1024); var done = 0L; var last = -1; var n = 0
+                while (input.read(buf).also { n = it } > 0) {
+                    o.write(buf, 0, n); done += n
+                    if (total > 0) { val p = (done * 100 / total).toInt(); if (p != last) { last = p; runOnUiThread { web.evaluateJavascript("window.updProgress&&window.updProgress($p)", null) } } }
+                }
+            } }
+            pendingApk = out
+            true
+        }.getOrDefault(false)
+        runOnUiThread {
+            web.evaluateJavascript("window.updDone&&window.updDone($ok)", null)
+            if (ok) installPending()
+        }
+    }.start()
+
+    private fun installPending() {
+        val apk = pendingApk ?: return
+        if (Build.VERSION.SDK_INT >= 26 && !packageManager.canRequestPackageInstalls()) {
+            web.evaluateJavascript("window.updNeedPermission&&window.updNeedPermission()", null)
+            runCatching {
+                startActivity(Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, android.net.Uri.parse("package:$packageName")))
+            }
+            return
+        }
+        val uri = androidx.core.content.FileProvider.getUriForFile(this, "$packageName.files", apk)
+        val i = Intent(Intent.ACTION_VIEW).setDataAndType(uri, "application/vnd.android.package-archive")
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+        runCatching { startActivity(i) }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // بعد السماح بالتثبيت من الإعدادات: نكمل التثبيت تلقائياً
+        if (pendingApk != null && (Build.VERSION.SDK_INT < 26 || packageManager.canRequestPackageInstalls())) installPending()
+    }
 
     private fun send(event: String) = runOnUiThread {
         web.evaluateJavascript("window.nativeEvent && window.nativeEvent('$event')", null)
@@ -387,6 +479,9 @@ class MainActivity : AppCompatActivity() {
         /** رقم الإصدار الظاهر في أسفل الشاشة */
         @JavascriptInterface
         fun appVersion(): String = runCatching { packageManager.getPackageInfo(packageName, 0).versionName ?: "" }.getOrDefault("")
+
+        @JavascriptInterface
+        fun installUpdate(url: String) { downloadAndInstall(url) }
 
         @JavascriptInterface
         fun exit() = runOnUiThread { closeApp() }

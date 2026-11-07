@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
         web.settings.apply {
             allowFileAccess = true
             javaScriptEnabled = true
+            textZoom = 100 // تجاهل تكبير خط النظام حتى لا تخرج الواجهة عن الشاشة
             domStorageEnabled = true
             mediaPlaybackRequiresUserGesture = false
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW

@@ -1,0 +1,116 @@
+name: Build APK
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with: { fetch-depth: 0 }
+      # ترتيب تلقائي: أي ملف يُرفع في مكان خطأ يُنقل لمكانه الصحيح، وتُحذف النسخ المكررة
+      - name: Fix file places
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cat > "$RUNNER_TEMP/fix.py" <<'PYEOF'
+          import subprocess, os, re
+          def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True).stdout
+          DEST = {'radio.html': 'app/src/main/assets/radio.html', 'radios.json': 'app/src/main/assets/radios.json',
+                  'AndroidManifest.xml': 'app/src/main/AndroidManifest.xml'}
+          for k in ['MainActivity.kt', 'AudioLevels.kt', 'PlaybackService.kt', 'Station.kt']: DEST[k] = 'app/src/main/java/com/quranradio/app/' + k
+          def when(p): return int((git('log', '-1', '--format=%ct', '--', p).strip() or '0'))
+          files = [f for f in git('ls-files').splitlines() if not f.startswith(('screenshots/', '.github/', 'gradle/'))]
+          # ملف بناء التطبيق إذا رُفع في مكان خطأ (يُعرف من applicationId)
+          for f in files:
+              base = os.path.basename(f)
+              if re.fullmatch(r'build\.gradle( \(\d+\))?\.kts', base) and f != 'app/build.gradle.kts':
+                  try: txt = open(f, encoding='utf-8').read()
+                  except Exception: continue
+                  if 'applicationId' in txt and when(f) >= when('app/build.gradle.kts'):
+                      open('app/build.gradle.kts', 'w', encoding='utf-8').write(txt); print('moved', f, '-> app/build.gradle.kts')
+                  if f != 'build.gradle.kts': git('rm', '-q', '--', f)
+          # باقي الملفات: الأحدث رفعاً هو الذي يُعتمد ويوضع في مكانه الصحيح
+          best = {}
+          for f in files:
+              base = re.sub(r' \(\d+\)(?=\.)', '', os.path.basename(f))
+              if base in DEST and f != DEST[base]:
+                  t = when(f)
+                  if t >= when(DEST[base]) and t >= best.get(base, (0, ''))[0]: best[base] = (t, f)
+          for base, (t, f) in best.items():
+              os.makedirs(os.path.dirname(DEST[base]), exist_ok=True)
+              open(DEST[base], 'wb').write(open(f, 'rb').read()); print('moved', f, '->', DEST[base])
+          for f in files:
+              base = re.sub(r' \(\d+\)(?=\.)', '', os.path.basename(f))
+              if (base in DEST and f != DEST[base]) or ('/' not in f and re.fullmatch(r'\d\d-.*\.jpg|.*\.xml|download|.*\.kt', f)):
+                  git('rm', '-q', '--', f)
+          open('build.gradle.kts', 'w').write('plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n}\n')
+          git('add', '-A')
+          PYEOF
+          python3 "$RUNNER_TEMP/fix.py"
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -qm "ترتيب الملفات تلقائياً"
+            git push && echo "تم الترتيب"
+          else echo "الملفات مرتبة"; fi
+      - uses: actions/setup-java@v5
+        with: { distribution: temurin, java-version: '17' }
+      - uses: gradle/actions/setup-gradle@v5
+        with: { gradle-version: '8.7' }
+      - name: Prepare project & signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          BEST=""; BESTV=-1
+          for f in $(find . -name 'settings.gradle.kts' -not -path './.git/*'); do
+            D=$(dirname "$f"); V=$(grep -oE 'versionCode = [0-9]+' "$D/app/build.gradle.kts" 2>/dev/null | grep -oE '[0-9]+' || echo 0)
+            echo "Found project: $D (versionCode $V)"
+            if [ "$V" -gt "$BESTV" ]; then BEST="$D"; BESTV="$V"; fi
+          done
+          VN=$(grep -oE 'versionName = "[^"]+"' "$BEST/app/build.gradle.kts" | cut -d'"' -f2)
+          echo "Using project: $BEST  version $VN ($BESTV)"
+          echo "PROJ=$BEST" >> $GITHUB_ENV
+          echo "VC=$BESTV" >> $GITHUB_ENV
+          echo "VN=$VN" >> $GITHUB_ENV
+          echo "sdk.dir=$ANDROID_HOME" > "$BEST/local.properties"
+          # إصلاح تلقائي: ملف البناء الرئيسي يجب أن يكون هكذا دائماً (حتى لو استُبدل بالخطأ)
+          printf 'plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n}\n' > "$BEST/build.gradle.kts"
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "KEYSTORE_FILE=$RUNNER_TEMP/release.jks" >> $GITHUB_ENV
+            echo "Release key: OK"
+          else
+            echo "::warning::KEYSTORE_BASE64 secret is missing - building with a temporary debug key"
+          fi
+      - name: Stamp UI version
+        run: sed -i 's/content="UIVER"/content="${{ github.run_number }}"/' "$PROJ/app/src/main/assets/radio.html"
+      - name: Build
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: cd "$PROJ" && gradle assembleRelease --no-daemon --stacktrace
+      - name: Collect files
+        run: |
+          mkdir -p out
+          cp "$PROJ"/app/build/outputs/apk/release/*.apk "out/almuslim-radio-$VN.apk"
+          cp "$PROJ/app/src/main/assets/radios.json" out/radios.json
+          cp "$PROJ/app/src/main/assets/radio.html" out/radio.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QuranRadio-apk
+          path: out/*.apk
+      # نشر إصدار عام: التطبيق عند الناس يتحقق منه ويعرض «تحديث متوفر»، ويحدّث قائمة الإذاعات تلقائياً
+      - name: Publish release
+        if: github.ref == 'refs/heads/main' && env.KEYSTORE_FILE != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VC }}
+          name: مذياع أنا المسلم ${{ env.VN }}
+          body: إصدار جديد من مذياع أنا المسلم فيه تحسينات وإذاعات جديدة.
+          files: |
+            out/almuslim-radio-${{ env.VN }}.apk
+            out/radios.json
+            out/radio.html
+          make_latest: true

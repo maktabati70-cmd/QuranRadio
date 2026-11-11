@@ -13,11 +13,11 @@ import kotlin.math.max
 import kotlin.math.sin
 
 /**
- * يقرأ الصوت الفعلي الخارج من المشغّل ويحسب مستوى 7 نطاقات ترددية (FFT)
+ * يقرأ الصوت الفعلي الخارج من المشغّل ويحسب مستوى 9 نطاقات ترددية (FFT)
  * لتتحرك أعمدة الصوت في الواجهة مع الصوت الحقيقي — بدون أي صلاحيات إضافية.
  */
 object AudioLevels {
-    const val BANDS = 7
+    const val BANDS = 9
     @Volatile var levels = FloatArray(BANDS)
     @Volatile var updatedAt = 0L
 
@@ -40,7 +40,7 @@ class LevelSink : TeeAudioProcessor.AudioBufferSink {
     private val im = DoubleArray(n)
     private val smooth = FloatArray(AudioLevels.BANDS)
     // حدود النطاقات بالهرتز
-    private val edges = intArrayOf(60, 150, 300, 600, 1200, 2400, 4800, 10000)
+    private val edges = intArrayOf(50, 110, 220, 420, 800, 1500, 2800, 5000, 8500, 14000)
 
     override fun flush(sampleRateHz: Int, channelCount: Int, encoding: Int) {
         rate = sampleRateHz; channels = max(1, channelCount); this.encoding = encoding; pos = 0

@@ -9,19 +9,52 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
-      # تنظيف تلقائي: حذف الملفات المكررة خارج المجلدات وإصلاح ملف البناء الرئيسي
-      - name: Clean repo
+        with: { fetch-depth: 0 }
+      # ترتيب تلقائي: أي ملف يُرفع في مكان خطأ يُنقل لمكانه الصحيح، وتُحذف النسخ المكررة
+      - name: Fix file places
         if: github.ref == 'refs/heads/main'
         run: |
-          git rm -q --ignore-unmatch -- 01-radio.jpg 02-night-blue.jpg 03-night-yellow.jpg 04-stations.jpg 05-mushaf-index.jpg 06-mushaf-page.jpg 07-mushaf-listen.jpg 08-mushaf-night.jpg 09-search.jpg 10-prayer.jpg 11-qibla.jpg 12-azkar.jpg 13-themes.jpg MainActivity.kt AudioLevels.kt PlaybackService.kt Station.kt AndroidManifest.xml colors.xml strings.xml themes.xml file_paths.xml ic_bg.xml ic_fg.xml ic_launcher.xml "ic_launcher (1).xml" radio.html radios.json download
-          printf 'plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n}\n' > build.gradle.kts
-          git add build.gradle.kts
+          cat > "$RUNNER_TEMP/fix.py" <<'PYEOF'
+          import subprocess, os, re
+          def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True).stdout
+          DEST = {'radio.html': 'app/src/main/assets/radio.html', 'radios.json': 'app/src/main/assets/radios.json',
+                  'AndroidManifest.xml': 'app/src/main/AndroidManifest.xml'}
+          for k in ['MainActivity.kt', 'AudioLevels.kt', 'PlaybackService.kt', 'Station.kt']: DEST[k] = 'app/src/main/java/com/quranradio/app/' + k
+          def when(p): return int((git('log', '-1', '--format=%ct', '--', p).strip() or '0'))
+          files = [f for f in git('ls-files').splitlines() if not f.startswith(('screenshots/', '.github/', 'gradle/'))]
+          # ملف بناء التطبيق إذا رُفع في مكان خطأ (يُعرف من applicationId)
+          for f in files:
+              base = os.path.basename(f)
+              if re.fullmatch(r'build\.gradle( \(\d+\))?\.kts', base) and f != 'app/build.gradle.kts':
+                  try: txt = open(f, encoding='utf-8').read()
+                  except Exception: continue
+                  if 'applicationId' in txt and when(f) >= when('app/build.gradle.kts'):
+                      open('app/build.gradle.kts', 'w', encoding='utf-8').write(txt); print('moved', f, '-> app/build.gradle.kts')
+                  if f != 'build.gradle.kts': git('rm', '-q', '--', f)
+          # باقي الملفات: الأحدث رفعاً هو الذي يُعتمد ويوضع في مكانه الصحيح
+          best = {}
+          for f in files:
+              base = re.sub(r' \(\d+\)(?=\.)', '', os.path.basename(f))
+              if base in DEST and f != DEST[base]:
+                  t = when(f)
+                  if t >= when(DEST[base]) and t >= best.get(base, (0, ''))[0]: best[base] = (t, f)
+          for base, (t, f) in best.items():
+              os.makedirs(os.path.dirname(DEST[base]), exist_ok=True)
+              open(DEST[base], 'wb').write(open(f, 'rb').read()); print('moved', f, '->', DEST[base])
+          for f in files:
+              base = re.sub(r' \(\d+\)(?=\.)', '', os.path.basename(f))
+              if (base in DEST and f != DEST[base]) or ('/' not in f and re.fullmatch(r'\d\d-.*\.jpg|.*\.xml|download|.*\.kt', f)):
+                  git('rm', '-q', '--', f)
+          open('build.gradle.kts', 'w').write('plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n}\n')
+          git('add', '-A')
+          PYEOF
+          python3 "$RUNNER_TEMP/fix.py"
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -qm "تنظيف الملفات المكررة وإصلاح ملف البناء"
-            git push && echo "تم التنظيف"
-          else echo "المستودع نظيف"; fi
+            git commit -qm "ترتيب الملفات تلقائياً"
+            git push && echo "تم الترتيب"
+          else echo "الملفات مرتبة"; fi
       - uses: actions/setup-java@v5
         with: { distribution: temurin, java-version: '17' }
       - uses: gradle/actions/setup-gradle@v5

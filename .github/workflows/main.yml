@@ -9,6 +9,19 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
+      # تنظيف تلقائي: حذف الملفات المكررة خارج المجلدات وإصلاح ملف البناء الرئيسي
+      - name: Clean repo
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git rm -q --ignore-unmatch -- 01-radio.jpg 02-night-blue.jpg 03-night-yellow.jpg 04-stations.jpg 05-mushaf-index.jpg 06-mushaf-page.jpg 07-mushaf-listen.jpg 08-mushaf-night.jpg 09-search.jpg 10-prayer.jpg 11-qibla.jpg 12-azkar.jpg 13-themes.jpg MainActivity.kt AudioLevels.kt PlaybackService.kt Station.kt AndroidManifest.xml colors.xml strings.xml themes.xml file_paths.xml ic_bg.xml ic_fg.xml ic_launcher.xml "ic_launcher (1).xml" radio.html radios.json download
+          printf 'plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n}\n' > build.gradle.kts
+          git add build.gradle.kts
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -qm "تنظيف الملفات المكررة وإصلاح ملف البناء"
+            git push && echo "تم التنظيف"
+          else echo "المستودع نظيف"; fi
       - uses: actions/setup-java@v5
         with: { distribution: temurin, java-version: '17' }
       - uses: gradle/actions/setup-gradle@v5
@@ -29,6 +42,8 @@ jobs:
           echo "VC=$BESTV" >> $GITHUB_ENV
           echo "VN=$VN" >> $GITHUB_ENV
           echo "sdk.dir=$ANDROID_HOME" > "$BEST/local.properties"
+          # إصلاح تلقائي: ملف البناء الرئيسي يجب أن يكون هكذا دائماً (حتى لو استُبدل بالخطأ)
+          printf 'plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n}\n' > "$BEST/build.gradle.kts"
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
             echo "KEYSTORE_FILE=$RUNNER_TEMP/release.jks" >> $GITHUB_ENV

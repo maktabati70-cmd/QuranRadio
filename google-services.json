@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "610331126028",
+    "firebase_url": "https://almuslim-radio-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "almuslim-radio",
+    "storage_bucket": "almuslim-radio.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610331126028:android:a3a189c4732b6a6fddc129",
+        "android_client_info": {
+          "package_name": "com.quranradio.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXDrYoChfW-d_4jbmO2azetKNtJ7eTU2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

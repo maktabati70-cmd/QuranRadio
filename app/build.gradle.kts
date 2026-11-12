@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -10,8 +11,8 @@ android {
         applicationId = "com.quranradio.app"
         minSdk = 21
         targetSdk = 34
-        versionCode = 27
-        versionName = "1.6"
+        versionCode = 28
+        versionName = "1.7"
     }
     // مفتاح التوقيع الثابت: يُقرأ من أسرار GitHub (أو من keystore محلي) حتى تنزل التحديثات فوق بعضها
     val ksFile = System.getenv("KEYSTORE_FILE")?.let { file(it) }
@@ -47,4 +48,6 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer-hls:1.4.1")
     implementation("androidx.media3:media3-session:1.4.1")
     implementation("com.google.guava:guava:33.2.1-android")
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-messaging")
 }

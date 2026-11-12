@@ -106,6 +106,21 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 33 &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != 0
         ) requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
+
+        Notify.channel(this); Notify.subscribe() // إشعارات المطور لكل المستخدمين
+        openPushLink(intent)
+    }
+
+    // إشعار فيه رابط (المفتاح url) وصل والتطبيق مغلق: نفتح الرابط عند الضغط عليه
+    private fun openPushLink(i: Intent?) {
+        val u = i?.getStringExtra("url") ?: return
+        i.removeExtra("url")
+        if (u.startsWith("http")) runCatching { startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(u))) }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        openPushLink(intent)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

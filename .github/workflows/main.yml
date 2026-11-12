@@ -17,7 +17,7 @@ jobs:
           cat > "$RUNNER_TEMP/fix.py" <<'PYEOF'
           import subprocess, os, re
           def git(*a): return subprocess.run(['git', *a], capture_output=True, text=True).stdout
-          DEST = {'radio.html': 'app/src/main/assets/radio.html', 'radios.json': 'app/src/main/assets/radios.json',
+          DEST = {'radio.html': 'app/src/main/assets/radio.html', 'radios.json': 'app/src/main/assets/radios.json', 'google-services.json': 'app/google-services.json', 'ic_notif.xml': 'app/src/main/res/drawable/ic_notif.xml', 'MessagingService.kt': 'app/src/main/java/com/quranradio/app/MessagingService.kt',
                   'AndroidManifest.xml': 'app/src/main/AndroidManifest.xml'}
           for k in ['MainActivity.kt', 'AudioLevels.kt', 'PlaybackService.kt', 'Station.kt']: DEST[k] = 'app/src/main/java/com/quranradio/app/' + k
           def when(p): return int((git('log', '-1', '--format=%ct', '--', p).strip() or '0'))
@@ -34,7 +34,7 @@ jobs:
           # باقي الملفات: الأحدث رفعاً هو الذي يُعتمد ويوضع في مكانه الصحيح
           best = {}
           for f in files:
-              base = re.sub(r' \(\d+\)(?=\.)', '', os.path.basename(f))
+              base = re.sub(r' \(?\d+\)?(?=\.)', '', os.path.basename(f))
               if base in DEST and f != DEST[base]:
                   t = when(f)
                   if t >= when(DEST[base]) and t >= best.get(base, (0, ''))[0]: best[base] = (t, f)
@@ -42,10 +42,10 @@ jobs:
               os.makedirs(os.path.dirname(DEST[base]), exist_ok=True)
               open(DEST[base], 'wb').write(open(f, 'rb').read()); print('moved', f, '->', DEST[base])
           for f in files:
-              base = re.sub(r' \(\d+\)(?=\.)', '', os.path.basename(f))
-              if (base in DEST and f != DEST[base]) or ('/' not in f and re.fullmatch(r'\d\d-.*\.jpg|.*\.xml|download|.*\.kt', f)):
+              base = re.sub(r' \(?\d+\)?(?=\.)', '', os.path.basename(f))
+              if (base in DEST and f != DEST[base]) or ('/' not in f and re.fullmatch(r'\d\d-.*\.jpg|.*\.xml|download|.*\.kt|.*\.yml', f)):
                   git('rm', '-q', '--', f)
-          open('build.gradle.kts', 'w').write('plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n}\n')
+          open('build.gradle.kts', 'w').write('plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n    id("com.google.gms.google-services") version "4.4.2" apply false\n}\n')
           git('add', '-A')
           PYEOF
           python3 "$RUNNER_TEMP/fix.py"
@@ -76,7 +76,7 @@ jobs:
           echo "VN=$VN" >> $GITHUB_ENV
           echo "sdk.dir=$ANDROID_HOME" > "$BEST/local.properties"
           # إصلاح تلقائي: ملف البناء الرئيسي يجب أن يكون هكذا دائماً (حتى لو استُبدل بالخطأ)
-          printf 'plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n}\n' > "$BEST/build.gradle.kts"
+          printf 'plugins {\n    id("com.android.application") version "8.5.2" apply false\n    id("org.jetbrains.kotlin.android") version "1.9.24" apply false\n    id("com.google.gms.google-services") version "4.4.2" apply false\n}\n' > "$BEST/build.gradle.kts"
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
             echo "KEYSTORE_FILE=$RUNNER_TEMP/release.jks" >> $GITHUB_ENV

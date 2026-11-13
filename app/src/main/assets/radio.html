@@ -610,20 +610,34 @@ const ICON = {duroos:'🎤',world:'🌍',national:'📡',mixed:'📖',qiraat:'�
 const $ = id => document.getElementById(id);
 /* ---------- جسر المشغّل الأصلي داخل تطبيق الأندرويد (يعمل في الخلفية وعلى شاشة القفل) ---------- */
 class NativeAudio extends EventTarget {
-  constructor(){ super(); this._src = ''; this.paused = true; this.ended = false; this._vol = .8; }
+  constructor(){ super(); this._src = ''; this.paused = true; this.ended = false; this._vol = .8; this.web = null; this.webOnly = new Set(); }
   get src(){ return this._src; } set src(v){ this._src = v || ''; }
   getAttribute(k){ return k === 'src' ? (this._src || null) : null; }
   removeAttribute(){ this._src = ''; }
-  load(){ if (!this._src) { this.paused = true; Android.stop(); } }
+  load(){ if (!this._src) { this.paused = true; this._webStop(); Android.stop(); } }
   play(){ if (this._src) { const s = ST[idx]; this.ended = false;
+      if (this.webOnly.has(this._src)) { Android.stop(); this._webPlay(); return Promise.resolve(); }
+      this._webStop(); if (Android.levels) $('radio').classList.add('reactive');
       Android.play(this._src, s.type === 'surahs' ? 'سورة ' + SURAH[surahPos[idx]] : s.name, s.type === 'surahs' ? s.name : CATS[s.cat]); }
     return Promise.resolve(); }
-  pause(){ this.paused = true; Android.pause(); }
-  get volume(){ return this._vol; } set volume(v){ this._vol = v; Android.setVolume(v); }
+  pause(){ this.paused = true; if (this.web && this.web.src) this.web.pause(); else Android.pause(); }
+  get volume(){ return this._vol; } set volume(v){ this._vol = v; Android.setVolume(v); if (this.web) this.web.volume = v; }
+  // احتياطي: إذاعات يرفضها المشغّل الأصلي (مثل إذاعة القاهرة) تُشغَّل بمشغّل المتصفح المدمج
+  tryWeb(){ if (!this._src || this.webOnly.has(this._src)) return false; this.webOnly.add(this._src); this._webPlay(); return true; }
+  _webPlay(){
+    if (!this.web) { const w = this.web = new Audio(); w.preload = 'none';
+      ['playing', 'pause', 'ended'].forEach(ev => w.addEventListener(ev, () => { if (!w.src || w._stopping) return;
+        this.paused = ev !== 'playing'; this.ended = ev === 'ended'; this.dispatchEvent(new Event(ev)); }));
+      w.addEventListener('error', () => { if (!w.src || w._stopping) return; this.paused = true; this.dispatchEvent(new Event('error')); }); }
+    $('radio').classList.remove('reactive'); // أعمدة الصوت بحركة تقريبية في هذا الوضع
+    const w = this.web; w._stopping = false; w.volume = this._vol; w.src = this._src; w.play().catch(() => {});
+  }
+  _webStop(){ const w = this.web; if (w && w.src) { w._stopping = true; w.pause(); w.removeAttribute('src'); w.load(); } }
 }
 const au = window.Android ? new NativeAudio() : $('au');
 window.nativeEvent = e => {
   if (e === 'playing') { au.paused = false; au.ended = false; }
+  if (e === 'error' && au.tryWeb && au.tryWeb()) return; // جرّب مشغّل المتصفح قبل اعتبارها لا تعمل
   if (e === 'pause' || e === 'error') au.paused = true;
   if (e === 'ended') { au.paused = true; au.ended = true; }
   if (e === 'next') { spin(30); if (!power) setPower(true); step(1); return; }

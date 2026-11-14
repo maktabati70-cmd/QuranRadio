@@ -11,8 +11,8 @@ android {
         applicationId = "com.quranradio.app"
         minSdk = 21
         targetSdk = 34
-        versionCode = 28
-        versionName = "1.7"
+        versionCode = 27
+        versionName = "1.6"
     }
     // مفتاح التوقيع الثابت: يُقرأ من أسرار GitHub (أو من keystore محلي) حتى تنزل التحديثات فوق بعضها
     val ksFile = System.getenv("KEYSTORE_FILE")?.let { file(it) }

@@ -1,6 +1,6 @@
 {
  "categories": {
-  "national": "إذاعات القرآن العالمية",
+  "national": "إذاعات القرآن الرسمية",
   "mixed": "تلاوات متنوعة",
   "qiraat": "القراءات والروايات",
   "tafsir": "التفسير",
@@ -21,6 +21,16 @@
   {
    "name": "إذاعة القرآن الكريم - القاهرة",
    "url": "https://stream.radiojar.com/8s5u5tpdtwzuv",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - القاهرة (بث احتياطي)",
+   "url": "https://islamicbulletin.site:8104/stream",
+   "cat": "national"
+  },
+  {
+   "name": "إذاعة القرآن الكريم - دمشق",
+   "url": "https://serverkw.quran-uni.com:8026/;",
    "cat": "national"
   },
   {
@@ -151,6 +161,16 @@
   {
    "name": "القرآن الكريم مباشر - مصر",
    "url": "https://stream.zeno.fm/ru2hqnplhk7uv",
+   "cat": "mixed"
+  },
+  {
+   "name": "القرآن للقلب",
+   "url": "https://edge.mixlr.com/channel/rwumx",
+   "cat": "mixed"
+  },
+  {
+   "name": "إذاعة طريق الارتقاء - القرآن الكريم",
+   "url": "https://streaming.radio.co/s596b42805/listen",
    "cat": "mixed"
   },
   {
@@ -369,6 +389,11 @@
    "cat": "hadith"
   },
   {
+   "name": "إذاعة طريق الارتقاء - الحديث النبوي",
+   "url": "https://s4.radio.co/s5a0c81b0f/listen",
+   "cat": "hadith"
+  },
+  {
    "name": "في ظلال السيرة النبوية (400 حلقة)",
    "url": "https://backup.qurango.net/radio/fi_zilal_alsiyra",
    "cat": "seerah"
@@ -394,7 +419,7 @@
    "cat": "seerah"
   },
   {
-   "name": "إذاعة السيرة النبوية",
+   "name": "رحمة للعالمين - السيرة النبوية",
    "url": "https://islamicbulletin.site:8054/stream",
    "cat": "seerah"
   },
@@ -536,6 +561,11 @@
   {
    "name": "إذاعة القرآن الكريم - باكستان",
    "url": "https://whmsonic.radio.gov.pk:7002/stream",
+   "cat": "world"
+  },
+  {
+   "name": "إذاعة طريق الارتقاء 87.5 FM - لبنان",
+   "url": "https://streams.radio.co/s8c9468a81/listen",
    "cat": "world"
   },
   {
